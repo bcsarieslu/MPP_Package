@@ -1,0 +1,14 @@
+﻿<AML>
+ <Item type="Server Event" id="3C0CF7B9DAFE476DAC0DE9B3D68C7A4E" action="add">
+  <event_version>version_1</event_version>
+  <is_required>0</is_required>
+  <related_id keyed_name="bcs_mpp_StepTemplate_add" type="Method">
+   <Item type="Method" action="get" select="id">
+    <name>bcs_mpp_StepTemplate_add</name>
+   </Item>
+  </related_id>
+  <server_event>onAdd</server_event>
+  <sort_order>128</sort_order>
+  <source_id keyed_name="mpp_StepTemplate" type="ItemType" name="mpp_StepTemplate">674B48BBF3034385ACA1E9C5B948624C</source_id>
+ </Item>
+</AML>

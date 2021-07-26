@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="A58C60F541D74B1BA41F7D9692DB7233" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Please save it again and resolve conflicts in Process Plan window.</text>
+  <name>mpp_ConflictResolvingInMainGrid</name>
+ </Item>
+</AML>

@@ -1,0 +1,127 @@
+﻿<AML>
+  <Item type="ItemType" id="401341C4A64B4B63915B0E94990AC21F" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>1</auto_search>
+    <default_page_size>25</default_page_size>
+    <enforce_discovery>1</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>PPR</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>0</is_relationship>
+    <is_versionable>0</is_versionable>
+    <label xml:lang="zc">MPP簽審流程</label>
+    <label_plural xml:lang="zc">MPP簽審流程</label_plural>
+    <large_icon>../Images/xClassification.svg</large_icon>
+    <maxrecords>500</maxrecords>
+    <open_icon>../Images/xClassification.svg</open_icon>
+    <revisions type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs on</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>0</use_src_access>
+    <name>PPR</name>
+    <Relationships>
+      <Item type="Allowed Permission" id="9EEF6EC822B043478FC3525C155E4C2B" action="add">
+        <is_default>1</is_default>
+        <related_id type="Permission">624F4D19940849EFA7D9319CED7E4716</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Can Add" id="A966FB6823B4468BA002F2CDE1CE9F8B" action="add">
+        <can_add>1</can_add>
+        <related_id type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="ItemType Life Cycle" id="C24425FF70FE4CDCA73320C4C346E208" action="add">
+        <related_id type="Life Cycle Map">9B33C833A4C44B51902E6B273893829D</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Property" id="5F65B3AA80994B868621F88E2855BE16" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">說明</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3328</sort_order>
+        <stored_length>500</stored_length>
+        <track_history>0</track_history>
+        <name>description</name>
+      </Item>
+      <Item type="Property" id="A5AC576D3F9145A4862BFA7B8F18820E" action="add">
+        <column_alignment>left</column_alignment>
+        <data_source>AF3E0FC8E153455C826D4A8A8E3FB94C</data_source>
+        <data_type>sequence</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <keyed_name_order>1</keyed_name_order>
+        <label xml:lang="zc">流程單號</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3072</sort_order>
+        <track_history>0</track_history>
+        <name>item_number</name>
+      </Item>
+      <Item type="Property" id="AE512AA39A5440DA8AEE18AB18003840" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <keyed_name_order>2</keyed_name_order>
+        <label xml:lang="zc">主旨</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3200</sort_order>
+        <stored_length>100</stored_length>
+        <track_history>0</track_history>
+        <name>title</name>
+      </Item>
+      <Item type="TOC Access" id="A4042253C7F746B790873FC73A8948D8" action="add">
+        <related_id type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <category>Process Flow</category>
+      </Item>
+      <Item type="View" id="77E13DF52ADC4CB6A714C2F0360D544C" action="add">
+        <client>js</client>
+        <related_id type="Form">
+          <Item type="Form" id="6DC33EC5F7AD4622A086FF44C6B7BAAE" action="add">
+            <category_form>0</category_form>
+            <height>234</height>
+            <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+            <width>699</width>
+            <name>mpp_ReviewForm</name>
+          </Item>
+        </related_id>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </role>
+        <show_ssvc>0</show_ssvc>
+        <sort_order>128</sort_order>
+        <type>default</type>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

@@ -1,0 +1,54 @@
+﻿<AML>
+ <Item type="Method" id="B87FAC20AA924149973C7487C47C8911" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[		Innovator innovatorInstance = this.getInnovator();
+		String partIdsValue = this.getProperty("part_ids");
+
+		if (String.IsNullOrEmpty(partIdsValue))
+		{
+			return innovatorInstance.newError(CCO.ErrorLookup.Lookup("mpp_parameterMissed", "part_ids"));
+		}
+		else {
+			String[] partIds = partIdsValue.Split(',');
+			Item fullMBOMItem = null;
+
+			for (int i = 0; i < partIds.Length; i++)
+			{
+				Item currentItems = GetAllItemsMbom(innovatorInstance, partIds[i], CCO);
+
+				if (fullMBOMItem == null)
+				{
+					fullMBOMItem = currentItems;
+				}
+				else
+				{
+					int itemsCount = currentItems.getItemCount();
+
+					for (int j = 0; j < itemsCount; j++)
+					{
+						fullMBOMItem.appendItem(currentItems.getItemByIndex(j));
+					}
+				}
+			}
+
+			return fullMBOMItem;
+		}
+	}
+
+	private static Item GetAllItemsMbom(Innovator innovatorInstance, String partId, Aras.Server.Core.CallContext CCO)
+	{
+		Item callframe = innovatorInstance.newItem("SQL", "SQL PROCESS");
+		callframe.setProperty("name", "mpp_GetWorkbenchPartStructure");
+		callframe.setProperty("PROCESS", "CALL");
+		callframe.setProperty("ARG1", partId);
+		callframe.setProperty("ARG2", Aras.Server.Security.Permissions.Current.IdentitiesList.Replace("'", ""));
+		callframe.setProperty("ARG3", CCO.Variables.GetUserIPAddr());
+		callframe.setProperty("ARG4", CCO.Variables.GetUserID());
+		string environmentAttributesXml = CCO.EnvironmentAttributeModule.SerializeEvaluatedEnvironmentAttributes();
+		callframe.setProperty("ARG5", environmentAttributesXml);
+
+		return callframe.apply();]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_GetWorkbenchPartStructure</name>
+ </Item>
+</AML>

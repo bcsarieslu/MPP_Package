@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="7CAA929767AC4C979E636D6ED0E276AF" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">ItemType {0} doesn't contains {1} class path</text>
+  <name>mpp_validatePartConfig_invalidClassPath</name>
+ </Item>
+</AML>

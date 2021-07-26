@@ -1,0 +1,326 @@
+﻿<AML>
+ <Item type="SQL" id="FD14AB55B28D4A5DB8C350AD68674159" action="add">
+  <execution_count>84</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <old_name>mpp_getMBOM1</old_name>
+  <sqlserver_body><![CDATA[CREATE PROCEDURE mpp_getMBOM1 (@rootProcessPlanId char(32), @partId char(32), @locationId char(32),
+ @identity_list VARCHAR(MAX), @ip_address VARCHAR(32), @cur_user_id CHAR(32), @environment_attributes_xml NVARCHAR(MAX))
+AS
+BEGIN
+	DECLARE @DuplicateExist BIT
+	SET @DuplicateExist = '0';
+	DECLARE @ResultTable TABLE
+	(level INTEGER,
+	id CHAR(32) COLLATE database_default, --id of mpp_OperationConsumedPart
+	source_id CHAR(32) COLLATE database_default, -- part_id of mpp_ProcessPlanProducedPart
+	related_id CHAR(32) COLLATE database_default, -- part_id
+	plan_id CHAR(32) COLLATE database_default,
+	quantity FLOAT,
+	sort_order INTEGER,
+	oper_sort_order INTEGER,
+	oper_id CHAR(32) COLLATE database_default,
+	item_number NVARCHAR(MAX) COLLATE database_default,
+	name NVARCHAR(MAX) COLLATE database_default,
+	CLASSIFICATION NVARCHAR(512) COLLATE database_default,
+	MAKE_BUY NVARCHAR(64) COLLATE database_default,
+	major_rev NVARCHAR(8) COLLATE database_default,
+	generation INTEGER,
+	config_id CHAR(32) COLLATE database_default
+	)
+
+	--variable declaration
+	DECLARE @KNOWN_PART_BOM TABLE(
+		id CHAR(32) COLLATE database_default PRIMARY KEY);
+
+	DECLARE @CURRENT_PART_BOM TABLE(
+		id CHAR(32) COLLATE database_default,
+		source_id CHAR(32) COLLATE database_default,
+		related_id CHAR(32) COLLATE database_default,
+		plan_id CHAR(32) COLLATE database_default,
+		quantity FLOAT,
+		sort_order INTEGER,
+		oper_sort_order INTEGER,
+		oper_id CHAR(32) COLLATE database_default);
+
+	DECLARE @NEXT_PART_BOM TABLE(
+		id CHAR(32) COLLATE database_default,
+		source_id CHAR(32) COLLATE database_default,
+		related_id CHAR(32) COLLATE database_default,
+		plan_id CHAR(32) COLLATE database_default,
+		plan_gen INTEGER,
+		plan_config_id CHAR(32) COLLATE database_default,
+		quantity FLOAT,
+		sort_order INTEGER,
+		oper_sort_order INTEGER,
+		oper_id CHAR(32) COLLATE database_default);
+
+	--insert root producedPart
+	INSERT INTO @ResultTable
+	SELECT 0, NULL, NULL, @partId, NULL, 1, NULL, NULL, NULL,
+		/*mpp_configurable:item_number_p_name*/item_number/*mpp_configurable*/, 
+		/*mpp_configurable:name_p_name*/name/*mpp_configurable*/,
+		CLASSIFICATION,
+		/*mpp_configurable:make_buy_p_name*/make_buy/*mpp_configurable*/,
+		major_rev,
+		generation,
+		config_id
+	FROM [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part
+	WHERE part.id = @partId
+	
+	DECLARE @NEXT_BOM_COUNT AS INTEGER;
+
+	SET @NEXT_BOM_COUNT = @@ROWCOUNT;
+	IF @NEXT_BOM_COUNT = 0
+	BEGIN
+		RETURN;
+	END
+
+	DECLARE @CURRENT_LEVEL AS INTEGER;
+	SET @CURRENT_LEVEL = 1;
+
+	INSERT INTO @NEXT_PART_BOM
+	SELECT ConsumedPart.id,
+		@partId,
+		ConsumedPart.related_id,
+		@rootProcessPlanId,
+		NULL,
+		NULL,
+		ConsumedPart.quantity,
+		ConsumedPart.sort_order,
+		Operation.sort_order,
+		Operation.id
+	FROM [innovator].mpp_Operation Operation
+	INNER JOIN [innovator].mpp_OperationConsumedPart ConsumedPart ON ConsumedPart.source_id = Operation.id
+	INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part on part.id = ConsumedPart.related_id
+	WHERE Operation.source_id = @rootProcessPlanId
+
+	SET @NEXT_BOM_COUNT = @@ROWCOUNT;
+	-- remember part ids that were allready found
+	INSERT INTO @KNOWN_PART_BOM SELECT id FROM @NEXT_PART_BOM;
+
+	DECLARE @LEVELS_TO_CHECK AS INTEGER;
+	DECLARE @HAS_DUPLICATES TABLE(id CHAR(32));
+
+	WHILE @NEXT_BOM_COUNT > 0
+	BEGIN
+		INSERT INTO @ResultTable
+		SELECT @CURRENT_LEVEL, npb.id, npb.source_id, npb.related_id, npb.plan_id, npb.quantity, npb.sort_order, npb.oper_sort_order, npb.oper_id,
+			/*mpp_configurable:item_number_p_name*/item_number/*mpp_configurable*/,
+			/*mpp_configurable:name_p_name*/name/*mpp_configurable*/,
+			CLASSIFICATION,
+			/*mpp_configurable:make_buy_p_name*/make_buy/*mpp_configurable*/,
+			major_rev,
+			generation,
+			config_id
+		FROM @NEXT_PART_BOM npb
+		INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part on part.id = related_id;
+
+		DELETE FROM @CURRENT_PART_BOM;
+		INSERT INTO @CURRENT_PART_BOM
+		SELECT id, source_id, related_id, plan_id, quantity, sort_order, oper_sort_order, oper_id
+		FROM @NEXT_PART_BOM;
+
+		DELETE FROM @NEXT_PART_BOM;
+
+		INSERT INTO @NEXT_PART_BOM
+		SELECT DISTINCT CASE WHEN ConsumedPart.id IS NULL THEN CONVERT(CHAR(32), ROW_NUMBER() OVER(ORDER BY current_pb.id DESC)) ELSE ConsumedPart.id END,
+			ProducedPart.related_id source_id,
+			ConsumedPart.related_id,
+			ProcessPlan.id plan_id,
+			ProcessPlan.generation plan_gen,
+			ProcessPlan.config_id plan_config_id,
+			ConsumedPart.quantity,
+			ConsumedPart.sort_order,
+			Operation.sort_order,
+			Operation.id
+		FROM @CURRENT_PART_BOM current_pb
+		INNER JOIN [innovator].mpp_ProcessPlanProducedPart ProducedPart ON ProducedPart.related_id = current_pb.related_id
+		INNER JOIN [innovator].mpp_ProcessPlan ProcessPlan on ProcessPlan.id = ProducedPart.source_id
+		LEFT JOIN [innovator].mpp_ProcessPlanLocation PlanLocation ON PlanLocation.source_id = ProcessPlan.id
+		LEFT JOIN [innovator].mpp_Operation Operation on Operation.source_id = ProcessPlan.id
+		LEFT JOIN [innovator].mpp_OperationConsumedPart ConsumedPart on ConsumedPart.source_id = Operation.id
+		WHERE ProcessPlan.id IS NOT NULL
+			AND (@locationId IS NULL OR @locationId = '' OR PlanLocation.related_id = @locationId)
+			AND ProcessPlan.id IN (SELECT id FROM [secured].mpp_ProcessPlan('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml));
+		--used this approach, but not [secured].mpp_ProcessPlan instead of INNER JOIN [innovator].mpp_ProcessPlan because 
+		--the approach with only one secured.mpp_ProcessPlan without innovator.mpp_ProcessPlan hurts performance much, e.g., 15s for 10.000 rows
+
+		SET @NEXT_BOM_COUNT = @@ROWCOUNT;
+
+		IF @NEXT_BOM_COUNT = 0
+		BEGIN
+			CONTINUE;
+		END
+		ELSE BEGIN
+			DELETE pb FROM @NEXT_PART_BOM pb
+			INNER JOIN (
+				SELECT MAX(plan_gen) max_gen, plan_config_id, source_id
+				FROM @NEXT_PART_BOM
+				GROUP BY plan_config_id, source_id
+				HAVING COUNT(DISTINCT plan_id) > 1
+			) sub_pb 
+			ON pb.plan_config_id = sub_pb.plan_config_id AND pb.source_id = sub_pb.source_id AND pb.plan_gen <> sub_pb.max_gen
+
+			INSERT INTO @HAS_DUPLICATES
+				SELECT source_id id FROM @NEXT_PART_BOM GROUP BY (source_id) HAVING COUNT(DISTINCT plan_id) > 1
+
+			IF @@ROWCOUNT > 0
+			BEGIN
+				DELETE FROM @ResultTable
+
+				INSERT INTO @ResultTable
+				SELECT 0, np.id, np.source_id, np.related_id, np.plan_id, np.quantity, np.sort_order, np.oper_sort_order, np.oper_id,
+					/*mpp_configurable:item_number_p_name*/item_number/*mpp_configurable*/,
+					/*mpp_configurable:name_p_name*/name/*mpp_configurable*/,
+					CLASSIFICATION,
+					/*mpp_configurable:make_buy_p_name*/make_buy/*mpp_configurable*/,
+					major_rev,
+					generation,
+					config_id
+				FROM @CURRENT_PART_BOM np
+				INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part on part.id = related_id
+				INNER JOIN @HAS_DUPLICATES d ON np.related_id = d.id
+
+				SET @NEXT_BOM_COUNT = 0;
+				SET @DuplicateExist = '1'
+				CONTINUE;
+			END
+		END
+
+		IF @LEVELS_TO_CHECK IS NULL
+		BEGIN
+			/* try to find "new" part_bom records. if there are no - this means we found all the tree . */
+			DECLARE @NEW_BOM_COUNT AS INTEGER;
+
+			--strange, but it seems should work even if we change part_bom id to ocp.id.
+			INSERT INTO @KNOWN_PART_BOM
+			SELECT newb.id
+			FROM @NEXT_PART_BOM newb LEFT OUTER JOIN @KNOWN_PART_BOM kb ON kb.id=newb.id
+			WHERE kb.id IS NULL;
+
+			SET @NEW_BOM_COUNT = @@ROWCOUNT;
+
+			IF @NEW_BOM_COUNT = 0
+			BEGIN
+				SET @LEVELS_TO_CHECK = @CURRENT_LEVEL; /* because the first level # is 0. It is enough to detect infinite loop. */
+			END
+		END
+		ELSE
+		BEGIN
+			IF @LEVELS_TO_CHECK <= 0
+			BEGIN
+				/* infinite loop is detected */
+				DELETE FROM @CURRENT_PART_BOM;
+
+				INSERT INTO @CURRENT_PART_BOM
+				SELECT
+				ConsumedPart.id,
+				ProducedPart.related_id,
+				ConsumedPart.related_id,
+				ProcessPlan.id,
+				ConsumedPart.quantity,
+				ConsumedPart.sort_order,
+				Operation.sort_order,
+				Operation.id
+				FROM @KNOWN_PART_BOM myP
+				INNER JOIN [innovator].mpp_OperationConsumedPart ConsumedPart ON ConsumedPart.id = myP.id
+				INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part on part.id = ConsumedPart.related_id
+				INNER JOIN [innovator].mpp_Operation Operation ON Operation.id = ConsumedPart.source_id
+				INNER JOIN [innovator].mpp_ProcessPlan ProcessPlan ON ProcessPlan.id = Operation.source_id
+				INNER JOIN [innovator].mpp_ProcessPlanProducedPart ProducedPart ON ProducedPart.source_id = ProcessPlan.id
+				LEFT JOIN [innovator].mpp_ProcessPlanLocation PlanLocation ON PlanLocation.source_id = ProcessPlan.id
+				WHERE (@locationId IS NULL OR @locationId = '' OR PlanLocation.related_id = @locationId)
+					AND ProcessPlan.id IN (SELECT id FROM [secured].mpp_ProcessPlan('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml));
+					--used this approach, but not [secured].mpp_ProcessPlan instead of INNER JOIN [innovator].mpp_ProcessPlan because 
+					--the approach with only one secured.mpp_ProcessPlan without innovator.mpp_ProcessPlan hurts performance much, e.g., 15s for 10.000 rows
+
+				DECLARE @LEAF_PARTS_COUNT AS INTEGER;
+				SET @LEAF_PARTS_COUNT = 1;
+
+				WHILE @LEAF_PARTS_COUNT > 0
+				BEGIN
+					DELETE FROM @CURRENT_PART_BOM
+					WHERE related_id NOT IN (SELECT source_id FROM @CURRENT_PART_BOM);
+
+					SET @LEAF_PARTS_COUNT = @@ROWCOUNT;
+				END
+
+				DECLARE @infinitive_loop_parent_id AS CHAR(32);
+				DECLARE @infinitive_loop_child_id AS CHAR(32);
+
+				SELECT TOP 1 @infinitive_loop_parent_id = source_id, @infinitive_loop_child_id = related_id
+				FROM @CURRENT_PART_BOM;
+
+				IF @infinitive_loop_parent_id IS NOT NULL
+				BEGIN
+					DECLARE @parent_part_keyed_name VARCHAR(128);
+					DECLARE @child_part_keyed_name VARCHAR(128);
+
+					SELECT @parent_part_keyed_name=ISNULL(keyed_name,id)
+					FROM [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml)
+					WHERE id=@infinitive_loop_parent_id;
+
+					SELECT @child_part_keyed_name=ISNULL(keyed_name,id)
+					FROM [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml)
+					WHERE id=@infinitive_loop_child_id;
+
+					SET @CURRENT_LEVEL = CAST(
+					'<error>
+						<B>The BOM structure contains circular references</B>. Please check dependency between Part "' +
+						@parent_part_keyed_name + '" (' + @infinitive_loop_parent_id + ') and "' +
+						@child_part_keyed_name + '" (' + @infinitive_loop_child_id + ').
+					</error>
+					' AS INTEGER);
+				END
+			END
+
+			SET @LEVELS_TO_CHECK = @LEVELS_TO_CHECK - 1;
+		END
+
+		SET @CURRENT_LEVEL = @CURRENT_LEVEL + 1;
+	END
+
+	SELECT cb.sort_order cp_sort_order, 
+		cb.level level,
+		cb.item_number rel_item_number,
+		cb.name rel_name,
+		cb.CLASSIFICATION rel_classn,
+		cb.quantity quantity,
+		cb.id op_consumed_id,
+		cb.oper_sort_order oper_sort_order,
+		cb.oper_id oper_id,
+		cb.plan_id pp_id,
+		(SELECT top 1 '1' FROM [innovator]./*mpp_configurable:bom_it_name*/Part_BOM/*mpp_configurable*/
+			WHERE source_id = cb.related_id) as child_part_bom_exists,
+		cb.source_id source_id,
+		cb.related_id rel_id,
+		cb.MAKE_BUY rel_make_buy,
+		cb.major_rev revision, 
+		cb.generation generation, 
+		cb.config_id config_id INTO #completeBom2
+		FROM @ResultTable cb 
+		
+	IF (@DuplicateExist = '1')
+	BEGIN
+		SELECT DISTINCT level, rel_item_number, rel_name, rel_classn, quantity, op_consumed_id, oper_sort_order, oper_id, pp_id,
+			child_part_bom_exists, source_id, rel_id, rel_make_buy, revision, generation, config_id, cp_sort_order,
+			'1' duplicate_exists 
+		FROM #completeBom2
+		ORDER BY level, oper_sort_order, cp_sort_order
+	END
+	ELSE BEGIN
+		SELECT level, rel_item_number, rel_name, rel_classn, quantity, op_consumed_id, oper_sort_order, oper_id, pp_id,
+			child_part_bom_exists, source_id, rel_id, rel_make_buy, revision, generation, config_id,
+			'0' duplicate_exists 
+		FROM #completeBom2
+		ORDER BY level, oper_sort_order, cp_sort_order
+	END
+
+	DROP TABLE #completeBom2;
+END]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>procedure</type>
+  <name>mpp_getMBOM1</name>
+ </Item>
+</AML>

@@ -1,0 +1,7 @@
+<AML>
+ <Item type="Method" id="02216ABCE5B44F1283C1C7EA258CA5D2" action="bcs_InstallPackage_AO-09011">
+  <package>tw.com.broadway.AO-09011</package>
+  <itemtype>Part</itemtype>
+  <classifications>Phantom,MBOM only Part</classifications>
+ </Item>
+</AML>

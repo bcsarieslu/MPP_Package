@@ -1,0 +1,277 @@
+﻿<AML>
+  <Item type="Method" action="add" id="984B8F12213347139C3EEF0C5EE43D64">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[return {
+		constructor: function() {
+			this.resourceStrings.partWasntFound = this.uiUtils.getResource('operationElementRenderer.partWasntFound');
+			this.resourceStrings.quantity = this.uiUtils.getResource('operationElementRenderer.quantity');
+			this.resourceStrings.partNumber = this.uiUtils.getResource('operationElementRenderer.partNumber');
+			this.resourceStrings.partName = this.uiUtils.getResource('operationElementRenderer.partName');
+			this.resourceStrings.type = this.uiUtils.getResource('operationElementRenderer.type');
+			this.resourceStrings.alternates = this.uiUtils.getResource('operationElementRenderer.alternates');
+			this.resourceStrings.substitutes = this.uiUtils.getResource('operationElementRenderer.substitutes');
+			this.resourceStrings.editableColumnTooltip = this.uiUtils.getResource('operationElementRenderer.editableColumnTooltip');
+			this.resourceStrings.resourceNumber = this.uiUtils.getResource('operationElementRenderer.resourceNumber');
+			this.resourceStrings.resourceName = this.uiUtils.getResource('operationElementRenderer.resourceName');
+			this.resourceStrings.resourceType = this.uiUtils.getResource('operationElementRenderer.resourceType');
+			this.resourceStrings.editDetails = this.uiUtils.getResource('operationElementRenderer.edit');
+			this.resourceStrings.resourceNotFound = this.uiUtils.getResource('operationElementRenderer.resourceNotFound');
+		},
+
+		prepareElementState: function(/*WrappedObject*/ schemaElement, /*Object*/ parentState) {
+			var elementState = this.inherited(arguments);
+
+			if (schemaElement.is('ArasInternalItemXmlSchemaElement') && !elementState.isEmpty) {
+				var modelItem = schemaElement.Item();
+				var detailsChildElement = schemaElement.ChildItems().get(0);
+
+				// additional state info
+				elementState.isDetailsEmpty = detailsChildElement && (detailsChildElement.ChildItems().length() === 0);
+				elementState.isEditable = modelItem.isEditable();
+			}
+
+			return elementState;
+		},
+
+		RenderStartHtmlElement: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var startHtml = this.inherited(arguments);
+			var detailsButtonContent = elementState.isDetailsEmpty && elementState.isEditable ?
+				this.wrapInTag('', 'img', {class: 'ExpandDetailsButton', src: '../../images/EditItem.svg', title: this.resourceStrings.editDetails}) : '';
+			var operationCaption = this.wrapInTag(schemaElement.nodeName + ' ' + schemaElement.getProperty('sort_order') +
+				' : ' + schemaElement.getProperty('name') + detailsButtonContent, 'div', {class: 'OperationCaption'});
+
+			return startHtml + operationCaption;
+		},
+
+		RenderChildren: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var out = '';
+			var additionalContentHtml = '';
+			var childItems = schemaElement.ChildItems().List();
+			var consumedParts = [];
+			var operationResources = [];
+			var childItem, i;
+
+			for (i = 0; i < childItems.length; i++) {
+				childItem = childItems[i];
+
+				if (childItem.is('WorkInstructionDetails')) {
+					if (!elementState.isDetailsEmpty || elementState.isEditable) {
+						additionalContentHtml += this.factory.CreateRenderer(childItem).RenderHtml(childItem, elementState);
+					}
+				} else if (childItem.is('Part')) {
+					consumedParts.push(childItem);
+				} else if (childItem.is('Resource')) {
+					operationResources.push(childItem);
+				} else if (!childItem.is('Document') && !childItem.is('Skill')) {
+					out += this.factory.CreateRenderer(childItem).RenderHtml(childItem, elementState);
+				}
+			}
+
+			if (elementState.isDetailsEmpty && elementState.isEditable) {
+				additionalContentHtml = this.wrapInTag(additionalContentHtml, 'div', {
+					class: 'CollapsedDetails',
+					style: 'display: none;'
+				});
+			}
+
+			out += this.RenderConsumedPartsTable(consumedParts, elementState);
+			out += this.RenderResourcesTable(operationResources);
+
+			return additionalContentHtml + out;
+		},
+
+		RenderConsumedPartsTable: function(/*Array*/ consumedParts, /*Object*/ elementState) {
+			var resultHtml = '';
+
+			if (consumedParts && consumedParts.length) {
+				var informationRows = '';
+				var consumedPartElement, consumedPartModelItem, partModelItem, similarParts,
+					partAlternates, partSubstitutes, currentPart, manyAlternates, relativeType,
+					maxAlternateCount, cellAttributes, i, j;
+
+				for (i = 0; i < consumedParts.length; i++) {
+					consumedPartElement = consumedParts[i];
+					consumedPartModelItem = consumedPartElement.Item();
+					partModelItem = consumedPartModelItem.getRelatedItem();
+
+					if (partModelItem) {
+						if (partModelItem.isBlocked()) {
+							informationRows +=
+							'	<tr class="ArasXmlSchemaElementBlocked">' +
+							'		<td colspan="6">' + this.resourceStrings.itemIsBlocked + '</td>' +
+							'	</tr>';
+						} else {
+							similarParts = consumedPartModelItem.getAlternateParts();
+							partAlternates = [];
+							partSubstitutes = [];
+
+							for (j = 0; j < similarParts.length; j++) {
+								currentPart = similarParts[j];
+								relativeType = currentPart.getProperty('relative_type');
+
+								if (relativeType === 'alternate') {
+									partAlternates.push(currentPart);
+								} else {
+									partSubstitutes.push(currentPart);
+								}
+							}
+
+							maxAlternateCount = Math.max(partAlternates.length, partSubstitutes.length);
+							manyAlternates = maxAlternateCount > 1;
+							cellAttributes = manyAlternates ? ' rowspan="' + maxAlternateCount + '"' : '';
+
+							informationRows +=
+							'	<tr>' +
+							'		<td' + cellAttributes + '>' + partModelItem.getProperty(this.partConfig.item_number_p_name) + '</td>' +
+							'		<td' + cellAttributes + '>' + partModelItem.getProperty(this.partConfig.name_p_name) + '</td>' +
+							'		<td' + cellAttributes + '>' + partModelItem.getProperty('classification') + '</td>' +
+							this.wrapInTag(consumedPartModelItem.getProperty('quantity'), 'td', (elementState.isEditable ? {
+								class: 'EditableCell',
+								actionName: 'changeQuantity',
+								consumedPartId: consumedPartModelItem.Id(),
+								rowspan: manyAlternates ? maxAlternateCount : undefined
+							} : {
+								rowspan: manyAlternates ? maxAlternateCount : undefined
+							})) +
+							'		<td>' + (partAlternates.length ? partAlternates[0].getProperty(this.partConfig.item_number_p_name) : '') + '</td>' +
+							'		<td>' + (partSubstitutes.length ? partSubstitutes[0].getProperty(this.partConfig.item_number_p_name) : '') + '</td>' +
+							'	</tr>';
+
+							// adding alternate rows
+							for (j = 1; j < maxAlternateCount; j++) {
+								informationRows +=
+									'	<tr>' +
+									'		<td>' + (j < partAlternates.length ? partAlternates[j].getProperty(this.partConfig.item_number_p_name) : '') + '</td>' +
+									'		<td>' + (j < partSubstitutes.length ? partSubstitutes[j].getProperty(this.partConfig.item_number_p_name) : '') + '</td>' +
+									'	</tr>';
+							}
+						}
+					} else {
+						informationRows +=
+						'	<tr>' +
+						'		<td colspan="6">' + this.resourceStrings.partWasntFound + '</td>' +
+						'	</tr>';
+					}
+				}
+
+				resultHtml = '<table class="ConsumedPartTable">' +
+					'	<tr>' +
+					'		<td>' + this.resourceStrings.partNumber + '</td>' +
+					'		<td>' + this.resourceStrings.partName + '</td>' +
+					'		<td>' + this.resourceStrings.type + '</td>' +
+					'		<td>' +
+					this.wrapInTag(this.resourceStrings.quantity +
+						(elementState.isEditable ? this.wrapInTag('', 'img', {
+							class: 'EditableMarker',
+							src: '../../images/Change.svg',
+							title: this.resourceStrings.editableColumnTooltip
+						}) : ''), 'div', {style: 'position:relative; padding-right:5px;'}) +
+					'		</td>' +
+					'		<td>' + this.resourceStrings.alternates + '</td>' +
+					'		<td>' + this.resourceStrings.substitutes + '</td>' +
+					'	</tr>' +
+					informationRows +
+					'</table>';
+			}
+
+			return resultHtml;
+		},
+
+		RenderResourcesTable: function(/*Array*/ operationToolElements) {
+			var resultHtml = '';
+
+			if (operationToolElements && operationToolElements.length) {
+				var informationRows = '';
+				var toolElement, resourceModelItem, toolModelItem, itemTypeName, itemTypeDescriptor, i;
+
+				for (i = 0; i < operationToolElements.length; i++) {
+					toolElement = operationToolElements[i];
+
+					resourceModelItem = toolElement.Item();
+					toolModelItem = resourceModelItem.getRelatedItem();
+
+					if (toolModelItem) {
+						if (toolModelItem.isBlocked()) {
+							informationRows +=
+							'	<tr class="ArasXmlSchemaElementBlocked">' +
+							'		<td colspan="3">' + this.resourceStrings.itemIsBlocked + '</td>' +
+							'	</tr>';
+						} else {
+							itemTypeName = toolModelItem.getItemType();
+							itemTypeDescriptor = this.datamodel.getItemTypeDescriptor(itemTypeName);
+
+							informationRows +=
+							'	<tr>' +
+							'		<td>' + toolModelItem.getProperty('item_number') + '</td>' +
+							'		<td>' + toolModelItem.getProperty('name') + '</td>' +
+							'		<td>' + itemTypeDescriptor.getProperty('label') + '</td>' +
+							'	</tr>';
+						}
+					} else {
+						informationRows +=
+						'	<tr>' +
+						'		<td colspan="3">' + resourceModelItem.getProperty('name') + (' - ' + this.resourceStrings.resourceNotFound + '</td>') +
+						'	</tr>';
+					}
+				}
+
+				resultHtml += '<table class="ResourcesTable">' +
+					'	<tr>' +
+					'		<td>' + this.resourceStrings.resourceNumber + '</td>' +
+					'		<td>' + this.resourceStrings.resourceName + '</td>' +
+					'		<td>' + this.resourceStrings.resourceType + '</td>' +
+					'	</tr>' +
+					informationRows +
+					'</table>';
+			}
+
+			return resultHtml;
+		},
+
+		RenderChildrens: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var out = [];
+
+			if (!elementState.isBlocked) {
+				var childItems = schemaElement.ChildItems();
+				var childsCount = childItems.length();
+				var childItem, childRenderResult, i;
+
+				for (i = 0; i < childsCount; i++) {
+					childItem = childItems.get(i);
+
+					if (!childItem.is('WorkInstructionDetails')) {
+						childRenderResult = this.factory.CreateRenderer(childItem).RenderModel(childItem, elementState);
+						out = out.concat(childRenderResult);
+					}
+				}
+			}
+
+			return out;
+		},
+
+		GetTreeName: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var elementName = '';
+
+			if (elementState.isBlocked) {
+				elementName = this.resourceStrings.itemIsBlocked;
+			} else if (!elementState.isEmpty) {
+				var itemName = schemaElement.getProperty('name');
+				
+				//Modify By tengz 2020/2/4
+                //调整MPP ProcessPlan Tree 显示对象KeyedName
+				//elementName = schemaElement.getProperty('sort_order') + (itemName ? ' : ' + itemName : '');
+				var keyed_name=schemaElement.getProperty('keyed_name');
+				elementName = (keyed_name ? keyed_name : schemaElement.getProperty('sort_order')) + (itemName ? ' : ' + itemName : '');
+			}
+
+			return this.wrapInTag(elementName, 'span', {class: 'ArasXmlSchemaElementTypeNode'});
+		}
+	};]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>mpp_OperationElementRenderer</name>
+  </Item>
+</AML>

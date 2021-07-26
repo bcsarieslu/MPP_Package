@@ -1,0 +1,10 @@
+﻿<AML>
+  <Item type="Field" id="E437B8C29C704D5AB407C0006C0B5EF6" action="edit">
+    <propertytype_id>
+      <Item type="Property" action="get" select="id">
+        <name>owned_by_id</name>
+        <source_id>70F22428A4CB459BBFAC3431376C5579</source_id>
+      </Item>
+    </propertytype_id>
+  </Item>
+</AML>

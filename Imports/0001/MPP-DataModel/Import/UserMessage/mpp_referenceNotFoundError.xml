@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="DE732D23C59F4BF88C5CBE5EB84602D3" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">'{0}' Item with id='{1}' doesn't exist. Please remove reference before save.</text>
+  <name>mpp_referenceNotFoundError</name>
+ </Item>
+</AML>

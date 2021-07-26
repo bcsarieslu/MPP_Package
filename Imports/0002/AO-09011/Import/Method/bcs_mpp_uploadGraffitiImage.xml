@@ -1,0 +1,61 @@
+﻿<AML>
+  <Item type="Method" action="add" id="404EFE66B441423FB8F06A199AE5E655">
+    <comments>AO-09011</comments>
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[Innovator inn=this.getInnovator();
+
+//上传涂鸦图片
+string imageFileName=inn.getNewID()+".jpg";
+string imgDirPath=CCO.Server.MapPath("../Client/scripts/WebEditor/ueditor/TemporaryFile/")+imageFileName;
+string imgbase64=this.getProperty("imgbase","");
+
+string rest=Base64StringToImage(imgDirPath,imgbase64);
+if(rest!="")
+{
+    return inn.newError("涂鸦上传至暂存目录失败:"+rest);
+}
+
+Item graffitiFile=inn.newItem("File","add");
+graffitiFile.setProperty("filename",imageFileName);
+graffitiFile.attachPhysicalFile(imgDirPath);
+graffitiFile=graffitiFile.apply();
+
+//删除临时图片文件
+File.Delete(imgDirPath);
+
+return graffitiFile;
+}
+
+//将涂鸦图片临时存放至特定目录
+public string Base64StringToImage(string imgDirPath,string strbase64 )
+{
+    try
+    {
+        byte[] arr = Convert.FromBase64String(strbase64);
+        MemoryStream ms = new MemoryStream(arr);
+        System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(ms);
+
+         bmp.Save(imgDirPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+        //bmp.Save(@"d:\"test.bmp", ImageFormat.Bmp);
+        //bmp.Save(@"d:\"test.gif", ImageFormat.Gif);
+        //bmp.Save(@"d:\"test.png", ImageFormat.Png);
+        ms.Close();
+        if(!File.Exists(imgDirPath))
+        {
+            return "Error";
+        }
+        return "";
+    }
+    catch (Exception ex)
+    {
+        return ex.Message;
+    }
+]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_mpp_uploadGraffitiImage</name>
+  </Item>
+</AML>

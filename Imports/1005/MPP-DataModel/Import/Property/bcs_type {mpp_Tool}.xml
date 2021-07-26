@@ -1,0 +1,21 @@
+﻿<AML>
+  <Item type="Property" id="7B2052F453ED43CC8D118F988F691CE9" action="add">
+    <column_alignment>left</column_alignment>
+    <data_source>E0DEBDD2D0644FE9920FD03C4BE0A856</data_source>
+    <data_type>list</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="zc">类型</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>3200</sort_order>
+    <source_id type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+    <stored_length>256</stored_length>
+    <track_history>0</track_history>
+    <name>bcs_type</name>
+  </Item>
+</AML>

@@ -1,0 +1,34 @@
+﻿<AML>
+ <Item type="Permission" id="624F4D19940849EFA7D9319CED7E4716" action="add">
+  <is_private>0</is_private>
+  <name>World Can Update</name>
+  <Relationships>
+   <Item type="Access" id="A6D6B4CD45F4432AADF3F6E95B73F803" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="World Can Update" type="Permission">624F4D19940849EFA7D9319CED7E4716</source_id>
+   </Item>
+   <Item type="Access" id="CED2C7C5B40943C3B057E663A62D356E" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Administrators" type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="World Can Update" type="Permission">624F4D19940849EFA7D9319CED7E4716</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

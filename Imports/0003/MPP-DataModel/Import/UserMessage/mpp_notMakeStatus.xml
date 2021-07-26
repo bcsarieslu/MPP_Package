@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="7824C8BACCFC42799C5C6732F87A6D0C" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Not-Make</text>
+  <name>mpp_notMakeStatus</name>
+ </Item>
+</AML>

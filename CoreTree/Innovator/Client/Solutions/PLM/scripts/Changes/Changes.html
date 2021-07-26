@@ -1,0 +1,355 @@
+﻿<!DOCTYPE html>
+<!-- (c) Copyright by Aras Corporation, 2004-2013. -->
+<html>
+<head>
+	<style type="text/css">
+		@import "../../../../public/styles/controls.css";	
+		@import "../../styles/changes.css";
+	</style>
+	<script type="text/javascript" src="../../../../javascript/include.aspx?classes=ScriptSet2"></script>
+	<script type="text/javascript" src="../../../../javascript/include.aspx?classes=XmlDocument"></script>
+	<script type="text/javascript" src="../../javascript/gridTools.js"></script>
+	<script type="text/javascript" src="../../javascript/toolbarTools.js"></script>
+	<script type="text/javascript" src="../../../../javascript/include.aspx?classes=/dojo.js"
+		data-dojo-config="isDebug: false, parseOnLoad: false, baseUrl:'../../../../javascript/dojo'"></script>
+</head>
+<body class="claro">
+	<script type="text/javascript">
+		var aras = parent.aras;
+		var toolbarReady = false,
+			gridReady = false,
+			isEditMode = false,
+			GridXmlLoadedFirstTime = true,
+			innovator = new aras.getMostTopWindowWithAras(window).Innovator (),
+			changesHelper = new ChangesHelper (),
+			grid,
+			toolbar;
+
+		window.onresize = fixGridHeight;
+		window.addEventListener("DOMContentLoaded", function () {
+			clientControlsFactory.createControl("Aras.Client.Controls.Public.Toolbar", {id: "toolbar", connectId: "toolbar_slot"}, function(control) {
+				toolbarApplet = toolbar = control;
+				clientControlsFactory.on(toolbar, {
+					"onClick": onToolbarButtonClick
+				});
+				loadToolbar();
+			});
+
+			clientControlsFactory.createControl("Aras.Client.Controls.Public.GridContainer", {connectId: "gridTD"}, function(control) {
+				gridApplet = grid = control;
+				clientControlsFactory.on(grid, {
+					"gridXmlLoaded": function(isSuccess) {
+						if (GridXmlLoadedFirstTime) {
+							GridXmlLoadedFirstTime = false;
+							onXmlLoaded();
+						}
+					},
+					"gridLinkClick": function(linkVal) {
+						if (linkVal.length) {
+							showItemForm(linkVal);
+						}
+					},
+					"gridRowSelect": onRowSelect,
+					"gridDoubleClick": doDoubleClick
+				});
+				initGrid();
+				onGridLoad();
+				fixGridHeight();
+			});
+		});
+
+		function showItemForm(linkVal)
+		{
+			linkVal = linkVal.replace(/'/g, "");
+			var typeName = linkVal.split(",")[0];
+			var id = linkVal.split(",")[1];
+			aras.uiShowItem(typeName, id, "tab view");
+		}
+
+		function fixGridHeight() {
+			var el = document.getElementById("gridTD");
+			aras.fixLiquidContainerHeight(document, el);
+			el.style.height = window.innerHeight - toolbar_slot.offsetHeight + "px";
+		}
+
+		function ChangesHelper() {
+			this.CreateQuery = function ChangesHelper_CreateQuery(aml) {
+				var query = innovator.newItem();
+				query.loadAML(aml);
+				return query;
+			}
+
+			this.GetResult = function ChangesHelper_GetResult(query) {
+				var changes = query.apply();
+				var changesCount = changes.getItemCount();
+				if (changesCount === -1) {
+					aras.AlertError(changes.getErrorDetail())
+				}
+				return changes.getItemsByXPath("//Item/source_id/Item");
+			}
+
+			this.GetItemTypeLabel = function ChangesHelper_GetItemTypeLabel(typeName) {
+				var it = aras.getItemByName("ItemType", typeName, 0);
+				return aras.getItemProperty(it, "label");
+			}
+		}
+
+		function PR(itemId) {
+			var aml = "<Item type='PR' action='get' select='id, item_number, title, state'>" +
+				"	<affected_item>" + itemId + "</affected_item>" +
+				"	<state condition='ne'>Closed</state>" +
+				"</Item>";
+
+			var query = changesHelper.CreateQuery(aml);
+
+			this.GetResult = function PR_GetResult() {
+				var changes = query.apply();
+				var changesCount = changes.getItemCount();
+				if (changesCount === -1) {
+					aras.AlertError(changes.getErrorDetail())
+				}
+				return changes;
+			}
+
+			this.GetType = function PR_GetType() {
+				return "PR";
+			}
+
+			this.GetLabel = function PR_GetLabel() {
+				return changesHelper.GetItemTypeLabel(this.GetType());
+			}
+		}
+
+		function ECR(itemId) {
+			var aml = "<Item type='ECR Affected Item' action='get' select='source_id(id, item_number, title, state)'>" +
+				"  <related_id>" +
+				"    <Item type='Affected Item'>" +
+				"      <OR>" +
+				"        <AND>" +
+				"          <new_item_id>" + itemId + "</new_item_id>" +
+				"          <interchangeable>0</interchangeable>" +
+				"        </AND>" +
+				"        <AND>" +
+				"          <affected_id>" + itemId + "</affected_id>" +
+				"        </AND>" +
+				"      </OR>" +
+				"    </Item>" +
+				"  </related_id>" +
+				"</Item>";
+			var query = changesHelper.CreateQuery(aml);
+
+			this.GetResult = function ECR_GetResult() {
+				return changesHelper.GetResult(query);
+			}
+
+			this.GetType = function ECR_GetType() {
+				return "ECR";
+			}
+
+			this.GetLabel = function ECR_GetLabel() {
+				return changesHelper.GetItemTypeLabel(this.GetType());
+			}
+		}
+
+		function Change(relationshipName, itemIds) {
+			var ids = "'" + itemIds.toString().replace(/,/g, "','") + "'";
+
+			var aml = "<Item type='" + relationshipName + "' action='get' select='source_id(id, item_number, title, state)'>" +
+				"	<related_id>" +
+				"		<Item type='Affected Item'>" +
+				"			<OR>" +
+				"				<new_item_id condition='in'>" + ids + "</new_item_id>" +
+				"				<affected_id condition='in'>" + ids + "</affected_id>" +
+				"			</OR>" +
+				"		</Item>" +
+				"	</related_id>" +
+				"</Item>";
+
+			var query = changesHelper.CreateQuery(aml);
+
+			this.GetResult = function Change_GetResult() {
+				return changesHelper.GetResult(query);
+			}
+
+			this.GetType = function Change_GetType() {
+				switch (relationshipName) {
+				case "ECN Affected Item":
+					return "ECN";
+				case "Simple ECO Affected Item":
+					return "Simple ECO";
+				case "Express ECO Affected Item":
+					return "Express ECO";
+				case "Express DCO Affected Item":
+					return "Express DCO";
+				case "Express EDR Affected Item":
+					return "Express EDR";
+				//Modify by tengz
+				case "PPR Affected Item":
+					return "PPR";
+				default:
+					return "";
+				}
+			}
+
+			this.GetLabel = function Change_GetLabel() {
+				return changesHelper.GetItemTypeLabel(this.GetType());
+			}
+		}
+
+		function MCO(itemIds) {
+			var ids = "'" + itemIds.toString().replace(/,/g, "','") + "'";
+
+			var aml = "<Item type='Simple MCO Part' action='get' select='source_id(id, item_number, title, state)'>" +
+				"	<related_id condition='in'>" + ids + "	</related_id>" +
+				"</Item>";
+
+			var query = changesHelper.CreateQuery(aml);
+
+			this.GetResult = function MCO_GetResult() {
+				return changesHelper.GetResult(query);
+			}
+
+			this.GetType = function MCO_GetType() {
+				return "Simple MCO";
+			}
+
+			this.GetLabel = function MCO_GetLabel() {
+				return changesHelper.GetItemTypeLabel(this.GetType());
+			}
+		}
+
+		function GetAllGenerationsIds(objConfigId, objType) {
+			var itemQey = innovator.newItem(objType, "get");
+			itemQey.setAttribute("select", "id");
+			itemQey.setProperty("config_id", objConfigId);
+			itemQey.setProperty("id", "");
+			var id = itemQey.node.selectSingleNode("id");
+			id.setAttribute("condition", "is not null");
+
+			items = itemQey.apply();
+			var itemsCount = items.getItemCount();
+
+			var itemsGenIds = [];
+			for (var i = 0; i < itemsCount; i++) {
+				itemsGenIds[i] = items.getItemByIndex(i).getProperty("id");
+			}
+
+			return itemsGenIds;
+		}
+
+
+		function initGrid() {
+			// Get the part Object
+			var thisItem = aras.getMostTopWindowWithAras(window).document.getElementById("instance").contentDocument.thisItem;
+			// thisItem could be a part or document
+			var objId = thisItem.getProperty("id");
+			var objType = thisItem.getType();
+			var objConfigId = thisItem.getProperty("config_id");
+			var itemsGenIds = GetAllGenerationsIds(objConfigId, objType);
+
+			var prTracker = new PR(objId);
+			var ecrTracker = new ECR(objId);
+			var ecnTracker = new Change("ECN Affected Item", itemsGenIds);
+			var sEcoTracker = new Change("Simple ECO Affected Item", itemsGenIds);
+			var mcoTracker = new MCO(itemsGenIds);
+			var exDcoTracker = new Change("Express DCO Affected Item", itemsGenIds);
+			var exEcoTracker = new Change("Express ECO Affected Item", itemsGenIds);
+			//Modify by tengz
+			var pprTracker = new Change("PPR Affected Item", itemsGenIds);
+			var exEdrTracker;
+
+			//todo: remove the temporary flag in a next major release
+			var hasExpressEdrItemType = aras.getItemTypeId("Express EDR");
+			if (hasExpressEdrItemType) {
+				exEdrTracker = new Change("Express EDR Affected Item", itemsGenIds);
+			}
+
+			// Convert the Grid Data to DOM
+			var gridDom = aras.createXMLDocument();
+			gridDom.load(aras.getI18NXMLResource("ChangesGrid.xml", aras.getScriptsURL() + "../Solutions/PLM/"));
+			var tmpDom = aras.createXMLDocument();
+
+			//Modify by tengz
+			var trackers = [prTracker, ecrTracker, ecnTracker, sEcoTracker, mcoTracker, exDcoTracker, exEcoTracker,pprTracker];
+			if (exEdrTracker) {
+				trackers.push(exEdrTracker);
+			}
+			var valsArr, valsArr0, linkParam, d, nds;
+			for (var i = 0; i < trackers.length; i++) {
+				var tracker = trackers[i];
+				var itms = tracker.GetResult();
+
+				for (var j = 0; j < itms.getItemCount(); j++) {
+					var itm = itms.getItemByIndex(j);
+					var id = itm.getAttribute("id");
+					valsArr = [tracker.GetLabel(), itm.getProperty("item_number"), itm.getProperty("title"), itm.getProperty("state")];
+					for (var k = 0; k < valsArr.length; k++) {
+						if (!valsArr[k]) valsArr[k] = "";
+					}
+					tmpDom.loadXML("<tr><td/><td/><td/><td/></tr>");
+					d = tmpDom.documentElement;
+					d.setAttribute("id", id);
+					d.setAttribute("action", id);
+					nds = d.selectNodes("td");
+					for (var k = 0; k < nds.length; k++) {
+						nds[k].text = valsArr[k];
+						if (k == 1) {
+							nds[k].setAttribute("id", id);
+							nds[k].setAttribute("link", "'" + tracker.GetType() + "','" + id + "'");
+						}
+					}
+					gridDom.selectSingleNode("/table").appendChild(tmpDom.selectSingleNode("/tr"));
+				}
+			}
+			grid.InitXML(gridDom.xml);
+			updateToolbar();
+		}
+
+		function doDoubleClick(rowId) {
+			if (!rowId) {
+				rowId = grid.getSelectedId();
+			}
+			if (rowId != "") {
+				var linkValue = grid.cells(grid.getSelectedId(), 1).cell_Experimental.Numberlink;
+				if (linkValue)
+					showItemForm(linkValue.toString());
+			}
+		}
+
+		function loadToolbar() {
+			toolbarReady = true;
+			toolbar.loadXml(aras.getI18NXMLResource("changes_toolbar.xml", aras.getScriptsURL() + "../Solutions/PLM/"));
+			toolbar.ShowToolbar("tb1");
+			initToolbar();
+		}
+
+		function onToolbarButtonClick(item) {
+			grid.turnEditOff();
+			if (item.getId() == "refresh") { 
+				initGrid(); 
+			}
+			if (item.getId() == "show_item") { 
+				doDoubleClick(); 
+			}
+		}
+
+		function onXmlLoaded() {
+			updateToolbar();
+		}
+
+		function onRowSelect(rowId) {
+			setControlEnabled("show_item", rowId ? true : false);
+		}
+	</script>
+	<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+		<tr>
+			<td valign="top" id="toolbar_slot">
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" id="gridTD">
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

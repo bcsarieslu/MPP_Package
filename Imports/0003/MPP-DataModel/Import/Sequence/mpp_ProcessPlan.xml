@@ -1,0 +1,8 @@
+﻿<AML>
+ <Item type="Sequence" id="BB24390C262947959DD483EE8E4931FA" action="add">
+  <initial_value>10000</initial_value>
+  <prefix>MPP-</prefix>
+  <step>1</step>
+  <name>mpp_ProcessPlan</name>
+ </Item>
+</AML>

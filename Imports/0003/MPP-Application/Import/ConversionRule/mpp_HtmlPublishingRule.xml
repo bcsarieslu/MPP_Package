@@ -1,0 +1,10 @@
+﻿<AML>
+ <Item type="ConversionRule" id="80EC2FD3436B457887BE788E82B23916" action="add">
+  <converter_type keyed_name="mpp_HtmlPublishingConverter" type="ConverterType">96C9F4AD3692445981E9F8029E882E83</converter_type>
+  <cutoff>1</cutoff>
+  <delay>1</delay>
+  <enabled>1</enabled>
+  <timeout>2</timeout>
+  <name>mpp_HtmlPublishingRule</name>
+ </Item>
+</AML>

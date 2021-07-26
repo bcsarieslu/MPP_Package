@@ -1,0 +1,16 @@
+﻿<AML>
+ <Item type="mpp_PartConfig" id="38F55BAEEA1B49BCA95B472BF4D9C133" action="add">
+  <default_bom_it_name>Part BOM</default_bom_it_name>
+  <default_bom_quantity_p_name>quantity</default_bom_quantity_p_name>
+  <default_bom_substitute_it_name>BOM Substitute</default_bom_substitute_it_name>
+  <default_item_number_p_name>item_number</default_item_number_p_name>
+  <default_make_buy_p_name>make_buy</default_make_buy_p_name>
+  <default_mbom_only_class_path>MBOM only Part</default_mbom_only_class_path>
+  <default_name_p_name>name</default_name_p_name>
+  <default_part_alternate_it_name>Part Alternate</default_part_alternate_it_name>
+  <default_part_it_name>Part</default_part_it_name>
+  <default_phantom_class_path>Phantom</default_phantom_class_path>
+  <sort_order>128</sort_order>
+  <source_id keyed_name="World" type="Preference">507A16AA36F94513AD7EC1F948B5B48F</source_id>
+ </Item>
+</AML>

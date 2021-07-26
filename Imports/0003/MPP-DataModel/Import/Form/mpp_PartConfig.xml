@@ -1,0 +1,848 @@
+﻿<AML>
+ <Item type="Form" id="F778E3AC0DE24AD5BA28300A10EF54B2" action="add">
+  <category_form>0</category_form>
+  <height>234</height>
+  <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+  <width>699</width>
+  <name>mpp_PartConfig</name>
+  <Relationships>
+   <Item type="Body" id="CAE2874848594AD8A5FB6C633DA28310" action="add">
+    <bg_color>#FFFFFF</bg_color>
+    <css>fieldset {
+  margin-bottom: 5px;
+  padding-top: 4px;
+}
+
+legend.sys_f_legend {
+  font-weight: bold;
+}</css>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_PartConfig" type="Form">F778E3AC0DE24AD5BA28300A10EF54B2</source_id>
+    <Relationships>
+     <Item type="Field" id="8291919EF574409F9CDB9444AE0FFBA3" action="add">
+      <border_width>1</border_width>
+      <container>partRelGroupBox</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <legend xml:lang="en">Part Alternate Mapping</legend>
+      <list_no_blank>0</list_no_blank>
+      <orientation>horizontal</orientation>
+      <positioning>static</positioning>
+      <sort_order>2816</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>822</x>
+      <y>170</y>
+      <name>alternateMapping</name>
+     </Item>
+     <Item type="Field" id="EED81F7A40D041D9A99EC06E6F15DA85" action="add">
+      <border_width>0</border_width>
+      <container>alternateMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>3200</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>260</y>
+      <name>alternateMappingDefault</name>
+     </Item>
+     <Item type="Field" id="7F55C870B1194410A332A017804E790D" action="add">
+      <border_width>0</border_width>
+      <container>alternateMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>3328</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>310</y>
+      <name>alternateMappingLinked</name>
+     </Item>
+     <Item type="Field" id="01B2FC1D0E89478F84AD227BF2B5EE90" action="add">
+      <border_width>0</border_width>
+      <container>bomMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="bom_it_name" type="Property">D38B7D45E90A4585981DAAF7565D9DC9</propertytype_id>
+      <sort_order>2560</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>5120</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>615</y>
+      <name>bom_it_name</name>
+     </Item>
+     <Item type="Field" id="3064EB6A87764DAFBE574D906EA769F0" action="add">
+      <border_width>0</border_width>
+      <container>bomMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked Property - Quantity</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="bom_quantity_p_name" type="Property">483082A68DE044CBAE0779E35DE7D17F</propertytype_id>
+      <sort_order>2688</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>5544</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>615</y>
+      <name>bom_quantity_p_name</name>
+     </Item>
+     <Item type="Field" id="281F71F27CAE46EE8456D85E8A5FA67C" action="add">
+      <border_width>0</border_width>
+      <container>substituteMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="bom_substitute_it_name" type="Property">DEC55069DB1144DD8610EED2EAC4DEE3</propertytype_id>
+      <sort_order>3968</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>5888</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>371</y>
+      <name>bom_substitute_it_name</name>
+     </Item>
+     <Item type="Field" id="C748802CEDB04EF58B512051BB1407C9" action="add">
+      <border_width>1</border_width>
+      <container>partRelGroupBox</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <legend xml:lang="en">Part BOM Mapping</legend>
+      <list_no_blank>0</list_no_blank>
+      <orientation>horizontal</orientation>
+      <positioning>static</positioning>
+      <sort_order>1920</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>824</x>
+      <y>141</y>
+      <name>bomMapping</name>
+     </Item>
+     <Item type="Field" id="973DF99EF944458EA40D0BE3EA97C83B" action="add">
+      <border_width>0</border_width>
+      <container>bomMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>2048</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>96</y>
+      <name>bomMappingDefault</name>
+     </Item>
+     <Item type="Field" id="F024DE6AE7254487BA2DAAE601EF95B9" action="add">
+      <border_width>0</border_width>
+      <container>bomMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>2176</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>146</y>
+      <name>bomMappingLinked</name>
+     </Item>
+     <Item type="Field" id="BBAE9925EBC04097A56E6E6D8E18F63A" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>bomMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Aras ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_bom_it_name" type="Property">ABFAF8D48722480597FF7A4FAFCA325E</propertytype_id>
+      <sort_order>2304</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>5248</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>196</y>
+      <name>default_bom_it_name</name>
+     </Item>
+     <Item type="Field" id="3105EF7B571F470199A4FDBA647C7EF1" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>bomMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Property - Quantity</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_bom_quantity_p_name" type="Property">112396FA0BA849E1AD54A908579DF72F</propertytype_id>
+      <sort_order>2432</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>6272</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>246</y>
+      <name>default_bom_quantity_p_name</name>
+     </Item>
+     <Item type="Field" id="731A630622CE42878DC60CC7DB607527" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>substituteMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Aras ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_bom_substitute_it_name" type="Property">389FFD3217B743188577260E6A4EB393</propertytype_id>
+      <sort_order>3840</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>6016</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>321</y>
+      <name>default_bom_substitute_it_name</name>
+     </Item>
+     <Item type="Field" id="1686782AC68F4892872E223A02263FB0" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>partMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Property - Item Number</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_item_number_p_name" type="Property">265F58B426C04AF2A78C2BEC6CD25F6D</propertytype_id>
+      <sort_order>896</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4224</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>191</x>
+      <y>315</y>
+      <name>default_item_number_p_name</name>
+     </Item>
+     <Item type="Field" id="6E6AADEC56AD4470AE5063A98E9D4C39" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>partMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Property - Make/Buy</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_make_buy_p_name" type="Property">BE9EB588A9B4446EBCC3E7F7F8F36B93</propertytype_id>
+      <sort_order>900</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4480</tab_index>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>321</y>
+      <name>default_make_buy_p_name</name>
+     </Item>
+     <Item type="Field" id="33FB5C712FF34A2699CCDA6B985EFEBB" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>partMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Class Path - MBOM Only Part</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_mbom_only_class_path" type="Property">040944C161264535A14DC06EDC702FD2</propertytype_id>
+      <sort_order>1152</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4992</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>363</y>
+      <name>default_mbom_only_class_path</name>
+     </Item>
+     <Item type="Field" id="406A8F9D658F476CB09DE5670F19EA51" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>partMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Property - Name</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_name_p_name" type="Property">76EC1FB60A2D46BFB770E77A04A94EEF</propertytype_id>
+      <sort_order>768</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>3968</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>215</y>
+      <name>default_name_p_name</name>
+     </Item>
+     <Item type="Field" id="EE5BDA392A8642A4ABA574BB8488714F" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>alternateMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Aras ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_part_alternate_it_name" type="Property">B992346E20834A67BFC57ED7F85722CE</propertytype_id>
+      <sort_order>2944</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>5760</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>10</x>
+      <y>159</y>
+      <name>default_part_alternate_it_name</name>
+     </Item>
+     <Item type="Field" id="D0FBFDD38E91478780DF4C862D608B17" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>partMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Aras ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_part_it_name" type="Property">73D80B5A60E24E4090795E3CBE8A76B5</propertytype_id>
+      <sort_order>640</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>3712</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>165</y>
+      <name>default_part_it_name</name>
+     </Item>
+     <Item type="Field" id="D09AEE28C72A4E98BA0D6D24DE454FFD" action="add">
+      <bg_color>beige  </bg_color>
+      <border_width>0</border_width>
+      <container>partMappingDefault</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>1</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Class Path - Phantom</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="default_phantom_class_path" type="Property">0521C1316D7645DE950AA4EA710E543C</propertytype_id>
+      <sort_order>1024</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4736</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>191</x>
+      <y>315</y>
+      <name>default_phantom_class_path</name>
+     </Item>
+     <Item type="Field" id="AA8C4A36713B4884A0806D3B53DF8923" action="add">
+      <display_length_unit>px</display_length_unit>
+      <field_type>html</field_type>
+      <html_code><![CDATA[<span id='ITEM_INFO_INTERNAL_SPAN'/>
+<script>
+  populate_ITEM_INFO_INTERNAL_SPAN = function()
+  {
+    document.getElementById('ITEM_INFO_INTERNAL_SPAN').innerHTML = aras.uiGetItemInfoTable(document.itemType);
+  }
+  window.addEventListener('load', populate_ITEM_INFO_INTERNAL_SPAN);
+</script>]]></html_code>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>6</x>
+      <y>5</y>
+      <name>item_info</name>
+     </Item>
+     <Item type="Field" id="4A1390462EA744D1B115A8C833A30FEB" action="add">
+      <border_width>0</border_width>
+      <container>partMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked Property - Item Number</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="item_number_p_name" type="Property">C8F09C4E73BA4FCBA0D0667FFA65F473</propertytype_id>
+      <sort_order>1536</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4096</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>515</y>
+      <name>item_number_p_name</name>
+     </Item>
+     <Item type="Field" id="7A65DD2E07B74D829B3369622E743871" action="add">
+      <border_width>0</border_width>
+      <container>partMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked Property - Make/Buy</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="make_buy_p_name" type="Property">F1802069821E4D7C8CBD38E035C097DE</propertytype_id>
+      <sort_order>1550</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4352</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>321</y>
+      <name>make_buy_p_name</name>
+     </Item>
+     <Item type="Field" id="DDB3121E2DE44A3D95081EEEF88AD924" action="add">
+      <border_width>0</border_width>
+      <container>partMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked Class Path - MBOM Only Part</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="mbom_only_class_path" type="Property">15A1C770010B41DFAF89FF7C9C3A93D6</propertytype_id>
+      <sort_order>1792</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4864</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>615</y>
+      <name>mbom_only_class_path</name>
+     </Item>
+     <Item type="Field" id="8AE8253AA7B0411393800C4076FC49A5" action="add">
+      <border_width>0</border_width>
+      <container>partMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked Property - Name</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="name_p_name" type="Property">EE28DFC99E3549FD9A587C3E409FCF38</propertytype_id>
+      <sort_order>1408</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>3840</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>465</y>
+      <name>name_p_name</name>
+     </Item>
+     <Item type="Field" id="D553CDB92B9B4B8B8D05893E2C4B1E9F" action="add">
+      <border_width>0</border_width>
+      <container>alternateMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="part_alternate_it_name" type="Property">9461C461ED18423F9702332811BFA66C</propertytype_id>
+      <sort_order>3072</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>5632</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>602</x>
+      <y>250</y>
+      <name>part_alternate_it_name</name>
+     </Item>
+     <Item type="Field" id="410D8F51D2E04631B7BEC17864FB0BE1" action="add">
+      <border_width>0</border_width>
+      <container>partMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="part_it_name" type="Property">B45AEE24CE94412FA8B742996608A9CB</propertytype_id>
+      <sort_order>1280</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>3584</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>415</y>
+      <name>part_it_name</name>
+     </Item>
+     <Item type="Field" id="1D177174E1674A1CB631A5D2531799F2" action="add">
+      <border_width>1</border_width>
+      <container />
+      <css />
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <legend xml:lang="en">Part Mapping</legend>
+      <list_no_blank>0</list_no_blank>
+      <orientation>horizontal</orientation>
+      <positioning>absolute</positioning>
+      <sort_order>256</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>195</x>
+      <y>15</y>
+      <name>partMapping</name>
+     </Item>
+     <Item type="Field" id="BB903EAB40BD425383026E484581C210" action="add">
+      <border_width>0</border_width>
+      <container>partMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>384</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>65</y>
+      <name>partMappingDefault</name>
+     </Item>
+     <Item type="Field" id="296CB5EC7CA1484FA500977DDEFDC139" action="add">
+      <border_width>0</border_width>
+      <container>partMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>512</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>115</y>
+      <name>partMappingLinked</name>
+     </Item>
+     <Item type="Field" id="D00C0158A701464FAA1A9DCAD547D357" action="add">
+      <border_width>0</border_width>
+      <container />
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>absolute</positioning>
+      <sort_order>4352</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>685</x>
+      <y>11</y>
+      <name>partRelGroupBox</name>
+     </Item>
+     <Item type="Field" id="ED0B05581ED443FCA971DCC3BEB6C8DA" action="add">
+      <border_width>0</border_width>
+      <container>partMappingLinked</container>
+      <display_length>200</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Linked Class Path - Phantom</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <positioning>static</positioning>
+      <propertytype_id keyed_name="phantom_class_path" type="Property">09C116B3091A4914A69A89331A60E62F</propertytype_id>
+      <sort_order>1664</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_index>4608</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>190</x>
+      <y>615</y>
+      <name>phantom_class_path</name>
+     </Item>
+     <Item type="Field" id="74095BDA56EA4ED78A7568E027CDF311" action="add">
+      <border_width>1</border_width>
+      <container>partRelGroupBox</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <legend xml:lang="en">Part BOM Substitute Mapping</legend>
+      <list_no_blank>0</list_no_blank>
+      <orientation>horizontal</orientation>
+      <positioning>static</positioning>
+      <sort_order>3456</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>821</x>
+      <y>218</y>
+      <name>substituteMapping</name>
+     </Item>
+     <Item type="Field" id="15BE9316DA56436296C9770A8DDE5DA7" action="add">
+      <border_width>0</border_width>
+      <container>substituteMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>3584</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>221</y>
+      <name>substituteMappingDefault</name>
+     </Item>
+     <Item type="Field" id="14B59EB5184D4E5DB2063225E3EF8411" action="add">
+      <border_width>0</border_width>
+      <container>substituteMapping</container>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <positioning>static</positioning>
+      <sort_order>3712</sort_order>
+      <source_id keyed_name="CAE2874848594AD8A5FB6C633DA28310" type="Body">CAE2874848594AD8A5FB6C633DA28310</source_id>
+      <tab_stop>0</tab_stop>
+      <x>190</x>
+      <y>271</y>
+      <name>substituteMappingLinked</name>
+     </Item>
+    </Relationships>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

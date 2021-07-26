@@ -1,0 +1,122 @@
+﻿<AML>
+ <Item type="Method" id="3807927877C146B8A93ECE3F65ACE1B0" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[
+			Innovator inn = this.getInnovator();
+			var logic = new BusinessLogic(inn);
+			return logic.Execute(this);
+		}
+	}
+
+	public class BusinessLogic
+	{
+		private readonly Innovator inn;
+
+		public BusinessLogic(Innovator innovator)
+		{
+			inn = innovator;
+		}
+
+		public Item Execute(Item self)
+		{
+			string partIds = self.getProperty("part_ids");
+			String locationdId = self.getProperty("location_id", string.Empty).Replace("'", "''");
+			var q = inn.newItem("mpp_ProcessPlanProducedPart", "get");
+			q.setAttribute("select", "source_id(config_id, generation, item_number), related_id(id)");
+			q.setProperty("related_id", partIds);
+			q.setPropertyCondition("related_id", "in");
+			if (!string.IsNullOrEmpty(locationdId))
+			{
+				q.setAttribute("where", @"source_id IN (SELECT source_id FROM mpp_ProcessPlanLocation WHERE related_id='" + locationdId + "')");
+			}
+			q = q.apply();
+			int qCount = q.isError() ? 0 : q.getItemCount();
+			var maxGenerations = new Dictionary<string, int>();
+			var plansWithMaxGeneration = new Dictionary<string, Dictionary<string, ProcessPlan>>();//in this distionaries 2 strings mean: partId, plan_config_id.
+			for (int i = 0; i < qCount; i++)
+			{
+				Item item = q.getItemByIndex(i);
+				Item processPlan = item.getPropertyItem("source_id");
+				string partId = item.getProperty("related_id");
+				string planConfigId = Utils.GetPropertyOptimized(processPlan, "config_id");
+				string partIdPlusPlanConfigId = partId + planConfigId;
+				int generation = int.Parse(Utils.GetPropertyOptimized(processPlan, "generation"), CultureInfo.InvariantCulture);
+				int maxGen;
+				bool greaterGenerationWasFound = false;
+				if (maxGenerations.TryGetValue(partIdPlusPlanConfigId, out maxGen))
+				{
+					if (generation > maxGen)
+					{
+						greaterGenerationWasFound = true;
+						maxGenerations[partIdPlusPlanConfigId] = generation;
+					}
+				}
+				else
+				{
+					greaterGenerationWasFound = true;
+					maxGenerations.Add(partIdPlusPlanConfigId, generation);
+				}
+
+				if (greaterGenerationWasFound)
+				{
+					Dictionary<string, ProcessPlan> planByPlanConfigId;
+					if (!plansWithMaxGeneration.TryGetValue(partId, out planByPlanConfigId))
+					{
+						planByPlanConfigId = new Dictionary<string, ProcessPlan>();
+						plansWithMaxGeneration[partId] = planByPlanConfigId;
+					}
+					planByPlanConfigId[planConfigId] = new ProcessPlan { Id = processPlan.getID(), ItemNumber = Utils.GetPropertyOptimized(processPlan, "item_number") };
+				}
+			}
+
+			Item result = inn.newResult("");
+			XmlDocument resultDom = result.dom;
+			XmlNode resultNode = result.dom.SelectSingleNode(Item.XPathResult);
+			foreach (string partId in plansWithMaxGeneration.Keys)
+			{
+				Dictionary<string, ProcessPlan> planIdByPlanConfigId = plansWithMaxGeneration[partId];
+				foreach (string planConfigId in planIdByPlanConfigId.Keys)
+				{
+					ProcessPlan processPlan = planIdByPlanConfigId[planConfigId];
+
+					XmlElement itemElement = resultDom.CreateElement("Item");
+					resultNode.AppendChild(itemElement);
+
+					Utils.AppendNode("part_id", partId, resultDom, itemElement);
+					Utils.AppendNode("plan_id", processPlan.Id, resultDom, itemElement);
+					Utils.AppendNode("plan_item_number", processPlan.ItemNumber, resultDom, itemElement);
+				}
+			}
+
+			return result;
+		}
+	}
+	static class Utils
+	{
+		public static void AppendNode(string nodeName, string nodeValue, XmlDocument resultDom, XmlElement itemElement)
+		{
+			XmlNode partNode = resultDom.CreateElement(nodeName);
+			itemElement.AppendChild(partNode);
+			partNode.InnerText = nodeValue;
+		}
+
+		public static string GetPropertyOptimized(Item item, string propertyName)
+		{
+			//note that the function will not work property, e.g., for multiString type. But, it's quicker in about 9 times then standard IOM function getProperty.
+			XmlNode node = item.node.SelectSingleNode(propertyName);
+			return node != null ? node.InnerText : "";
+		}
+	}
+
+	class ProcessPlan
+	{
+		public string Id { get; set; }
+
+		public string ItemNumber
+		{
+			get; set;
+			]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_getProcessPlanByPart</name>
+ </Item>
+</AML>

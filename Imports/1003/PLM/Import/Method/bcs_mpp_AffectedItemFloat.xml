@@ -1,0 +1,120 @@
+﻿<AML>
+  <Item type="Method" action="add" id="60DEAB207EC44B8BB6E21FCF52C43825">
+    <comments>AO-09011:solution.PLM</comments> 
+	<execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[// Called OnAfterVersion for Parts and Documents.  Performs a manual float of the new_item_id 
+//  property on Affected Item while the change item (ECN, Simple ECO, Express ECO, ECR, Express DCO) is still open
+
+// Modify by tengz 2019/7/9
+// 增加PPR变更MPP逻辑
+
+// Grant 'Aras PLM' permissions
+Aras.Server.Security.Identity plmIdentity = Aras.Server.Security.Identity.GetByName("Aras PLM");
+bool PermissionWasSet = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity);
+
+Innovator inn = this.getInnovator();
+
+// Retrieve the id of the new version
+string thisType = this.getType();
+string oldId = this.getID();
+string itemTypeDbNameCurrent = CCO.DB.GenerateTableName(thisType);
+string oldConfigId = this.getProperty("config_id");
+
+Aras.Server.Core.Utilities. IsIdValid(oldId, true);
+
+string sqlQuery = "SELECT aff.id FROM AFFECTED_ITEM aff INNER JOIN " + itemTypeDbNameCurrent + 
+                  " allPartWithCurrentConfigID ON allPartWithCurrentConfigID.CONFIG_ID = '" +oldConfigId+ 
+                  "' AND aff.NEW_ITEM_ID = allPartWithCurrentConfigID.id";
+Aras.Server.Core.InnovatorDatabase conn = CCO.Variables.InnDatabase;
+Aras.Server.Core.InnovatorDataSet result = conn.ExecuteSelect(sqlQuery);
+
+if (result.RowsNumber <= 0)
+	return this;
+
+string[] affectedItemsIdlist = new string[result.RowsNumber];
+for (int i = 0; i < result.RowsNumber; i++)
+{
+	affectedItemsIdlist[i] = result["id"].ToString();
+	result.MoveNext();
+}
+
+// Get the latest generation
+Item newVer = this.newItem(thisType, "get");
+newVer.setAttribute("select", "id");
+newVer.setProperty("config_id", this.getProperty("config_id"));
+newVer.setProperty("is_current", "1");
+newVer = newVer.apply();
+if (newVer.isError())
+	return newVer;
+
+string newId = newVer.getID();
+
+//// Find any unreleased change items that reference the old generation as a new_item_id (Superseding Item)
+string[] chgItemNames = { "ECN", "Simple ECO", "ECR", "Express ECO", "Express DCO","PPR" };
+foreach (string chgItemName in chgItemNames)
+{
+	Item affItemRel = this.newItem(chgItemName + " Affected Item", "get");
+	affItemRel.setAttribute("select", "source_id(state), related_id(id)");
+	affItemRel.setProperty("related_id", String.Join(",", affectedItemsIdlist));
+	affItemRel.setPropertyCondition("related_id", "in");
+	affItemRel = affItemRel.apply();
+	for (int i = 0; i < affItemRel.getItemCount(); i++)
+	{
+		Item affecteItemRelship = affItemRel.getItemByIndex(i);
+		Item sourceItem = affecteItemRelship.getPropertyItem("source_id");
+		if (String.Equals(sourceItem.getProperty("state"), "Released", StringComparison.Ordinal))
+			continue;
+
+		// Edit each Affected Item and set new_item_id to the id of the new generation
+		Item tempItem = inn.newItem("Affected Item", "edit");
+		tempItem.setAttribute("doGetItem", "0");
+		tempItem.setID(affecteItemRelship.getRelatedItemID());
+		tempItem.setProperty("new_item_id", newId);
+		tempItem = tempItem.apply();
+		if (tempItem.isError())
+			return tempItem;
+
+		//Edit Affected Relationship (set new id of new relationship)
+		tempItem = inn.newItem("Affected Item Relationship","get");
+		tempItem.setProperty("source_id",affecteItemRelship.getRelatedItemID());
+		Item affectedItemRelationships = tempItem.apply();
+		for (int j = 0; j < affectedItemRelationships.getItemCount(); j++)
+		{
+			Item affectedItemRelationship = affectedItemRelationships.getItemByIndex(j);
+			Item affectedRelationship = affectedItemRelationship.getRelatedItem();
+			string affectedRelationshipId = affectedRelationship.getID();
+			string newRelId = affectedRelationship.getProperty("new_rel_id");
+			if (newRelId != null)
+			{
+				Item partBOM = inn.newItem("Part BOM","get");
+				partBOM.setID(newRelId);
+				partBOM = partBOM.apply();
+				string sortOrder = partBOM.getProperty("sort_order");
+				string itemTypeId = partBOM.getProperty("typeId");
+				Item newRelItem = inn.newItem("Part BOM","get");
+				newRelItem.setProperty("source_id",newId);
+				newRelItem.setProperty("sort_order",sortOrder);
+				newRelItem.setProperty("typeId",itemTypeId);
+				newRelItem = newRelItem.apply();
+				string newRelItemId = newRelItem.getID();
+				affectedRelationship = inn.newItem("Affected Relationship","edit");
+				affectedRelationship.setID(affectedRelationshipId);
+				affectedRelationship.setProperty("new_rel_id",newRelItemId);
+				affectedRelationship = affectedRelationship.apply();
+			}
+		}
+	}
+}
+// Revoke 'Aras PLM' permissions
+if (PermissionWasSet)
+	Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity);
+
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_mpp_AffectedItemFloat</name>
+  </Item>
+</AML>

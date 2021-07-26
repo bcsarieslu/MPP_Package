@@ -1,0 +1,72 @@
+﻿<AML>
+  <Item type="Method" action="add" id="B0AF46F533D245FF9EE372FA3AD4F70E">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[return {
+		prepareElementState: function(/*WrappedObject*/ schemaElement, /*Object*/ parentState) {
+			var elementState = this.inherited(arguments);
+
+			if (schemaElement.is('ArasInternalItemXmlSchemaElement') && !elementState.isEmpty) {
+				var modelItem = schemaElement.Item();
+
+				elementState.isPhantom = modelItem.isPhantom && modelItem.isPhantom();
+				elementState.isMBOMOnly = modelItem.isMBOMOnly && modelItem.isMBOMOnly();
+			}
+
+			return elementState;
+		},
+
+		RenderChildrens: function(schemaElement, elementState) {
+			var haveProcessPlan = schemaElement.Attribute('haveProcessPlan');
+			var out = [];
+
+			if (haveProcessPlan) {
+				var childItems = schemaElement.ChildItems();
+
+				if (childItems.length()) {
+					out = this.inherited(arguments);
+				} else {
+					out.push({
+						id: schemaElement.Id().toString() + '_ProducedPart',
+						uid: schemaElement.Uid() + '_ProducedPart',
+						name: name,
+						style: this.GetTreeStyle(schemaElement, elementState),
+						parent: schemaElement.Id(),
+						rowClass: this.getTreeClassList(schemaElement, elementState)
+					});
+				}
+			}
+
+			return out;
+		},
+
+		GetTreeName: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var elementName = '';
+
+			if (elementState.isBlocked) {
+				elementName = this.resourceStrings.itemIsBlocked;
+			} else if (!elementState.isEmpty) {
+				var modelItem = schemaElement.Item();
+				
+				//Modify By tengz 2020/2/4
+                //调整MPP ProcessPlan Tree 显示对象KeyedName
+				//var itemName = modelItem.getRelatedItemProperty(this.partConfig.item_number_p_name);
+                var itemName = modelItem.getRelatedItemProperty("keyed_name");
+                
+				elementName = itemName || '';
+			}
+
+			return this.wrapInTag(elementName, 'span', {class: 'ArasXmlSchemaElementTypeNode'});
+		},
+
+		GetTreeStyle: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			return {backgroundImage: 'url("' + this.enums.getImageFromName(elementState.isPhantom || elementState.isMBOMOnly ? 'Phantom' : 'Part') + '")'};
+		}
+	};]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>mpp_ConsumedPartElementRenderer</name>
+  </Item>
+</AML>

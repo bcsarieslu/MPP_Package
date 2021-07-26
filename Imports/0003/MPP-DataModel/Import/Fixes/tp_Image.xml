@@ -1,0 +1,18 @@
+﻿<AML>
+ <Item type="ItemType" id="E4A23B0AC84D4155BF4C1E44B84CBD45" action="edit">
+  <Relationships>
+   <Item type="TOC Access" id="3288BFA3D8964764BD5299ECAF164D3B" action="add">
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="tp_Image" type="ItemType" name="tp_Image">E4A23B0AC84D4155BF4C1E44B84CBD45</source_id>
+    <category>MPP/Standard Resource</category>
+   </Item>
+   <Item type="Can Add" id="D0C3A4970FFA4E1EAD592F4C63D8F855" action="add">
+    <can_add>1</can_add>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="tp_Image" type="ItemType" name="tp_Image">E4A23B0AC84D4155BF4C1E44B84CBD45</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

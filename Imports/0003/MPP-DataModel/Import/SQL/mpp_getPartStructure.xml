@@ -1,0 +1,212 @@
+﻿<AML>
+ <Item type="SQL" id="ABF7A01018BD4A35825B25378E065944" action="add">
+  <execution_count>26</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <old_name>mpp_getPartStructure</old_name>
+  <sqlserver_body><![CDATA[CREATE FUNCTION mpp_getPartStructure (@partId char(32), @identity_list VARCHAR(MAX), @ip_address VARCHAR(32), @cur_user_id CHAR(32), @environment_attributes_xml NVARCHAR(MAX))
+RETURNS @Res_Bom TABLE
+ (level INTEGER,
+  id CHAR(32) COLLATE database_default,
+  source_id CHAR(32) COLLATE database_default,
+  related_id CHAR(32) COLLATE database_default,
+  /* 
+    You may add more columns here.
+    If you do so - add the same columns into @CURRENT_PART_BOM and @NEXT_PART_BOM.
+   */
+  quantity FLOAT,
+  sort_order INTEGER,
+  item_number NVARCHAR(MAX) COLLATE database_default,
+  name NVARCHAR(MAX) COLLATE database_default,
+  CLASSIFICATION NVARCHAR(512) COLLATE database_default,
+  major_rev NVARCHAR(8) COLLATE database_default,
+  MAKE_BUY NVARCHAR(64) COLLATE database_default,
+  generation INTEGER,
+  config_id CHAR(32) COLLATE database_default
+  )
+AS
+BEGIN
+  DECLARE @KNOWN_PART_BOM TABLE(
+    id CHAR(32) COLLATE database_default PRIMARY KEY);
+
+  DECLARE @CURRENT_PART_BOM TABLE(
+    id CHAR(32) COLLATE database_default,
+    source_id CHAR(32) COLLATE database_default,
+    related_id CHAR(32) COLLATE database_default,
+    /* you may add more columns here*/
+    quantity FLOAT,
+    sort_order INTEGER);
+
+  DECLARE @NEXT_PART_BOM TABLE(
+    id CHAR(32) COLLATE database_default,
+    source_id CHAR(32) COLLATE database_default,
+    related_id CHAR(32) COLLATE database_default,
+    /* you may add more columns here*/
+    quantity FLOAT,
+    sort_order INTEGER);
+  
+  --insert root - produced Part
+  INSERT INTO @Res_Bom
+  SELECT 0, NULL, NULL, @partId, NULL, NULL, 
+	/*mpp_configurable:item_number_p_name*/item_number/*mpp_configurable*/, 
+	/*mpp_configurable:name_p_name*/name/*mpp_configurable*/,
+	CLASSIFICATION,
+	major_rev,
+	/*mpp_configurable:make_buy_p_name*/make_buy/*mpp_configurable*/,
+	generation,
+	config_id
+  FROM [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part
+  WHERE part.id = @partId
+
+  DECLARE @NEXT_BOM_COUNT AS INTEGER;
+  
+  SET @NEXT_BOM_COUNT = @@ROWCOUNT;
+  IF @NEXT_BOM_COUNT = 0
+  BEGIN
+    RETURN;
+  END
+
+  DECLARE @CURRENT_LEVEL AS INTEGER;
+  SET @CURRENT_LEVEL = 1;
+
+ INSERT INTO @NEXT_PART_BOM
+  SELECT pb.id, source_id, related_id,
+    /* you may add more columns here*/
+    /*mpp_configurable:bom_quantity_p_name*/quantity/*mpp_configurable*/, sort_order
+  FROM innovator./*mpp_configurable:bom_it_name*/Part_BOM/*mpp_configurable*/ pb
+  INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part on part.id = related_id
+  WHERE source_id = @partId;
+
+  SET @NEXT_BOM_COUNT = @@ROWCOUNT;
+  IF @NEXT_BOM_COUNT = 0
+  BEGIN
+    RETURN;
+  END
+
+  INSERT INTO @KNOWN_PART_BOM
+  SELECT id
+  FROM @NEXT_PART_BOM;
+  
+  DECLARE @LEVELS_TO_CHECK AS INTEGER;
+
+  WHILE @NEXT_BOM_COUNT > 0
+  BEGIN
+    INSERT INTO @Res_Bom
+    SELECT @CURRENT_LEVEL, npb.*,
+		/*mpp_configurable:item_number_p_name*/item_number/*mpp_configurable*/,
+		/*mpp_configurable:name_p_name*/name/*mpp_configurable*/,
+		CLASSIFICATION,
+		major_rev,
+		/*mpp_configurable:make_buy_p_name*/make_buy/*mpp_configurable*/,
+		generation,
+		config_id
+    FROM @NEXT_PART_BOM npb
+	INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part on part.id = related_id;
+
+    DELETE FROM @CURRENT_PART_BOM;
+    INSERT INTO @CURRENT_PART_BOM
+    SELECT *
+    FROM @NEXT_PART_BOM;
+    
+    DELETE FROM @NEXT_PART_BOM;
+    
+    INSERT INTO @NEXT_PART_BOM
+    SELECT DISTINCT pb.id, source_id, related_id,
+      /* you may add more columns here*/
+      /*mpp_configurable:bom_quantity_p_name*/quantity/*mpp_configurable*/, sort_order
+    FROM innovator./*mpp_configurable:bom_it_name*/Part_BOM/*mpp_configurable*/ pb 
+	WHERE source_id IN (SELECT related_id FROM @CURRENT_PART_BOM);
+
+    SET @NEXT_BOM_COUNT = @@ROWCOUNT;
+
+    IF @NEXT_BOM_COUNT = 0
+    BEGIN
+      RETURN;
+    END
+
+    IF @LEVELS_TO_CHECK IS NULL
+    BEGIN
+      /* try to find "new" part_bom records. if there are no - this means we found all the tree . */
+      DECLARE @NEW_BOM_COUNT AS INTEGER;
+
+      INSERT INTO @KNOWN_PART_BOM
+      SELECT newb.id
+      FROM @NEXT_PART_BOM newb LEFT OUTER JOIN @KNOWN_PART_BOM kb ON kb.id=newb.id
+      WHERE kb.id IS NULL;
+
+      SET @NEW_BOM_COUNT = @@ROWCOUNT;
+
+      IF @NEW_BOM_COUNT = 0
+      BEGIN
+        SET @LEVELS_TO_CHECK = @CURRENT_LEVEL; /* because the first level # is 0. It is enough to detect infinite loop. */
+      END
+    END
+    ELSE
+    BEGIN
+      IF @LEVELS_TO_CHECK <= 0
+      BEGIN
+        /* infinite loop is detected */
+        
+        DELETE FROM @CURRENT_PART_BOM;
+        
+        /* create a list of all PART_BOM */
+        INSERT INTO @CURRENT_PART_BOM
+        SELECT pb.id, pb.source_id, pb.related_id, 0, pb.sort_order
+        FROM innovator./*mpp_configurable:bom_it_name*/Part_BOM/*mpp_configurable*/ pb
+		INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) part on part.id = related_id
+		INNER JOIN @KNOWN_PART_BOM myP ON pb.id = myP.id;
+        
+        DECLARE @LEAF_PARTS_COUNT AS INTEGER;
+        SET @LEAF_PARTS_COUNT = 1;
+
+        WHILE @LEAF_PARTS_COUNT > 0
+        BEGIN
+          DELETE FROM @CURRENT_PART_BOM
+          WHERE related_id NOT IN (SELECT source_id FROM @CURRENT_PART_BOM);
+          
+          SET @LEAF_PARTS_COUNT = @@ROWCOUNT;
+        END
+        
+        DECLARE @infinitive_loop_parent_id AS CHAR(32);
+        DECLARE @infinitive_loop_child_id AS CHAR(32);
+
+        SELECT TOP 1 @infinitive_loop_parent_id = source_id, @infinitive_loop_child_id = related_id
+        FROM @CURRENT_PART_BOM;
+
+        IF @infinitive_loop_parent_id IS NOT NULL
+        BEGIN
+          DECLARE @parent_part_keyed_name VARCHAR(128);
+          DECLARE @child_part_keyed_name VARCHAR(128);
+
+          SELECT @parent_part_keyed_name=ISNULL(keyed_name,id)
+          FROM [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml)
+          WHERE id=@infinitive_loop_parent_id;
+
+          SELECT @child_part_keyed_name=ISNULL(keyed_name,id)
+          FROM [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml)
+          WHERE id=@infinitive_loop_child_id;
+
+          SET @CURRENT_LEVEL = CAST(
+'
+<error>
+<B>The BOM structure contains circular references</B>. Please check dependency between Part "' +
+          @parent_part_keyed_name + '" (' + @infinitive_loop_parent_id + ') and "' +
+          @child_part_keyed_name + '" (' + @infinitive_loop_child_id + ').
+</error>
+'         AS INTEGER);
+        END
+      END
+      
+      SET @LEVELS_TO_CHECK = @LEVELS_TO_CHECK - 1;
+    END
+
+    SET @CURRENT_LEVEL = @CURRENT_LEVEL + 1;
+  END
+  
+  RETURN;
+END]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>function</type>
+  <name>mpp_getPartStructure</name>
+ </Item>
+</AML>

@@ -1,0 +1,17 @@
+﻿<AML>
+ <Item type="Permission" id="10B7C6DABAF44122AF40570D324B135E" action="edit">
+  <Relationships>
+   <Item type="Access" id="3B77F0CC5F384F8CB579EAE01D06CFCE" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <show_permissions_warning>1</show_permissions_warning>
+    <sort_order>640</sort_order>
+    <source_id keyed_name="Technical Document Graphic - In Work" type="Permission">10B7C6DABAF44122AF40570D324B135E</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

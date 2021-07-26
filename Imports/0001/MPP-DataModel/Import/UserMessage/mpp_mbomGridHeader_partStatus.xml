@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="70C9B97917F6487890EAAEE7C1FF873E" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Part Status</text>
+  <name>mpp_mbomGridHeader_partStatus</name>
+ </Item>
+</AML>

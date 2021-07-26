@@ -1,0 +1,54 @@
+﻿<AML>
+ <Item type="ItemType" id="030019FA30FE40FEB5E32AD2FC9B1F20" action="edit">
+  <Relationships>
+   <Item type="Server Event" id="018A8FE71992496786D54C0AEAE1E515" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="mpp_EnsureOperationWIDetailsType" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>mpp_EnsureOperationWIDetailsType</name>
+     </Item>
+    </related_id>
+    <server_event>onAfterAdd</server_event>
+    <sort_order>896</sort_order>
+    <source_id keyed_name="Language" type="ItemType" name="Language">030019FA30FE40FEB5E32AD2FC9B1F20</source_id>
+   </Item>
+   <Item type="Server Event" id="064558A1D15449619E19781F7F6744C6" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="mpp_EnsureStepWIDetailsType" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>mpp_EnsureStepWIDetailsType</name>
+     </Item>
+    </related_id>
+    <server_event>onAfterAdd</server_event>
+    <sort_order>1152</sort_order>
+    <source_id keyed_name="Language" type="ItemType" name="Language">030019FA30FE40FEB5E32AD2FC9B1F20</source_id>
+   </Item>
+   <Item type="Server Event" id="31DCC0A87ECB44AD90177182860C2A86" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="mpp_EnsureOperationWIDetailsType" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>mpp_EnsureOperationWIDetailsType</name>
+     </Item>
+    </related_id>
+    <server_event>onAfterUpdate</server_event>
+    <sort_order>1024</sort_order>
+    <source_id keyed_name="Language" type="ItemType" name="Language">030019FA30FE40FEB5E32AD2FC9B1F20</source_id>
+   </Item>
+   <Item type="Server Event" id="4295463A0A384DE8A1A462D2BBBE4C99" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="mpp_EnsureStepWIDetailsType" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>mpp_EnsureStepWIDetailsType</name>
+     </Item>
+    </related_id>
+    <server_event>onAfterUpdate</server_event>
+    <sort_order>1280</sort_order>
+    <source_id keyed_name="Language" type="ItemType" name="Language">030019FA30FE40FEB5E32AD2FC9B1F20</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

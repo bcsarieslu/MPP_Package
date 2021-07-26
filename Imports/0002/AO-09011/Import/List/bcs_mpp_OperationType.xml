@@ -1,0 +1,17 @@
+﻿<AML>
+  <Item type="List" id="A74FD3672A5A4862B7C181B3C0A3ABFD" action="add">
+    <name>bcs_mpp_OperationType</name>
+    <Relationships>
+      <Item type="Value" id="3BE9DD7747B34E2F91CF54AAC3121721" action="add">
+        <label xml:lang="zc">机械加工</label>
+        <sort_order>128</sort_order>
+        <value>0</value>
+      </Item>
+      <Item type="Value" id="23C17B896FCE4A3086A585F57D371D09" action="add">
+        <label xml:lang="zc">装配</label>
+        <sort_order>256</sort_order>
+        <value>1</value>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

@@ -1,0 +1,319 @@
+﻿<AML>
+ <Item type="Method" id="FCCF05CC12B64F36BF9DA7BD82374291" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[
+			Item query = getInnovator().newItem("mpp_PartConfig", "get");
+			query.setID(getID());
+			query.setAttribute("select",
+				"default_part_it_name,part_it_name,default_bom_it_name,bom_it_name,default_part_alternate_it_name,part_alternate_it_name" +
+				",default_bom_substitute_it_name,bom_substitute_it_name,default_name_p_name,name_p_name,default_item_number_p_name,item_number_p_name,default_make_buy_p_name" +
+				",make_buy_p_name,default_phantom_class_path,phantom_class_path,default_mbom_only_class_path,mbom_only_class_path,default_bom_quantity_p_name,bom_quantity_p_name");
+			Item storedItem = ItemExt.GetResultItems(query).SingleOrDefault();
+			ItemExt.Merge(this, storedItem);
+
+			string defaultPartItemTypeName = getProperty("default_part_it_name");
+			string effectivePartItemTypeName = Effective(getProperty("part_it_name"), defaultPartItemTypeName);
+			string defaultBomItemTypeName = getProperty("default_bom_it_name");
+			string effectiveBomItemTypeName = Effective(getProperty("bom_it_name"), defaultBomItemTypeName);
+			string defaultAlternateItemTypeName = getProperty("default_part_alternate_it_name");
+			string effectiveAlternateItemTypeName = Effective(getProperty("part_alternate_it_name"), defaultAlternateItemTypeName);
+			string defaultSubstituteItemTypeName = getProperty("default_bom_substitute_it_name");
+			string effectiveSubstituteItemTypeName = Effective(getProperty("bom_substitute_it_name"), defaultSubstituteItemTypeName);
+			string defaultPartNameProperty = getProperty("default_name_p_name");
+			string effectivePartNameProperty = Effective(getProperty("name_p_name"), defaultPartNameProperty);
+			string defaultPartItemNumberProperty = getProperty("default_item_number_p_name");
+			string effectivePartItemNumberProperty = Effective(getProperty("item_number_p_name"), defaultPartItemNumberProperty);
+			string defaultPartMakeBuyProperty = getProperty("default_make_buy_p_name");
+			string effectivePartMakeBuyProperty = Effective(getProperty("make_buy_p_name"), defaultPartMakeBuyProperty);
+			string defaultPhantomClass = getProperty("default_phantom_class_path");
+			string effectivePhantomClass = Effective(getProperty("phantom_class_path"), defaultPhantomClass);
+			string defaultMbomOnlyClass = getProperty("default_mbom_only_class_path");
+			string effectiveMbomOnlyClass = Effective(getProperty("mbom_only_class_path"), defaultMbomOnlyClass);
+			string defaultBomQuantityProperty = getProperty("default_bom_quantity_p_name");
+			string effectiveBomQuantityProperty = Effective(getProperty("bom_quantity_p_name"), defaultBomQuantityProperty);
+
+
+			var itemTypes = new[]
+			{
+				defaultPartItemTypeName,
+				effectivePartItemTypeName,
+				defaultBomItemTypeName,
+				effectiveBomItemTypeName,
+				defaultAlternateItemTypeName,
+				effectiveAlternateItemTypeName,
+				defaultSubstituteItemTypeName,
+				effectiveSubstituteItemTypeName
+			};
+			var metaData = GetMetaInfo(itemTypes,
+				new[]
+				{
+					defaultPartNameProperty,
+					effectivePartNameProperty,
+					defaultPartItemNumberProperty,
+					effectivePartItemNumberProperty,
+					defaultPartMakeBuyProperty,
+					effectivePartMakeBuyProperty,
+					defaultBomQuantityProperty,
+					effectiveBomQuantityProperty
+				}
+			);
+
+			var makeBuyListId = "F7553D600D57489BB81309E32835AFEC"; //hardcoded make buy list id
+			ValidateItemTypes(metaData, itemTypes, CCO.ErrorLookup);
+			ValidatePropertyType(CCO.ErrorLookup, metaData, defaultPartItemTypeName, defaultPartNameProperty, "string");
+			ValidatePropertyType(CCO.ErrorLookup, metaData, defaultPartItemTypeName, defaultPartItemNumberProperty, "string");
+			ValidatePropertyType(CCO.ErrorLookup, metaData, defaultPartItemTypeName, defaultPartMakeBuyProperty, "list", makeBuyListId);
+			ValidatePropertyType(CCO.ErrorLookup, metaData, defaultBomItemTypeName, defaultBomQuantityProperty, "float");
+
+			ValidatePropertyType(CCO.ErrorLookup, metaData, effectivePartItemTypeName, effectivePartNameProperty, "string");
+			ValidatePropertyType(CCO.ErrorLookup, metaData, effectivePartItemTypeName, effectivePartItemNumberProperty, "string");
+			ValidatePropertyType(CCO.ErrorLookup, metaData, effectivePartItemTypeName, effectivePartMakeBuyProperty, "list", makeBuyListId);
+			ValidatePropertyType(CCO.ErrorLookup, metaData, effectiveBomItemTypeName, effectiveBomQuantityProperty, "float");
+
+			ValidateClassStructure(metaData, defaultPartItemTypeName, defaultPhantomClass, CCO.ErrorLookup);
+			ValidateClassStructure(metaData, defaultPartItemTypeName, defaultMbomOnlyClass, CCO.ErrorLookup);
+			ValidateClassStructure(metaData, effectivePartItemTypeName, effectivePhantomClass, CCO.ErrorLookup);
+			ValidateClassStructure(metaData, effectivePartItemTypeName, effectiveMbomOnlyClass, CCO.ErrorLookup);
+
+			var relMetaData = GetRelationshipMetaData(
+				new[]
+				{
+					defaultBomItemTypeName,
+					effectiveBomItemTypeName,
+					defaultAlternateItemTypeName,
+					effectiveAlternateItemTypeName,
+					defaultSubstituteItemTypeName,
+					effectiveSubstituteItemTypeName
+				});
+
+			ValidateRelationshipType(relMetaData, defaultBomItemTypeName, defaultPartItemTypeName, defaultPartItemTypeName, CCO.ErrorLookup);
+			ValidateRelationshipType(relMetaData, effectiveBomItemTypeName, effectivePartItemTypeName, effectivePartItemTypeName, CCO.ErrorLookup);
+			ValidateRelationshipType(relMetaData, defaultAlternateItemTypeName, defaultPartItemTypeName, defaultPartItemTypeName, CCO.ErrorLookup);
+			ValidateRelationshipType(relMetaData, effectiveAlternateItemTypeName, effectivePartItemTypeName, effectivePartItemTypeName, CCO.ErrorLookup);
+			ValidateRelationshipType(relMetaData, defaultSubstituteItemTypeName, defaultBomItemTypeName, defaultPartItemTypeName, CCO.ErrorLookup);
+			ValidateRelationshipType(relMetaData, effectiveSubstituteItemTypeName, effectiveBomItemTypeName, effectivePartItemTypeName, CCO.ErrorLookup);
+
+
+			return this;
+
+
+		}
+
+		private Dictionary<string, KeyValuePair<string, string>> GetRelationshipMetaData(string[] relationshipItemTypeNames)
+		{
+			Item query = getInnovator().newItem("RelationshipType", "get");
+			query.setAttribute("select", "source_id(name),related_id(name),relationship_id(name)");
+			Item itSubquery = getInnovator().newItem("ItemType", "get");
+			itSubquery.setProperty("name", string.Join(",", relationshipItemTypeNames.Distinct().Select(i => "'" + i + "'")));
+			itSubquery.setPropertyCondition("name", "in");
+			query.setPropertyItem("relationship_id", itSubquery);
+			return ItemExt.GetResultItems(query)
+				.ToDictionary(
+					i => i.getPropertyItem("relationship_id").getProperty("name").ToUpperInvariant(),
+					i => new KeyValuePair<string, string>(
+						i.getPropertyItem("source_id").getProperty("name"),
+						i.getPropertyItem("related_id").getProperty("name"))
+				);
+		}
+
+		private static void ValidateRelationshipType(Dictionary<string, KeyValuePair<string, string>> relMetaData, string relationshipItemTypeName, string sourceItemTypeName, string relatedItemTypeName,
+			Aras.Server.Core.ErrorLookup errorLookup)
+		{
+			KeyValuePair<string, string> relInfo = relMetaData[relationshipItemTypeName.ToUpperInvariant()];
+			if (!string.Equals(sourceItemTypeName, relInfo.Key, StringComparison.OrdinalIgnoreCase))
+			{
+				throw new Aras.Server.Core.InnovatorServerException(errorLookup.Lookup("mpp_validatePartConfig_invalidSourceItemType",
+						relationshipItemTypeName,
+						relInfo.Key,
+						sourceItemTypeName)
+				);
+			}
+			if (!string.Equals(relatedItemTypeName, relInfo.Value, StringComparison.OrdinalIgnoreCase))
+			{
+				throw new Aras.Server.Core.InnovatorServerException(
+					errorLookup.Lookup("mpp_validatePartConfig_invalidRelatedItemType",
+						relationshipItemTypeName,
+						relInfo.Value,
+						relatedItemTypeName)
+				);
+			}
+		}
+
+		private static void ValidateClassStructure(Dictionary<string, ItemTypeInfo> metaData, string itemType, string classPath, Aras.Server.Core.ErrorLookup errorLookup)
+		{
+			var classList = metaData[itemType.ToUpperInvariant()].ClassList;
+			if (!classList.Contains(classPath))  //todo: probabaly should be made case insensitive
+			{
+				throw new Aras.Server.Core.InnovatorServerException(errorLookup.Lookup("mpp_validatePartConfig_invalidClassPath", itemType, classPath));
+			}
+		}
+
+		private static void ValidatePropertyType(Aras.Server.Core.ErrorLookup errorLookup, Dictionary<string, ItemTypeInfo> metaData, string itemType, string propertyName, string propertyType = null, string dataSource = null)
+		{
+			var itemTypeInfo = metaData[itemType.ToUpperInvariant()];
+			PropInfo property;
+			itemTypeInfo.Properties.TryGetValue(propertyName.ToUpperInvariant(), out property);
+			if (property == null)
+			{
+				throw new Aras.Server.Core.InnovatorServerException(errorLookup.Lookup("mpp_validatePartConfig_invalidPropertyName", propertyName, itemType));
+			}
+			if (!string.IsNullOrEmpty(propertyType) && !string.Equals(propertyType, property.DataType, StringComparison.OrdinalIgnoreCase))
+			{
+				throw new Aras.Server.Core.InnovatorServerException(errorLookup.Lookup("mpp_validatePartConfig_invalidPropertyType", new object[] {
+					propertyName,
+					itemType,
+					property.DataType,
+					propertyType}));
+			}
+
+			if (!string.IsNullOrEmpty(dataSource) && !string.Equals(dataSource, property.DataSource, StringComparison.OrdinalIgnoreCase))
+			{
+				throw new Aras.Server.Core.InnovatorServerException(errorLookup.Lookup("mpp_validatePartConfig_invalidPropertyType", new object[] {
+					propertyName,
+					itemType,
+					property.DataType,
+					propertyType}));
+			}
+		}
+
+		private static void ValidateItemTypes(Dictionary<string, ItemTypeInfo> metaData, string[] itemTypes, Aras.Server.Core.ErrorLookup errorLookup)
+		{
+			List<string> unknownTypes = itemTypes.Select(i => i.ToUpperInvariant()).Distinct().Except(metaData.Keys).ToList();
+			if (unknownTypes.Any())
+			{
+				throw new Aras.Server.Core.InnovatorServerException(errorLookup.Lookup("mpp_validatePartConfig_invalidItemType",  string.Join(", ", unknownTypes)));
+			}
+		}
+
+		private Dictionary<string, ItemTypeInfo> GetMetaInfo(string[] itemTypes, string[] properties)
+		{
+			var itemQuery = getInnovator().newItem("ItemType", "get");
+			itemQuery.setAttribute("select", "name,class_structure");
+			itemQuery.setPropertyCondition("name", "in");
+			itemQuery.setProperty("name", string.Join(",", itemTypes.Select(i => "'" + i + "'")));
+			Item propertyQuery = getInnovator().newItem("Property", "get");
+			propertyQuery.setAttribute("select", "name,data_type,data_source");
+			propertyQuery.setPropertyCondition("name", "in");
+			propertyQuery.setProperty("name", string.Join(",", properties.Select(i => "'" + i + "'")));
+			propertyQuery.setAttribute("isCriteria", "0");
+			itemQuery.addRelationship(propertyQuery);
+
+			return ItemExt.GetResultItems(itemQuery)
+				.ToDictionary(i => i.getProperty("name").ToUpperInvariant(),
+					i => new ItemTypeInfo
+					{
+						ClassList = GetClassificationList(i.getProperty("class_structure")),
+						Properties = ItemExt.Enumerate(i.getRelationships())
+							.ToDictionary(p => p.getProperty("name").ToUpperInvariant(),
+								p => new PropInfo
+								{
+									DataType = p.getProperty("data_type"),
+									DataSource = p.getProperty("data_source")
+								})
+					});
+		}
+
+		private static List<string> GetClassificationList(string structure)
+		{
+			if (string.IsNullOrEmpty(structure))
+			{
+				return new List<string>();
+			}
+			var xml = new XmlDocument();
+			xml.XmlResolver = null;
+			xml.LoadXml(structure);
+			var result = new List<string>();
+			XmlNodeList leafNodes = xml.SelectNodes("//class[not(node())]");
+			for (var i = 0; i < leafNodes.Count; i++)
+			{
+				var node = (XmlElement)leafNodes[i];
+				result.Add(GetPath(node));
+			}
+			return result;
+		}
+
+		private static string GetPath(XmlElement element)
+		{
+			var nodes = new List<string>();
+			var node = element;
+			while (node != null)
+			{
+				var nameAttribute = node.GetAttribute("name");
+				if (string.IsNullOrEmpty(nameAttribute))
+				{
+					break;
+				}
+				nodes.Add(nameAttribute);
+				node = (XmlElement)node.ParentNode;
+			}
+
+			return string.Join("/", Enumerable.Reverse(nodes));
+		}
+
+		class ItemTypeInfo
+		{
+			public List<string> ClassList { get; set; }
+			public Dictionary<string, PropInfo> Properties { get; set; }
+		}
+
+		class PropInfo
+		{
+			public string DataType { get; set; }
+			public string DataSource { get; set; }
+		}
+
+		private static string Effective(string configValue, string defaultConfigValue)
+		{
+			return !string.IsNullOrEmpty(configValue) ? configValue : defaultConfigValue;
+		}
+
+		private static class ItemExt
+		{
+			public static IEnumerable<Item> Enumerate(Item item)
+			{
+				int itemCount = item.getItemCount();
+				for (var i = 0; i < itemCount; i++)
+				{
+					yield return item.getItemByIndex(i);
+				}
+			}
+
+			public static IEnumerable<Item> GetResultItems(Item item)
+			{
+				Item result = item.apply("get");
+
+				if (result.isError() && !result.isEmpty())
+				{
+					throw new Aras.Server.Core.InnovatorServerException(result.getErrorString());
+				}
+				return Enumerate(result);
+			}
+
+			public static void Merge(Item baseItem, Item item)
+			{
+				if (item == null)
+				{
+					return;
+				}
+				XmlNodeList propNodes = item.node.SelectNodes("*");
+				if (propNodes == null)
+				{
+					return;
+				}
+				for (var i = 0; i < propNodes.Count; i++)
+				{
+					XmlNode node = propNodes[i];
+					string propertyName = node.Name;
+					if (baseItem.getProperty(propertyName) != null)
+					{
+						continue;
+					}
+					baseItem.setProperty(propertyName, item.getProperty(propertyName));
+				}
+			}
+
+			]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_ValidatePartConfig</name>
+ </Item>
+</AML>

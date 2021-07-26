@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="16ADBEE0FDA9492B9382F02486D83889" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Property with name {0} not found at itemType {1}</text>
+  <name>mpp_validatePartConfig_invalidPropertyName</name>
+ </Item>
+</AML>

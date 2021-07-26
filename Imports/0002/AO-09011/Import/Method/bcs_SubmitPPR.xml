@@ -1,0 +1,103 @@
+﻿<AML>
+  <Item type="Method" action="add" id="E708C548BF5445EA874B2349BF3DC184">
+    <comments>AO-09011</comments>
+	<execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[/*
+ * 設定方式
+ * Workflow Map : PPR Workflow
+ * Activity : Auto Verify
+ * Server Events : onActive
+ * Add by tengz 2019/7/9
+ */
+
+Innovator inn = this.getInnovator();
+
+Aras.Server.Security.Identity plmIdentity = Aras.Server.Security.Identity.GetByName("Aras PLM");
+bool PermissionWasSet = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity);
+
+Item result;
+try {
+    Item workflowDocumentFromActivity = this.apply("Get My Controlled Item");
+    Item relationshipAndRelatedItem = inn.newItem("PPR Affected Item", "get");
+    relationshipAndRelatedItem.setAttribute("select", "related_id(action)");
+    relationshipAndRelatedItem.setProperty("source_id", workflowDocumentFromActivity.getID());
+    relationshipAndRelatedItem = relationshipAndRelatedItem.apply();
+    bool flag2 = false;
+    bool flag3 = !relationshipAndRelatedItem.isError() && relationshipAndRelatedItem.getItemCount() > 0;
+    if (flag3) {
+        for (int i = 0; i < relationshipAndRelatedItem.getItemCount(); i++) {
+            Item relatedItem = relationshipAndRelatedItem.getItemByIndex(i).getRelatedItem();
+            bool flag4 = relatedItem.getProperty("action", "").ToLower() != "add";
+            if (flag4) {
+                flag2 = true;
+                break;
+            }
+        }
+    }
+    bool flag5 = flag2;
+    if (flag5) {
+        result = inn.newResult("Not All Affecteds Are Add.");
+    } else {
+        Item relationshipAndRelatedItem2 = inn.newItem("Workflow Process Path", "get");
+        relationshipAndRelatedItem2.setProperty("source_id", this.getID());
+        relationshipAndRelatedItem2 = relationshipAndRelatedItem2.apply();
+        bool flag6 = !relationshipAndRelatedItem2.isError() && relationshipAndRelatedItem2.getItemCount() > 0;
+        if (flag6) {
+            for (int j = 0; j < relationshipAndRelatedItem2.getItemCount(); j++) {
+                Item itemByIndex = relationshipAndRelatedItem2.getItemByIndex(j);
+                bool flag7 = itemByIndex.getProperty("name", "") == "Accept to Review";
+                if (flag7) {
+                    string[] lstrPropertyName = new string[] {
+                        "is_default"
+                    };
+                    string[] lstrPropertyValue = new string[] {
+                        "1"
+                    };
+                    EditItem(ref itemByIndex, lstrPropertyName, lstrPropertyValue);
+                } else {
+                    string[] lstrPropertyName2 = new string[] {
+                        "is_default"
+                    };
+                    string[] lstrPropertyValue2 = new string[] {
+                        "0"
+                    };
+                    EditItem(ref itemByIndex, lstrPropertyName2, lstrPropertyValue2);
+                }
+            }
+        }
+        result = inn.newResult("Success");
+    }
+} catch (Exception ex) {
+    throw new Exception(ex.Message);
+}
+finally
+{
+	if (PermissionWasSet) Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity);
+}
+return result;
+}
+public void EditItem(ref Item LitmMain, string[] LstrPropertyName, string[] LstrPropertyValue) {
+        try {
+            bool flag = LitmMain.fetchLockStatus() == 0;
+            if (flag) {
+                LitmMain.setAction("edit");
+            } else {
+                LitmMain.setAction("update");
+            }
+            LitmMain.setAttribute("serverEvents", "0");
+            LitmMain.setAttribute("version", "0");
+            for (int i = 0; i < LstrPropertyName.Length; i++) {
+                LitmMain.setProperty(LstrPropertyName[i], LstrPropertyValue[i]);
+            }
+            LitmMain = LitmMain.apply();
+        } catch (Exception ex) {
+            throw new Exception(ex.Message);
+        }]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_SubmitPPR</name>
+  </Item>
+</AML>

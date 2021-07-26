@@ -1,0 +1,19 @@
+﻿<AML>
+ <Item type="List" id="F99CBAB1D7B043568E4A8CB4CAD6CF7E" action="add">
+  <name>mpp_PublishingConversionResult</name>
+  <Relationships>
+   <Item type="Value" id="71A11CAE632D411DA333E99194F288F9" action="add">
+    <label xml:lang="en">Show in browser</label>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_PublishingConversionResult" type="List">F99CBAB1D7B043568E4A8CB4CAD6CF7E</source_id>
+    <value>window</value>
+   </Item>
+   <Item type="Value" id="5FD692869FDB46248D027E52E6D2BEB8" action="add">
+    <label xml:lang="en">Save to file</label>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_PublishingConversionResult" type="List">F99CBAB1D7B043568E4A8CB4CAD6CF7E</source_id>
+    <value>file</value>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

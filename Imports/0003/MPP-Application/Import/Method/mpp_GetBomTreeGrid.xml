@@ -1,0 +1,2281 @@
+﻿<AML>
+ <Item type="Method" id="5E72C58CEF344AFCBA52AADA67D60B43" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[			Innovator inn = this.getInnovator();
+			String idListAttribute = this.getAttribute("idlist");
+			List<String> partIdList = !String.IsNullOrEmpty(idListAttribute) ? this.getAttribute("idlist", "").Split(',').ToList() : new List<String> { this.getID() };
+			var logic = new BusinessLogic(inn, CCO, new ResourceManager(CCO.ErrorLookup), new ClassificationHelper(inn));
+
+			if (partIdList.Count > 0)
+			{
+				if (partIdList.Count == 1)
+				{
+					String partId = partIdList[0];
+
+					if (String.IsNullOrEmpty(this.getID()))
+					{
+						this.setID(partId);
+						this.removeProperty("idlist");
+					}
+
+					// set appropriate post_mbom_json property
+					String postMbomData = this.getProperty("post_mbom_json_" + partId);
+					if (!String.IsNullOrEmpty(postMbomData))
+					{
+						this.setProperty("post_mbom_json", postMbomData);
+					}
+
+					return logic.Execute(this);
+				}
+				else
+				{
+					Item resultItem = inn.newItem();
+
+					foreach (String partId in partIdList)
+					{
+						Item requestItem = this.clone(true);
+
+						requestItem.setID(partId);
+						requestItem.removeAttribute("idlist");
+
+						// set appropriate post_mbom_json property
+						String postMbomData = this.getProperty("post_mbom_json_" + partId);
+						if (!String.IsNullOrEmpty(postMbomData))
+						{
+							requestItem.setProperty("post_mbom_json", postMbomData);
+						}
+
+						resultItem.appendItem(logic.Execute(requestItem));
+					}
+
+					// cleaning up item, that created during variable declaration
+					resultItem.removeItem(resultItem.getItemByIndex(0));
+
+					return resultItem;
+				}
+			}
+
+			return this;
+		}
+	}
+
+	#region interfaces_bom_statuses
+	interface IBomStatusGroup
+	{
+		void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext);
+		void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext);
+		List<MbomStatuses> GetAllMbomStatuses();
+		Type[] GetDependOnMbomStatusGroups();
+	}
+	#endregion
+
+	#region StatusesEnums
+	public enum MbomStatuses
+	{
+		[MbomStatusUiInfo(Result = BomStatusResult.Good)]
+		Consumed,
+
+		[MbomStatusUiInfo(Result = BomStatusResult.Good)]
+		MbomOnlyPart,
+
+		[MbomStatusUiInfo(Result = BomStatusResult.Good)]
+		PhantomAssembly,
+
+		[MbomStatusUiInfo(TooltipResourceKey = "mpp_splitQuantityStatus", Result = BomStatusResult.Good, ImageName = "Split")]
+		ConsumedQuantitySplit,
+
+		[MbomStatusUiInfo(TooltipResourceKey = "mpp_partiallyConsumedQuantityStatus", Result = BomStatusResult.Bad, ImageName = "Underconsumed")]
+		PartiallyConsumedQuantity,
+
+		[MbomStatusUiInfo(TooltipResourceKey = "mpp_overconsumedStatus", Result = BomStatusResult.Bad, ImageName = "Overconsumed")]
+		Overconsumed,
+
+		//the status looks like unused, but not, it has 'bad' status, that's why it's used when statuses with bad status are found)
+		[MbomStatusUiInfo(Result = BomStatusResult.Bad)]
+		ConsumedAssemblyNotComplete,
+
+		[MbomStatusUiInfo(Result = BomStatusResult.Ok, ImageName = "NotMake", TooltipResourceKey = "mpp_notMakeStatus")]
+		ConsumedNotMakeAssembly,
+
+		[MbomStatusUiInfo(Result = BomStatusResult.Ok)]
+		EbomOnlyAssembly,
+
+		[MbomStatusUiInfo(TooltipResourceKey = "mpp_notInEbomStatus", Result = BomStatusResult.Bad, ImageName = "NotEBOM")]
+		NotInEbom,
+
+		//the status looks like unused (IsPhantomOrEbom is called to set Phantom icons, but not, it has 'bad' status, that's why it's used when statuses with bad status are found)
+		[MbomStatusUiInfo(Result = BomStatusResult.Bad)]
+		PhantomAssemblyAssemblyNotComplete,
+
+		//these 2 statuses of NewPartsAvailable can be applied both in one time only if in EBOM we have several rows with the same config_id of Part,
+		[MbomStatusUiInfo(TooltipResourceKey = "mpp_newGenerationAvailableStatus", Result = BomStatusResult.Ok, ImageName = "LaterVersion")]
+		NewGenerationAvailable,
+
+		[MbomStatusUiInfo(TooltipResourceKey = "mpp_newRevisionAvailableStatus", Result = BomStatusResult.Ok, ImageName = "LaterRevision")]
+		NewRevisionAvailable
+	}
+
+	internal enum EbomStatuses
+	{
+		[EbomStatusUiInfo(Result = BomStatusResult.Good)]
+		Consumed,
+
+		[EbomStatusUiInfo(Result = BomStatusResult.Good, ImageName = "Split")]
+		QuantitySplit,
+
+		[EbomStatusUiInfo(Result = BomStatusResult.Bad, ImageName = "Underconsumed")]
+		PartiallyConsumedQuantity,
+
+		[EbomStatusUiInfo(Result = BomStatusResult.Bad, ImageName = "Overconsumed")]
+		Overconsumed,
+
+		[EbomStatusUiInfo(Result = BomStatusResult.Ok, ImageName = "NotMake", TooltipResourceKey = "mpp_notMakeStatus")]
+		ConsumedNotMakeAssembly,
+
+		[EbomStatusUiInfo(Result = BomStatusResult.Ok)]
+		RemovedFromMbom,
+
+		[EbomStatusUiInfo(TooltipResourceKey = "mpp_notAccountedInMbomStatus", Result = BomStatusResult.Bad, ImageName = "NotMBOM")]
+		NotAccountedInMbom,
+
+		//these 2 statuses of NewPartsStatusGroup can be applied both in one time only if in MBOM we have several rows with the same config_id of Part,
+		[EbomStatusUiInfo(TooltipResourceKey = "mpp_newGenerationStatus", Result = BomStatusResult.Ok, ImageName = "LaterVersion")]
+		NewGeneration,
+
+		[EbomStatusUiInfo(TooltipResourceKey = "mpp_newRevisionStatus", Result = BomStatusResult.Ok, ImageName = "LaterRevision")]
+		NewRevision,
+	}
+	#endregion
+
+	#region BomStatusGroupsFactory
+	internal class BomStatusGroupsFactory
+	{
+		private readonly IClassificationHelper _classificationHelper;
+
+		public BomStatusGroupsFactory(IClassificationHelper classificationHelper)
+		{
+			_classificationHelper = classificationHelper;
+		}
+
+		internal IBomStatusGroup[] CreateBomGroups()
+		{
+			return new IBomStatusGroup[]
+			{
+				//sequence of adding status groups is important, because in which order they were added in the same order they will be calculated
+				new MbomSpecificTypeStatusGroup(_classificationHelper, this),
+				new NotMakeStatusGroup(this),
+				new NotCompleteStatusGroup(_classificationHelper, this),
+				new NotInEbomStatusGroup(this),
+				new QuantityStatusGroup(this),
+				new EbomOnlyStatusGroup(this),
+				new NewPartsStatusGroup(this)
+			};
+		}
+
+		internal IBomStatusGroup CreateBomGroup(Type statusGroupType)
+		{
+			switch (statusGroupType.Name)
+			{
+				case "MbomSpecificTypeStatusGroup":
+					return new MbomSpecificTypeStatusGroup(_classificationHelper, this);
+				case "NotMakeStatusGroup":
+					return new NotMakeStatusGroup(this);
+				case "NotCompleteStatusGroup":
+					return new NotCompleteStatusGroup(_classificationHelper, this);
+				case "NotInEbomStatusGroup":
+					return new NotInEbomStatusGroup(this);
+				case "QuantityStatusGroup":
+					return new QuantityStatusGroup(this);
+				case "EbomOnlyStatusGroup":
+					return new EbomOnlyStatusGroup(this);
+				case "NewPartsStatusGroup":
+					return new NewPartsStatusGroup(this);
+				default:
+					throw new NotSupportedException(statusGroupType.Name);
+			}
+		}
+	}
+	#endregion
+
+	#region BomStatusGroups
+	abstract class BomStatusGroup : IBomStatusGroup
+	{
+		private readonly BomStatusGroupsFactory _bomStatusGroupFactory;
+
+		protected BomStatusGroup(BomStatusGroupsFactory bomStatusGroupFactory)
+		{
+			_bomStatusGroupFactory = bomStatusGroupFactory;
+		}
+
+		protected bool IsItemContainsDependentMbomStatuses(MbomItem mbomItem)
+		{
+			Type[] notApplyIfStatusGroups = GetDependOnMbomStatusGroups();
+			if (notApplyIfStatusGroups == null)
+			{
+				return false;
+			}
+			foreach (Type statusGroupType in notApplyIfStatusGroups)
+			{
+				IBomStatusGroup statusGroup = _bomStatusGroupFactory.CreateBomGroup(statusGroupType);
+				List<MbomStatuses> notApplyIfStatuses = statusGroup.GetAllMbomStatuses();
+				if (mbomItem.MbomStatusList.Intersect(notApplyIfStatuses).Any())
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public abstract void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext);
+		public abstract void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext);
+		public abstract List<MbomStatuses> GetAllMbomStatuses();
+		public abstract Type[] GetDependOnMbomStatusGroups();
+	}
+
+	class MbomSpecificTypeStatusGroup : BomStatusGroup
+	{
+		private readonly IClassificationHelper _classificationHelper;
+
+		public MbomSpecificTypeStatusGroup(IClassificationHelper classificationHelper, BomStatusGroupsFactory bomStatusGroupsFactory): base(bomStatusGroupsFactory)
+		{
+			_classificationHelper = classificationHelper;
+		}
+
+		public override List<MbomStatuses> GetAllMbomStatuses()
+		{
+			return new List<MbomStatuses> { MbomStatuses.MbomOnlyPart, MbomStatuses.PhantomAssembly, MbomStatuses.PhantomAssemblyAssemblyNotComplete };
+		}
+
+		public override Type[] GetDependOnMbomStatusGroups()
+		{
+			return null;
+		}
+
+		public override void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext)
+		{
+			if (_classificationHelper.IsPhantomAssy(mbomItem))
+			{
+				mbomItem.MbomStatusList.Add(string.IsNullOrEmpty(mbomItem.UserdataJson.cpid)
+					? MbomStatuses.PhantomAssemblyAssemblyNotComplete
+					: MbomStatuses.PhantomAssembly);
+
+				return;
+			}
+
+			if (_classificationHelper.IsMbomOnlyAssy(mbomItem))
+			{
+				mbomItem.MbomStatusList.Add(MbomStatuses.MbomOnlyPart);
+			}
+		}
+
+		public override void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext) { }
+	}
+
+	class NotInEbomStatusGroup : BomStatusGroup
+	{
+		private static MbomStatuses status = MbomStatuses.NotInEbom;
+
+		public NotInEbomStatusGroup(BomStatusGroupsFactory bomStatusGroupsFactory) : base(bomStatusGroupsFactory)
+		{
+		}
+
+		public override List<MbomStatuses> GetAllMbomStatuses()
+		{
+			return new List<MbomStatuses> { status };
+		}
+
+		public override Type[] GetDependOnMbomStatusGroups()
+		{
+			return new[]
+			{
+				typeof (MbomSpecificTypeStatusGroup)
+			};
+		}
+
+		public override void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext)
+		{
+			if (IsItemContainsDependentMbomStatuses(mbomItem))
+			{
+				return;
+			}
+
+			List<EbomItem> ebomItemsList;
+			if (!calculationContext.EbomsByConfigId.TryGetValue(mbomItem.UserdataJson.conf, out ebomItemsList))
+			{
+				mbomItem.MbomStatusList.Add(MbomStatuses.NotInEbom);
+			}
+		}
+
+		public override void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext) { }
+	}
+
+	class QuantityStatusGroup : BomStatusGroup
+	{
+		public QuantityStatusGroup(BomStatusGroupsFactory bomStatusGroupsFactory) : base(bomStatusGroupsFactory)
+		{
+		}
+
+		public override Type[] GetDependOnMbomStatusGroups()
+		{
+			return new[]
+			{
+				typeof (MbomSpecificTypeStatusGroup),
+				typeof (NotInEbomStatusGroup)
+			};
+		}
+
+		public override List<MbomStatuses> GetAllMbomStatuses()
+		{
+			return new List<MbomStatuses> { MbomStatuses.Consumed, MbomStatuses.PartiallyConsumedQuantity, MbomStatuses.ConsumedQuantitySplit, MbomStatuses.Overconsumed };
+		}
+
+		public override void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext)
+		{
+			if (IsItemContainsDependentMbomStatuses(mbomItem))
+			{
+				return;
+			}
+
+			List<EbomItem> ebomListOfItemsByConfigId;
+			List<MbomItem> mbomListOfItemsByConfigId;
+
+			if (!calculationContext.EbomsByConfigId.TryGetValue(mbomItem.UserdataJson.conf, out ebomListOfItemsByConfigId) ||
+				!calculationContext.MbomsByConfigId.TryGetValue(mbomItem.UserdataJson.conf, out mbomListOfItemsByConfigId))
+			{
+				return;
+			}
+
+			double mbomTotal = mbomListOfItemsByConfigId.GroupBy(i => i.UserdataJson.ocid).
+				Select(group => group.First()).
+				Sum(i => i.Quantity * i.TotalOccurrenceByConsumedPartId) ?? 0;
+
+			double ebomTotal = ebomListOfItemsByConfigId.GroupBy(i => i.UserdataJson.pbid).
+				Select(group => group.First()).
+				Sum(i => i.Quantity * i.TotalOccurrenceByPartBomId) ?? 0;
+
+			double mbomTotalMinusEbomTotal = mbomTotal - ebomTotal;
+
+			MbomStatuses mbomStatus;
+			EbomStatuses ebomStatus;
+			if (mbomTotalMinusEbomTotal < 0.0)
+			{
+				mbomStatus = MbomStatuses.PartiallyConsumedQuantity;
+				ebomStatus = EbomStatuses.PartiallyConsumedQuantity;
+			}
+			else if (mbomTotalMinusEbomTotal > 0.0)
+			{
+				mbomStatus = MbomStatuses.Overconsumed;
+				ebomStatus = EbomStatuses.Overconsumed;
+			}
+			else
+			{
+				int mbomListOfItemsByConfigIdCount =
+					mbomListOfItemsByConfigId.GroupBy(i => i.UserdataJson.ocid)
+						.Select(group => group.First())
+						.Sum(i => i.TotalOccurrenceByConsumedPartId);
+
+				int ebomListOfItemsByConfigIdCount =
+					ebomListOfItemsByConfigId.GroupBy(i => i.UserdataJson.pbid)
+						.Select(group => group.First())
+						.Sum(i => i.TotalOccurrenceByPartBomId);
+
+				mbomStatus = mbomListOfItemsByConfigIdCount > ebomListOfItemsByConfigIdCount ? MbomStatuses.ConsumedQuantitySplit : MbomStatuses.Consumed;
+				ebomStatus = mbomListOfItemsByConfigIdCount > ebomListOfItemsByConfigIdCount ? EbomStatuses.QuantitySplit : EbomStatuses.Consumed;
+			}
+
+			string tooltip = String.Empty;
+			string ebomQuantityStr = String.Format(CultureInfo.InvariantCulture, "{0}: ", calculationContext.ResourceManager.GetResource("mpp_ebomQuantity"));
+			string mbomQuantityStr = String.Format(CultureInfo.InvariantCulture, "{0}: ", calculationContext.ResourceManager.GetResource("mpp_mbomQuantity"));
+
+			mbomItem.MbomStatusList.Add(mbomStatus);
+			if (mbomStatus != MbomStatuses.Consumed)
+			{
+				tooltip = calculationContext.ResourceManager.GetResource(mbomStatus.GetStatusInfoMbom().TooltipResourceKey) + Environment.NewLine +
+				   ebomQuantityStr + ebomTotal.ToString(CultureInfo.InvariantCulture) + Environment.NewLine +
+				   mbomQuantityStr + mbomTotal.ToString(CultureInfo.InvariantCulture);
+				mbomItem.TotalQuantityForTooltip = tooltip;
+			}
+
+			//set statuses for Ebom
+			foreach (EbomItem ebomItem in ebomListOfItemsByConfigId)
+			{
+				if (ebomItem.EbomStatusList.Contains(ebomStatus))
+				{
+					continue;
+				}
+
+				ebomItem.EbomStatusList.Add(ebomStatus);
+
+				if (ebomStatus != EbomStatuses.Consumed)
+				{
+					ebomItem.TotalQuantityForTooltip = tooltip;
+				}
+			}
+		}
+
+		public override void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext) { }
+	}
+
+	class NotCompleteStatusGroup : BomStatusGroup
+	{
+		private static MbomStatuses status = MbomStatuses.ConsumedAssemblyNotComplete;
+		private readonly IClassificationHelper _classificationHelper;
+
+		public NotCompleteStatusGroup(IClassificationHelper classificationHelper, BomStatusGroupsFactory bomStatusGroupsFactory): base(bomStatusGroupsFactory)
+		{
+			_classificationHelper = classificationHelper;
+		}
+
+		public override Type[] GetDependOnMbomStatusGroups()
+		{
+			return new[]
+			{
+				typeof (MbomSpecificTypeStatusGroup),
+				typeof (NotMakeStatusGroup)
+			};
+		}
+
+		public override List<MbomStatuses> GetAllMbomStatuses()
+		{
+			return new List<MbomStatuses> { status };
+		}
+
+		public override void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext)
+		{
+			if (IsItemContainsDependentMbomStatuses(mbomItem))
+			{
+				return;
+			}
+
+			if (string.IsNullOrEmpty(mbomItem.UserdataJson.cpid) && mbomItem.UserdataJson.comp != "1" &&
+				!_classificationHelper.IsPhantomAssy(mbomItem))//we can add here Utils.IsMbomOnlyAssy, but it's not required because MbomOnlyAssy should be components (haven't part boms).
+			{
+				mbomItem.MbomStatusList.Add(status);
+			}
+		}
+
+		public override void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext) { }
+	}
+
+	class NotMakeStatusGroup : BomStatusGroup
+	{
+		private static MbomStatuses status = MbomStatuses.ConsumedNotMakeAssembly;
+
+		public NotMakeStatusGroup(BomStatusGroupsFactory bomStatusGroupsFactory) : base(bomStatusGroupsFactory)
+		{
+		}
+
+		public override Type[] GetDependOnMbomStatusGroups()
+		{
+			return new[]
+			{
+				typeof (MbomSpecificTypeStatusGroup)
+			};
+		}
+
+		public override List<MbomStatuses> GetAllMbomStatuses()
+		{
+			return new List<MbomStatuses> { status };
+		}
+
+		public override void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext)
+		{
+			if (IsItemContainsDependentMbomStatuses(mbomItem))
+			{
+				return;
+			}
+
+			if (mbomItem.UserdataJson.buy == "1" && mbomItem.UserdataJson.comp != "1")
+			{
+				mbomItem.MbomStatusList.Add(status);
+			}
+		}
+
+		public override void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext)
+		{
+			if (ebomItem.UserdataJson.buy == "1" && ebomItem.ChildConfigIds.Count != 0)
+			{
+				ebomItem.EbomStatusList.Add(EbomStatuses.ConsumedNotMakeAssembly);
+			}
+		}
+	}
+
+	class EbomOnlyStatusGroup : BomStatusGroup
+	{
+		//this class also sets statuses for Ebom: RemovedFromMbom, NotAccountedInMbom
+		private static MbomStatuses status = MbomStatuses.EbomOnlyAssembly;
+
+		public EbomOnlyStatusGroup(BomStatusGroupsFactory bomStatusGroupsFactory) : base(bomStatusGroupsFactory)
+		{
+		}
+
+		public override Type[] GetDependOnMbomStatusGroups()
+		{
+			return null;
+		}
+
+		public override List<MbomStatuses> GetAllMbomStatuses()
+		{
+			return new List<MbomStatuses> { status };
+		}
+
+		public override void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext) { }
+
+		public override void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext)
+		{
+			List<EbomItem> ebomListOfItemsByConfigId;
+			List<MbomItem> mbomListOfItemsByConfigId;
+
+			if (!calculationContext.EbomsByConfigId.TryGetValue(ebomItem.UserdataJson.conf, out ebomListOfItemsByConfigId) ||
+				(calculationContext.MbomsByConfigId.TryGetValue(ebomItem.UserdataJson.conf, out mbomListOfItemsByConfigId) &&
+				!mbomListOfItemsByConfigId[0].MbomStatusList.Contains(status)))
+			{
+				return;
+			}
+
+			//set statuses for Mbom
+			bool isEbomOnlyAssembly = ebomItem.ChildConfigIds.Count != 0;
+			if (isEbomOnlyAssembly)
+			{
+				foreach (string childConfigId in ebomItem.ChildConfigIds)
+				{
+					if (!String.IsNullOrEmpty(childConfigId))
+					{
+						if (!calculationContext.MbomsByConfigId.ContainsKey(childConfigId))
+						{
+							isEbomOnlyAssembly = false;
+							break;
+						}
+					}
+				}
+			}
+
+			if (isEbomOnlyAssembly)
+			{
+				calculationContext.AddToMbomEbomOnlyAssembly(ebomItem);
+			}
+
+			//set statuses for Ebom
+			ebomItem.EbomStatusList.Add(isEbomOnlyAssembly ? EbomStatuses.RemovedFromMbom : EbomStatuses.NotAccountedInMbom);
+		}
+	}
+
+	class NewPartsStatusGroup : BomStatusGroup
+	{
+		public NewPartsStatusGroup(BomStatusGroupsFactory bomStatusGroupsFactory) : base(bomStatusGroupsFactory)
+		{
+		}
+
+		public override List<MbomStatuses> GetAllMbomStatuses()
+		{
+			return new List<MbomStatuses> { MbomStatuses.NewRevisionAvailable, MbomStatuses.NewGenerationAvailable };
+		}
+
+		public override Type[] GetDependOnMbomStatusGroups()
+		{
+			return null;
+		}
+
+		public override void CalculateMbomItem(MbomItem mbomItem, CalculationContext calculationContext) { }
+
+		public override void CalculateEbomItem(EbomItem ebomItem, CalculationContext calculationContext)
+		{
+			List<MbomItem> mbomListOfItemsByConfigId;
+			List<EbomItem> ebomListOfItemsByConfigId;
+
+			if (!calculationContext.MbomsByConfigId.TryGetValue(ebomItem.UserdataJson.conf, out mbomListOfItemsByConfigId) ||
+				!calculationContext.EbomsByConfigId.TryGetValue(ebomItem.UserdataJson.conf, out ebomListOfItemsByConfigId))
+			{
+				return;
+			}
+
+			foreach (MbomItem mbomItem in mbomListOfItemsByConfigId)
+			{
+				if (ebomItem.UserdataJson.gen <= mbomItem.UserdataJson.gen)
+				{
+					continue;
+				}
+
+				if (ebomItem.Revision == mbomItem.UserdataJson.rev)
+				{
+					MbomStatuses newGenAv = MbomStatuses.NewGenerationAvailable;
+					if (!mbomItem.MbomStatusList.Contains(newGenAv))
+					{
+						mbomItem.MbomStatusList.Add(newGenAv);
+					}
+
+					EbomItem ebomItemWithMaxGen = ebomListOfItemsByConfigId.OrderByDescending(i => i.UserdataJson.gen).First();
+					mbomItem.UserdataJson.ngen = ebomItemWithMaxGen.UserdataJson.id;
+
+					EbomStatuses newGen = EbomStatuses.NewGeneration;
+					if (!ebomItem.EbomStatusList.Contains(newGen))
+					{
+						ebomItem.EbomStatusList.Add(newGen);
+					}
+				}
+				else
+				{
+					MbomStatuses newRevAv = MbomStatuses.NewRevisionAvailable;
+					if (!mbomItem.MbomStatusList.Contains(newRevAv))
+					{
+						mbomItem.MbomStatusList.Add(newRevAv);
+					}
+
+					EbomStatuses newRev = EbomStatuses.NewRevision;
+					if (!ebomItem.EbomStatusList.Contains(newRev))
+					{
+						ebomItem.EbomStatusList.Add(newRev);
+					}
+				}
+			}
+		}
+	}
+	#endregion
+
+	#region CalculationContext_and_BomStatusCalculator
+	class CalculationContext
+	{
+		public Dictionary<string, List<MbomItem>> MbomsByConfigId = new Dictionary<string, List<MbomItem>>();
+		public Dictionary<string, List<MbomItem>> MbomsByPartId = new Dictionary<string, List<MbomItem>>();
+
+		public Dictionary<string, List<EbomItem>> EbomsByConfigId = new Dictionary<string, List<EbomItem>>();
+		public Dictionary<string, List<EbomItem>> EbomsByPartId = new Dictionary<string, List<EbomItem>>();
+
+		public IResourceManager ResourceManager;
+		private UniqueIdHelper uniqueIdHelper;
+		private DictsForMbom dictOfDataMbom;
+
+		public CalculationContext(List<MbomItem> mbomItemsArg, List<EbomItem> ebomItemsArg, IResourceManager resourceMan, DictsForMbom dictOfDataMbomArg, UniqueIdHelper uniqueIdHelperArg)
+		{
+			ResourceManager = resourceMan;
+			uniqueIdHelper = uniqueIdHelperArg;
+			dictOfDataMbom = dictOfDataMbomArg;
+
+			foreach (MbomItem mbomItem in mbomItemsArg)
+			{
+				AddMbomsToDict(mbomItem, MbomsByPartId, mbomItem.UserdataJson.id);
+				AddMbomsToDict(mbomItem, MbomsByConfigId, mbomItem.UserdataJson.conf);
+			}
+
+			foreach (EbomItem ebomItem in ebomItemsArg)
+			{
+				AddEbomsToDict(ebomItem, EbomsByPartId, ebomItem.UserdataJson.id);
+				AddEbomsToDict(ebomItem, EbomsByConfigId, ebomItem.UserdataJson.conf);
+			}
+		}
+
+		private static void AddMbomsToDict(MbomItem mbomItem, Dictionary<string, List<MbomItem>> dict, string keyValue)
+		{
+			List<MbomItem> itemsList;
+			if (dict.TryGetValue(keyValue, out itemsList))
+			{
+				itemsList.Add(mbomItem);
+			}
+			else
+			{
+				itemsList = new List<MbomItem> { mbomItem };
+				dict.Add(keyValue, itemsList);
+			}
+		}
+
+		private static void AddEbomsToDict(EbomItem ebomItem, Dictionary<string, List<EbomItem>> dict, string keyValue)
+		{
+			List<EbomItem> itemsList;
+			if (dict.TryGetValue(keyValue, out itemsList))
+			{
+				itemsList.Add(ebomItem);
+			}
+			else
+			{
+				itemsList = new List<EbomItem> { ebomItem };
+				dict.Add(keyValue, itemsList);
+			}
+		}
+
+		public List<MbomItem> GetMbomItemsListByPartId(string partId)
+		{
+			List<MbomItem> mboms;
+			MbomsByPartId.TryGetValue(partId, out mboms);
+			return mboms;
+		}
+
+		public List<MbomItem> GetMbomItemsListByConfigId(string configId)
+		{
+			List<MbomItem> mboms;
+			MbomsByPartId.TryGetValue(configId, out mboms);
+			return mboms;
+		}
+
+		public List<EbomItem> GetEbomItemsListByPartId(string partId)
+		{
+			List<EbomItem> eboms;
+			EbomsByPartId.TryGetValue(partId, out eboms);
+			return eboms;
+		}
+
+		public List<EbomItem> GetEbomItemsListByConfigId(string configId)
+		{
+			List<EbomItem> eboms;
+			EbomsByPartId.TryGetValue(configId, out eboms);
+			return eboms;
+		}
+
+		public void AddToMbomEbomOnlyAssembly(EbomItem ebomItem)
+		{
+			MbomItem mbomItemWithStatus = new MbomItem
+			{
+				ItemNumber = ebomItem.ItemNumber,
+				RelClassn = ebomItem.RelClassn,
+				OperSortOrder = "1000000015", //need to set a big value to put rows with the statusUiInfo at the bottom of TreeGrid
+				UniqueId = uniqueIdHelper.GetUniqueId(),
+				Quantity = ebomItem.Quantity,
+				Name = ebomItem.Name,
+				MbomStatusList = new List<MbomStatuses> { MbomStatuses.EbomOnlyAssembly }
+			};
+
+			mbomItemWithStatus.UserdataJson.id = ebomItem.UserdataJson.id;
+			mbomItemWithStatus.UserdataJson.gen = ebomItem.UserdataJson.gen;
+			mbomItemWithStatus.UserdataJson.rev = ebomItem.Revision;
+			mbomItemWithStatus.UserdataJson.conf = ebomItem.UserdataJson.conf;
+			mbomItemWithStatus.UserdataJson.level = 1;
+
+			List<MbomItem> mbomListOfItemsByConfigId;
+			if (!MbomsByConfigId.TryGetValue(ebomItem.UserdataJson.conf, out mbomListOfItemsByConfigId))
+			{
+				mbomListOfItemsByConfigId = new List<MbomItem>();
+				MbomsByConfigId[ebomItem.UserdataJson.conf] = mbomListOfItemsByConfigId;
+			}
+
+			mbomListOfItemsByConfigId.Add(mbomItemWithStatus);
+
+			List<MbomItem> firstLevelMbomItems;
+			if (dictOfDataMbom.DictAllItemsByParentPartId.TryGetValue(dictOfDataMbom.ZeroLevelItem.UserdataJson.id,
+				out firstLevelMbomItems))
+			{
+				firstLevelMbomItems.Add(mbomItemWithStatus);
+			}
+			else
+			{
+				dictOfDataMbom.DictAllItemsByParentPartId.Add(dictOfDataMbom.ZeroLevelItem.UserdataJson.id, new List<MbomItem> { mbomItemWithStatus });
+			}
+		}
+	}
+
+	class BomStatusCalculator
+	{
+		private IBomStatusGroup[] bomStatusGroups;
+		private int uniqueId;
+
+		public BomStatusCalculator(IBomStatusGroup[] mbomStatusGroupsArg)
+		{
+			bomStatusGroups = mbomStatusGroupsArg;
+			CheckGroupsOrder();
+		}
+
+		public int GetUniqueId()
+		{
+			uniqueId++;
+			return uniqueId - 1;
+		}
+
+		private void CheckGroupsOrder()
+		{
+			//validates if right order is passed (was set in BomStatusGroupsFactory)
+			var alreadyApplied = new HashSet<Type>();
+			foreach (IBomStatusGroup statusGroup in bomStatusGroups)
+			{
+				Type[] statusGroupTypesDependentOn = statusGroup.GetDependOnMbomStatusGroups();
+				if (statusGroupTypesDependentOn != null)
+				{
+					foreach (Type statusGroupTypeDependentOn in statusGroupTypesDependentOn)
+					{
+						if (!alreadyApplied.Contains(statusGroupTypeDependentOn))
+						{
+							throw new InvalidOperationException(statusGroup.GetType().Name + " depends on Status Group " + statusGroupTypeDependentOn +
+								" but, it was passed to constructor (created in BomStatusGroupsFactory) in wrong order");
+						}
+					}
+				}
+
+				alreadyApplied.Add(statusGroup.GetType());
+			}
+		}
+
+		public void Calculate(IEnumerable<MbomItem> mbomItems, IEnumerable<EbomItem> ebomItems, CalculationContext calculationContext)
+		{
+			foreach (MbomItem mbomItem in mbomItems)
+			{
+				foreach (IBomStatusGroup statusGroup in bomStatusGroups)
+				{
+					if (mbomItem.IsRoot)
+					{
+						continue;
+					}
+
+					mbomItem.UserdataJson.ngen = null;
+
+					statusGroup.CalculateMbomItem(mbomItem, calculationContext);
+				}
+			}
+
+			foreach (EbomItem ebomItem in ebomItems)
+			{
+				foreach (IBomStatusGroup statusGroup in bomStatusGroups)
+				{
+					if (ebomItem.IsRoot)
+					{
+						continue;
+					}
+
+					statusGroup.CalculateEbomItem(ebomItem, calculationContext);
+				}
+			}
+		}
+	}
+	#endregion
+
+	public class BusinessLogic
+	{
+		private readonly Innovator inn;
+		private readonly Aras.Server.Core.CallContext CCO;
+		private readonly IResourceManager _resourceManager;
+		private readonly IClassificationHelper _classificationHelper;
+
+		public BusinessLogic(Innovator innovator, Aras.Server.Core.CallContext callContext, IResourceManager resourceManager, IClassificationHelper classificationHelper)
+		{
+			inn = innovator;
+			CCO = callContext;
+			_resourceManager = resourceManager;
+			_classificationHelper = classificationHelper;
+		}
+
+		public Item Execute(Item self)
+		{
+			if (self == null || !String.Equals(self.getType(), "Part", StringComparison.Ordinal))
+			{
+				return inn.newError(_resourceManager.GetResource("mpp_typeMismatchError", "Part"));
+			}
+
+			string partId = self.getID();
+			if (String.IsNullOrEmpty(partId))
+			{
+				return inn.newError(_resourceManager.GetResource("mpp_partIdRequiredError"));
+			}
+
+			var dataParser = new DataParser(self, CCO, _resourceManager, _classificationHelper);
+			var dictOfDataMbom = new DictsForMbom();
+			Boolean isMbomValid = true;
+			String mbomClientJson = self.getProperty("post_mbom_json");
+
+			Item result = inn.newItem("any");
+			result.setID(partId);
+
+			var mbomItems = new List<MbomItem>();
+			var ebomItems = new List<EbomItem>();
+			var mbomsByPartId = new Dictionary<string, List<MbomItem>>();
+			var ebomsByPartId = new Dictionary<string, List<EbomItem>>();
+
+			bool mbomAndEbom = Utils.GetPropertyOptimized(self, "get_mbom_node_without_reconc") != "1";
+			if (!mbomAndEbom)
+			{
+				Item requestProcessPlans = inn.newItem("Part", "mpp_getProcessPlanByPart");
+				requestProcessPlans.setProperty("part_ids", partId);
+				requestProcessPlans.setProperty("location_id", self.getProperty("location_id", ""));
+				Item foundProcessPlans = requestProcessPlans.apply();
+
+				if (!foundProcessPlans.isError())
+				{
+					int processPlanCount = foundProcessPlans.getItemCount();
+					if (processPlanCount < 1)
+					{
+						// if process plan wasn't found and client passed mbom data, then return data back(it will be extended with missed properties)
+						if (!String.IsNullOrEmpty(mbomClientJson))
+						{
+							if (!dataParser.SetDataToDictMbom(dictOfDataMbom, mbomsByPartId, mbomClientJson, mbomItems))
+							{
+								Utils.SetErrors(result, dataParser);
+							}
+							else
+							{
+								GetMultiBom multiBomGetter = new GetMultiBom(_resourceManager, inn, _classificationHelper);
+								result.setProperty("mbomDataJson", multiBomGetter.GetMbomGridDataJson(dictOfDataMbom));
+							}
+
+							return result;
+						}
+
+						return inn.newError(_resourceManager.GetResource("mpp_noProcessPlanError", partId));
+					}
+					else if (processPlanCount == 1)
+					{
+						self.setProperty("processplan_id", foundProcessPlans.getProperty("plan_id"));
+					}
+					else if (processPlanCount > 1)
+					{
+						return inn.newError(_resourceManager.GetResource("mpp_multiplePlansError"));
+					}
+				}
+				else
+				{
+					return foundProcessPlans;
+				}
+			}
+
+			if (!dataParser.SetDataToDictMbom(dictOfDataMbom, mbomsByPartId, mbomClientJson, mbomItems))
+			{
+				Utils.SetErrors(result, dataParser);
+				isMbomValid = false;
+			}
+
+			var dictOfDataEbom = new DictsForEbom();
+			if (Utils.GetPropertyOptimized(self, "is_phantom") != "1" && mbomAndEbom)
+			{
+				string ebomJson = self.getProperty("post_ebom_json");
+				dataParser.SetDataToDictEbom(dictOfDataEbom, ebomsByPartId, ebomJson, ebomItems);
+
+				if (isMbomValid)
+				{
+					var statusCalculator = new BomStatusCalculator(new BomStatusGroupsFactory(_classificationHelper).CreateBomGroups());
+					var uniqueIdHelper = new UniqueIdHelper(dataParser.UniqueId);
+					var calculationContext = new CalculationContext(mbomItems, ebomItems, _resourceManager, dictOfDataMbom, uniqueIdHelper);
+					statusCalculator.Calculate(mbomItems, ebomItems, calculationContext);
+					dataParser.UniqueId = uniqueIdHelper.GetUniqueId();
+				}
+			}
+
+			GetMultiBom ret = new GetMultiBom(_resourceManager, inn, _classificationHelper);
+			if (!string.IsNullOrEmpty(Utils.GetPropertyOptimized(self, "mbom_expanded_op_cons_ids")))
+			{
+				ret.MbomExpandedOpConsIds = Utils.GetPropertyOptimized(self, "mbom_expanded_op_cons_ids").Split('|');
+			}
+			if (!string.IsNullOrEmpty(Utils.GetPropertyOptimized(self, "ebom_expanded_item_numbers")))
+			{
+				ret.EbomExpandedItemNumbers = Utils.GetPropertyOptimized(self, "ebom_expanded_item_numbers").Split('|');
+			}
+
+			bool withHeaders = Utils.GetPropertyOptimized(self, "get_only_rows") != "1";
+			if (withHeaders)
+			{
+				result.setProperty("mbomGridHeader", ret.GetMbomGridHeader());
+			}
+			result.setProperty("mbomDataJson", ret.GetMbomGridDataJson(dictOfDataMbom));
+			if (mbomAndEbom)
+			{
+				if (withHeaders)
+				{
+					result.setProperty("ebomGridHeader", ret.GetEbomGridHeader());
+				}
+				result.setProperty("ebomDataJson", ret.GetEbomGridDataJson(dictOfDataEbom));
+			}
+
+			return result;
+		}
+	}
+
+	class UniqueIdHelper
+	{
+		private int uniqueId;
+
+		public UniqueIdHelper(int currentUniqueId)
+		{
+			uniqueId = currentUniqueId - 1;
+		}
+
+		public int GetUniqueId()
+		{
+			uniqueId++;
+			return uniqueId;
+		}
+	}
+
+	public interface IClassificationHelper
+	{
+		bool IsPhantomOrMbomOnly(MbomItem mbomItem);
+		bool IsPhantomAssy(MbomItem mbomItem);
+		bool IsMbomOnlyAssy(MbomItem mbomItem);
+	}
+
+	class ClassificationHelper : IClassificationHelper
+	{
+		public ClassificationHelper(Innovator inn)
+		{
+			Item query = inn.newItem("mpp_PartConfig", "get");
+			query.setAttribute("select", "phantom_class_path,default_phantom_class_path,mbom_only_class_path,default_mbom_only_class_path");
+			query.setProperty("source_id", "507A16AA36F94513AD7EC1F948B5B48F"); //hardcoded world preference
+			Item classInfo = query.apply();
+			if (classInfo.isError())
+			{
+				throw new InvalidOperationException(classInfo.getErrorString());
+			}
+			string phantomClass = classInfo.getProperty("phantom_class_path");
+			string defaultPhantomClass = classInfo.getProperty("default_phantom_class_path");
+			string mbomOnlyClass = classInfo.getProperty("mbom_only_class_path");
+			string defaultMbomOnlyClass = classInfo.getProperty("default_mbom_only_class_path");
+			PhantomClass = !string.IsNullOrEmpty(phantomClass) ? phantomClass : defaultPhantomClass;
+			MBomOnlyClass = !string.IsNullOrEmpty(mbomOnlyClass) ? mbomOnlyClass : defaultMbomOnlyClass;
+		}
+
+		public string PhantomClass { get; private set; }
+		public string MBomOnlyClass { get; private set; }
+
+		public bool IsPhantomOrMbomOnly(MbomItem mbomItem)
+		{
+			return IsPhantomAssy(mbomItem) || IsMbomOnlyAssy(mbomItem);
+		}
+
+		public bool IsPhantomAssy(MbomItem mbomItem)
+		{
+			return mbomItem.RelClassn == PhantomClass;
+		}
+
+		public bool IsMbomOnlyAssy(MbomItem mbomItem)
+		{
+			return mbomItem.RelClassn == MBomOnlyClass;
+		}
+	}
+
+	static class Utils
+	{
+		public static string GetPropertyOptimized(Item item, string propertyName)
+		{
+			//note that the function will not work property, e.g., for multiString type. But, it's quicker in about 9 times then standard IOM function getProperty.
+			XmlNode node = item.node.SelectSingleNode(propertyName);
+			return node != null ? node.InnerText : "";
+		}
+
+		public static string GetString(System.Data.SqlClient.SqlDataReader reader, string propertyName)
+		{
+			object dbValue = reader[propertyName];
+			string value = dbValue == null ? "" : dbValue as string;
+			return value ?? "";
+		}
+
+		public static string GetIntConvertedToString(System.Data.SqlClient.SqlDataReader reader, string propertyName)
+		{
+			object dbValue = reader[propertyName];
+			int? value = dbValue as int?;
+			if (value == null)
+			{
+				return String.Empty;
+			}
+
+			return ((int) value).ToString(CultureInfo.InvariantCulture);
+		}
+
+		public static double? GetFloat(System.Data.SqlClient.SqlDataReader reader, string propertyName)
+		{
+			object dbValue = reader[propertyName];
+			return dbValue as double?;
+		}
+
+		public static int? GetInt(System.Data.SqlClient.SqlDataReader reader, string propertyName)
+		{
+			object dbValue = reader[propertyName];
+			return dbValue as int?;
+		}
+
+		public static string SafeCastToString(object value)
+		{
+			string possibleValuesMessage = "Value can be null, string, double or int. Also can be 'boxed' value object which can be cast to int or double";
+
+			if (value == null)
+			{
+				return null;
+			}
+
+			string strValue = value as string;
+			if (strValue != null)
+			{
+				return strValue;
+			}
+
+			if (value is int)
+			{
+				int operSortOrder = (int) value;//unboxing should be performed explicitly. E.g., if value is type of object (boxed).
+				return operSortOrder.ToString(CultureInfo.InvariantCulture);
+			}
+
+			if (value is double)
+			{
+				double operSortOrder = (double) value;//unboxing should be performed explicitly. E.g., if value is type of object (boxed).
+				return operSortOrder.ToString(CultureInfo.InvariantCulture);
+			}
+
+			throw new ArgumentException(possibleValuesMessage);
+		}
+
+		public static void SetErrors(Item result, DataParser dataParser)
+		{
+			result.setProperty("execution_error", dataParser.ErrorString);
+			if (!string.IsNullOrEmpty(dataParser.ErrorNotResolvedFull))
+			{
+				result.setProperty("error_not_resolved_full", dataParser.ErrorNotResolvedFull);
+			}
+		}
+	}
+
+	class BomStatusResult
+	{
+		public const string Good = "Good";
+		public const string Ok = "OK";
+		public const string Bad = "Bad";
+	}
+
+	class BomStatusUiInfo : Attribute
+	{
+		public string Result;
+		public string TooltipResourceKey;
+		public string ImageName = "no_icon";
+	}
+
+	class MbomStatusUiInfo : BomStatusUiInfo
+	{
+	}
+
+	class EbomStatusUiInfo : BomStatusUiInfo
+	{
+	}
+
+	internal static class StatusExtensions
+	{
+		private static Dictionary<MbomStatuses, MbomStatusUiInfo> dictionaryMbom;
+		private static Dictionary<EbomStatuses, EbomStatusUiInfo> dictionaryEbom;
+
+		internal static MbomStatusUiInfo GetStatusInfoMbom(this MbomStatuses mbomStatus)
+		{
+			if (dictionaryMbom == null)
+			{
+				var tmp = new Dictionary<MbomStatuses, MbomStatusUiInfo>();
+				foreach (MbomStatuses enumVal in typeof(MbomStatuses).GetEnumValues())
+				{
+					var attr = typeof(MbomStatuses).GetMember(enumVal.ToString())
+						.First()
+						.GetCustomAttributes(false)
+						.OfType<MbomStatusUiInfo>()
+						.LastOrDefault();
+					
+					tmp.Add(enumVal, attr);
+				}
+
+				dictionaryMbom = tmp;
+			}
+
+			return dictionaryMbom[mbomStatus];
+		}
+
+		internal static EbomStatusUiInfo GetStatusInfoEbom(this EbomStatuses ebomStatus)
+		{
+			if (dictionaryEbom == null)
+			{
+				var tmp = new Dictionary<EbomStatuses, EbomStatusUiInfo>();
+				foreach (EbomStatuses enumVal in typeof(EbomStatuses).GetEnumValues())
+				{
+					var attr = typeof(EbomStatuses).GetMember(enumVal.ToString())
+						.First()
+						.GetCustomAttributes(false)
+						.OfType<EbomStatusUiInfo>()
+						.LastOrDefault();
+
+					tmp.Add(enumVal, attr);
+				}
+
+				dictionaryEbom = tmp;
+			}
+
+			return dictionaryEbom[ebomStatus];
+		}
+	}
+
+	public interface IResourceManager
+	{
+		string GetResource(string key);
+		string GetResource(string key, params object[] parameters);
+	}
+
+	class ResourceManager : IResourceManager
+	{
+		private readonly Aras.Server.Core.ErrorLookup _errorLookup;
+
+		public ResourceManager(Aras.Server.Core.ErrorLookup errorLookup)
+		{
+			_errorLookup = errorLookup;
+		}
+
+		public string GetResource(string key)
+		{
+			return _errorLookup.Lookup(key);
+		}
+
+		public string GetResource(string key, params object[] parameters)
+		{
+			return _errorLookup.Lookup(key, parameters);
+		}
+	}
+
+	class DictsForMbom
+	{
+		//difference between dict by id is that this dict contains childs of some Part. mbomsByPartId returns all mboms by partId and ignore parents, childs (structure)
+		public Dictionary<string, List<MbomItem>> DictAllItemsByParentPartId = new Dictionary<string, List<MbomItem>>();
+		public MbomItem ZeroLevelItem;
+		public HashSet<string> KnownPartBomsIdsPlusLevel = new HashSet<string>();
+	}
+
+	class DictsForEbom
+	{
+		//difference between dict by id is that this dict contains childs of some Part. mbomsByPartId returns all mboms by partId and ignore parents, childs (structure)
+		public Dictionary<string, List<EbomItem>> DictAllItemsByParentPartId = new Dictionary<string, List<EbomItem>>();
+		public EbomItem ZeroLevelItem;
+		public HashSet<string> KnownPartBomsIdsPlusLevel = new HashSet<string>();
+	}
+
+	public class MbomItemUserdataJson
+	{
+		public string id;//related PartId
+		public string cpid;//ChildProcessPlanId
+		public string pid;//ProcessPlanId
+		public string ocid;//OpConsumedPartId
+		public string oid;//OperationId
+		public string eonly;//isEbomOnly
+		public string comp;//isComponent
+		public string bad;//isBad
+		public string buy;//IsBuyNotMake
+		public int gen;//related generation
+		public string rev;//related revision
+		public string conf;//related config_id
+		public int level;
+		public string ngen;//id of Part with new Generation in EBOM, is set only if status set - new Version Available
+	}
+
+	public class MbomItem
+	{
+		public string ItemNumber;
+		public string RelClassn;
+		public bool IsRoot;
+		public int UniqueId;
+		public string OperSortOrder;
+		//nullable because can be null, e.g., for Root node, root node isn't consumed part.
+		public double? Quantity;
+		public int TotalOccurrenceByConsumedPartId = 1;
+		public string Name;
+		public List<MbomStatuses> MbomStatusList = new List<MbomStatuses>();
+		public string TotalQuantityForTooltip;
+
+		public MbomItemUserdataJson UserdataJson = new MbomItemUserdataJson();
+	}
+
+	class MbomItemJson
+	{
+		public int uniqueId = -1;
+		public string expanded;
+		public string icon;
+		public string expandedIcon;
+		public MbomItemUserdataJson userdata;
+		public List<object> fields;
+		public List<MbomItemJson> children;
+	}
+
+	public class EbomItemUserdataJson
+	{
+		public string id;//related PartId
+		public string bad;//isBad
+		public string removed;//isRemoved
+		public string buy;//isBuy
+		public string conf;//related config_id
+		public int gen;//related generation
+		public int level;
+		public string pbid;//part bom id
+	}
+
+	class EbomItem
+	{
+		public string id;
+		public bool IsRoot;
+		public string ItemNumber;
+		public string Name;
+		public string RelClassn;
+		public string Revision;
+		public double? Quantity;
+		public int TotalOccurrenceByPartBomId = 1;
+		public string TotalQuantityForTooltip;
+		public List<EbomStatuses> EbomStatusList = new List<EbomStatuses>();
+		public List<string> ChildConfigIds = new List<string>();
+		public string RelMakeBuy;
+
+		public EbomItemUserdataJson UserdataJson = new EbomItemUserdataJson();
+	}
+
+	class EbomItemJson
+	{
+		public string id;
+		public string expanded;
+		public string icon;
+		public string expandedIcon;
+		public EbomItemUserdataJson userdata;
+		public List<object> fields;
+		public List<EbomItemJson> children;
+	}
+
+	class DataParser
+	{
+		private Item item;
+
+		public int UniqueId = 1;
+		public String ErrorString = null;
+		public String ErrorNotResolvedFull = null;
+		private Aras.Server.Core.CallContext CCO;
+		private readonly IResourceManager _resourceManager;
+		public System.Web.Script.Serialization.JavaScriptSerializer JSONSerializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+		private IClassificationHelper _classificationHelper;
+
+		public DataParser(Item part, Aras.Server.Core.CallContext cco, IResourceManager resourceManager, IClassificationHelper classificationHelper)
+		{
+			CCO = cco;
+			_resourceManager = resourceManager;
+			_classificationHelper = classificationHelper;
+
+			this.item = part;
+		}
+
+		public bool SetDataToDictMbom(DictsForMbom dictOfData, Dictionary<string, List<MbomItem>> mbomsByPartId, string json, List<MbomItem> mbomItems)
+		{
+			bool getOnlyNode = Utils.GetPropertyOptimized(this.item, "get_mbom_node_without_reconc") == "1";
+			MbomItemJson mbomItemJson = null;
+			if (!String.IsNullOrEmpty(json))
+			{
+				var jsSerializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+				mbomItemJson = jsSerializer.Deserialize<MbomItemJson>(json);
+
+				if (!getOnlyNode)
+				{
+					SetItemToMbom(dictOfData, mbomItemJson, null, mbomsByPartId, false, true, "", mbomItems);
+					SetOccurrencesMbom(dictOfData.ZeroLevelItem, dictOfData.DictAllItemsByParentPartId, mbomItems);
+					return true;
+				}
+			}
+
+			Type typeInnDb = GetInnDbType();
+			string locationId = item.getProperty("location_id", "");
+			string environmentAttributesXml = CCO.EnvironmentAttributeModule.SerializeEvaluatedEnvironmentAttributes();
+			if (environmentAttributesXml != null)
+			{
+				environmentAttributesXml = environmentAttributesXml.Replace("'", "''");
+			}
+			String sql = String.Format(CultureInfo.InvariantCulture, @"EXEC [innovator].[mpp_getMBOM1] @rootProcessPlanId = N'{0}', @partId = N'{1}', @locationId = N'{2}', 
+@identity_list=N'{3}', @ip_address=N'{4}', @cur_user_id=N'{5}', @environment_attributes_xml=N'{6}'", item.getProperty("processplan_id", ""), item.getID(), locationId,
+Aras.Server.Security.Permissions.Current.IdentitiesList.Replace("'", ""), CCO.Variables.GetUserIPAddr(), CCO.Variables.GetUserID(), environmentAttributesXml);
+			bool hasDuplicates = false;
+			using (System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand(sql, GetSqlConnection(typeInnDb), GetSqlTransaction(typeInnDb)))
+			{
+				using (System.Data.SqlClient.SqlDataReader reader = command.ExecuteReader())
+				{
+					if (reader.HasRows)
+					{
+						bool isFirstRow = true;//not to check every time. The value duplicate_exists is the same for all rows. It was done such because IOM allows to get only 1 table in results.
+						while (reader.Read())
+						{
+							if (isFirstRow && Utils.GetString(reader, "duplicate_exists") == "1")
+							{
+								hasDuplicates = true;
+							}
+
+							SetItemToMbom(dictOfData, isFirstRow ? mbomItemJson : null, reader, mbomsByPartId, hasDuplicates, isFirstRow,
+								isFirstRow ? this.item.getProperty("parent_part_id") : null, mbomItems);
+
+							isFirstRow = false;
+						}
+					}
+					else if (mbomItemJson != null)
+					{
+						SetItemToMbom(dictOfData, mbomItemJson, null, mbomsByPartId, false, false, "", mbomItems);
+						dictOfData.ZeroLevelItem = mbomsByPartId[mbomItemJson.userdata.id][0];
+					}
+				}
+			}
+
+			if (hasDuplicates)
+			{
+				var fullPartItemNumbers = new StringBuilder();
+				var shortPartItemNumbers = new StringBuilder();
+				int i = 0;
+				int maxCountItemNumberToShow = 10;
+				bool isToShowOnlyMax = false;
+
+				foreach (string partId in mbomsByPartId.Keys)
+				{
+					List<MbomItem> mbomListOfItems;
+					if (mbomsByPartId.TryGetValue(partId, out mbomListOfItems))
+					{
+						MbomItem mbomItem = mbomListOfItems[0];
+						string commaOrEmpty = i != 0 ? ", " : string.Empty;
+						fullPartItemNumbers.Append(commaOrEmpty).Append(mbomItem.ItemNumber);
+
+						if (i < maxCountItemNumberToShow)
+						{
+							shortPartItemNumbers.Append(commaOrEmpty).Append(mbomItem.ItemNumber);
+						}
+						if (i == maxCountItemNumberToShow)
+						{
+							isToShowOnlyMax = true;
+						}
+
+						i++;
+					}
+				}
+				ErrorString = _resourceManager.GetResource(isToShowOnlyMax ? "mpp_cantResolveErrorOnlyMax" : "mpp_cantResolveErrorAll", System.Security.SecurityElement.Escape(shortPartItemNumbers.ToString()));
+				ErrorNotResolvedFull = _resourceManager.GetResource("mpp_cantResolveErrorAll", System.Security.SecurityElement.Escape(fullPartItemNumbers.ToString()));
+
+				return false;
+			}
+
+			FillEmptyChildProcessPlanIds(dictOfData.DictAllItemsByParentPartId, locationId);
+
+			SetOccurrencesMbom(dictOfData.ZeroLevelItem, dictOfData.DictAllItemsByParentPartId, mbomItems);
+
+			return true;
+		}
+
+		private static void SetOccurrencesMbom(MbomItem rootMbomItem, Dictionary<string, List<MbomItem>> dictAllItemsByParentPartId, List<MbomItem> mbomItems)
+		{
+			if (dictAllItemsByParentPartId == null || dictAllItemsByParentPartId.Count == 0)
+			{
+				return;
+			}
+
+			var rootMbomItemJson = new MbomItemJson { userdata = rootMbomItem.UserdataJson };
+
+			//note that we should have occurrences by ConsumedPartId, but not, e.g., by PartId, because we will group by key (ConsumedPartId) and multiply any of element in group by Quantity.
+			//Quantity should be the same for each element of group. But, quantity is a property of ConsumedPart, not a Part, so, quantity can be different for every PartId.
+			var occurrencesInTreeByConsumedPartId = new Dictionary<string, int>();
+			SetOccurrencesInTreeMbom(rootMbomItem, rootMbomItemJson, dictAllItemsByParentPartId, 0, occurrencesInTreeByConsumedPartId);
+
+			foreach (MbomItem mbomItem in mbomItems)
+			{
+				int occurrence;
+				if (occurrencesInTreeByConsumedPartId.TryGetValue(mbomItem.UserdataJson.ocid, out occurrence))
+				{
+					mbomItem.TotalOccurrenceByConsumedPartId = occurrence;
+				}
+			}
+		}
+
+		//recursively go throw each child to calculate OccurrencesInTree, we use the simular recursion when call GetParsedJSONDataMbom.
+		//These 2 functions should work the same way.
+		private static void SetOccurrencesInTreeMbom(MbomItem mbomItem, MbomItemJson mbomItemJson, Dictionary<string, List<MbomItem>> dictAllItems, int level, Dictionary<string, int> occurrencesInTreeByConsumedPartId)
+		{
+			List<MbomItem> dataOfItemList;
+			level++;
+			if (dictAllItems.TryGetValue(mbomItem.UserdataJson.id, out dataOfItemList))
+			{
+				mbomItemJson.children = new List<MbomItemJson>();
+
+				foreach (MbomItem childMbomItem in dataOfItemList)
+				{
+					if (childMbomItem.UserdataJson.level != level)
+					{
+						continue;
+					}
+
+					int occurence;
+					if (!occurrencesInTreeByConsumedPartId.TryGetValue(childMbomItem.UserdataJson.ocid, out occurence))
+					{
+						occurrencesInTreeByConsumedPartId[childMbomItem.UserdataJson.ocid] = 1;
+					}
+					else
+					{
+						occurrencesInTreeByConsumedPartId[childMbomItem.UserdataJson.ocid]++;
+					}
+
+					var childMbomItemJson = new MbomItemJson { userdata = childMbomItem.UserdataJson };
+					mbomItemJson.children.Add(childMbomItemJson);
+					//recursively call itself.
+					SetOccurrencesInTreeMbom(childMbomItem, childMbomItemJson, dictAllItems, level, occurrencesInTreeByConsumedPartId);
+				}
+			}
+		}
+
+		private void FillEmptyChildProcessPlanIds(Dictionary<string, List<MbomItem>> dictAllItemsByParentPartId, string locationId)
+		{
+			var mbomItemsWithEmptyChildPp = new List<MbomItem>();
+			var partIdsHashSet = new HashSet<string>();
+			foreach (KeyValuePair<string, List<MbomItem>> itemsByParentPartId in dictAllItemsByParentPartId)
+			{
+				foreach (MbomItem mbomItem in itemsByParentPartId.Value)
+				{
+					string partId = mbomItem.UserdataJson.id;
+					if (string.IsNullOrEmpty(mbomItem.UserdataJson.cpid))
+					{
+						mbomItemsWithEmptyChildPp.Add(mbomItem);
+						if (!partIdsHashSet.Contains(partId))
+						{
+							partIdsHashSet.Add(partId);
+						}
+					}
+				}
+			}
+
+			StringBuilder partIdsStringBuilder = new StringBuilder();
+			bool isFirst = true;
+			foreach (string partId in partIdsHashSet)
+			{
+				if (isFirst)
+				{
+					isFirst = false;
+				}
+				else
+				{
+					partIdsStringBuilder.Append(",");
+				}
+				partIdsStringBuilder.Append(partId);
+			}
+
+			string partIdsStr = partIdsStringBuilder.ToString();
+
+			if (!string.IsNullOrEmpty(partIdsStr))
+			{
+				Item requestProcessPlans = this.item.newItem("Part", "mpp_getProcessPlanByPart");
+				requestProcessPlans.setProperty("part_ids", partIdsStr);
+				requestProcessPlans.setProperty("location_id", locationId);
+				Item foundProcessPlans = requestProcessPlans.apply();
+
+				var planIdsByPartId = new Dictionary<string, string>();
+
+				if (!foundProcessPlans.isError())
+				{
+					int processPlanCount = foundProcessPlans.getItemCount();
+					for (int i = 0; i < processPlanCount; i++)
+					{
+						Item foundPp = foundProcessPlans.getItemByIndex(i);
+						string partId = Utils.GetPropertyOptimized(foundPp, "part_id");
+						string planIdOut;
+						if (!planIdsByPartId.TryGetValue(partId, out planIdOut))
+						{
+							//if several Pps for one Part were found, let's take any, it should be OK if no childs (several of them will be empty). 
+							//This code will not be executed after one of them will become not empty .
+							planIdsByPartId.Add(partId, Utils.GetPropertyOptimized(foundPp, "plan_id"));
+						}
+					}
+				}
+
+				foreach (MbomItem mbomItem in mbomItemsWithEmptyChildPp)
+				{
+					string planIdOut;
+					if (planIdsByPartId.TryGetValue(mbomItem.UserdataJson.id, out planIdOut))
+					{
+						mbomItem.UserdataJson.cpid = planIdOut;
+					}
+				}
+			}
+		}
+
+		private static void SetItemToMbomForDuplicate(System.Data.SqlClient.SqlDataReader reader, List<MbomItem> mbomItems, Dictionary<string, List<MbomItem>> mbomsByPartId)
+		{
+			string partId = Utils.GetString(reader, "rel_id");
+			MbomItem mbomItem = new MbomItem
+			{
+				ItemNumber = Utils.GetString(reader, "rel_item_number"),
+				UserdataJson = new MbomItemUserdataJson {id = partId}
+			};
+
+			mbomItems.Add(mbomItem);
+			List<MbomItem> currentMboms;
+			if (!mbomsByPartId.TryGetValue(partId, out currentMboms))
+			{
+				mbomsByPartId.Add(partId, new List<MbomItem> { new MbomItem { ItemNumber = Utils.GetString(reader, "rel_item_number") } });
+			}
+		}
+
+		private void SetItemToMbom(DictsForMbom dictsForMbom, MbomItemJson mbomItemJson, System.Data.SqlClient.SqlDataReader reader, Dictionary<string, List<MbomItem>> mbomsByPartId, bool hasDuplicates, bool isRoot, string sourceIdIfJson, List<MbomItem> mbomItems)
+		{
+			if (mbomItemJson != null && mbomItemJson.userdata.eonly == "1")
+			{
+				return;
+			}
+			if (hasDuplicates)
+			{
+				SetItemToMbomForDuplicate(reader, mbomItems, mbomsByPartId);
+				return;
+			}
+
+			MbomItem mbomItem = new MbomItem()
+			{
+				IsRoot = mbomItemJson != null && !string.IsNullOrEmpty(sourceIdIfJson) ? false : isRoot,
+				ItemNumber = mbomItemJson != null ? (string)mbomItemJson.fields[0] : Utils.GetString(reader, "rel_item_number"),
+				Name = mbomItemJson != null ? (string)mbomItemJson.fields[2] : Utils.GetString(reader, "rel_name"),
+				RelClassn = mbomItemJson != null ? (string)mbomItemJson.fields[3] : Utils.GetString(reader, "rel_classn"),
+				OperSortOrder = mbomItemJson != null ? Utils.SafeCastToString(mbomItemJson.fields[5]) : Utils.GetIntConvertedToString(reader, "oper_sort_order"),
+			};
+
+			if (mbomItemJson != null)
+			{
+				String quantityStr = Utils.SafeCastToString(mbomItemJson.fields[4]);
+				mbomItem.Quantity = String.IsNullOrEmpty(quantityStr) ? (double?)null : double.Parse(quantityStr, CultureInfo.InvariantCulture);
+
+				mbomItem.UserdataJson = mbomItemJson.userdata;
+				mbomItem.UniqueId = mbomItemJson.uniqueId != -1 ? mbomItemJson.uniqueId : (isRoot ? 0 : UniqueId++);
+			}
+			else
+			{
+				mbomItem.Quantity = Utils.GetFloat(reader, "quantity");
+
+				mbomItem.UserdataJson.id = Utils.GetString(reader, "rel_id");
+				mbomItem.UserdataJson.pid = Utils.GetString(reader, "pp_id");
+				mbomItem.UserdataJson.ocid = Utils.GetString(reader, "op_consumed_id");
+				mbomItem.UserdataJson.oid = Utils.GetString(reader, "oper_id");
+
+				String relMakeBuy = Utils.GetString(reader, "rel_make_buy");
+				if (!String.IsNullOrEmpty(relMakeBuy) && relMakeBuy.ToUpperInvariant() == "BUY")
+				{
+					mbomItem.UserdataJson.buy = "1";
+				}
+
+				mbomItem.UserdataJson.gen = (int)Utils.GetInt(reader, "generation");
+				mbomItem.UserdataJson.rev = Utils.GetString(reader, "revision");
+				mbomItem.UserdataJson.conf = Utils.GetString(reader, "config_id");
+				mbomItem.UserdataJson.level = (int)Utils.GetInt(reader, "level");
+
+				mbomItem.UniqueId = isRoot ? 0 : UniqueId++;
+			}
+
+			if (reader != null && Utils.GetString(reader, "child_part_bom_exists") != "1" && !_classificationHelper.IsPhantomAssy(mbomItem))
+			{
+				mbomItem.UserdataJson.comp = "1";
+			}
+
+			if (isRoot)
+			{
+				dictsForMbom.ZeroLevelItem = mbomItem;
+				
+				AddToMbomsByPartId(mbomsByPartId, mbomItem, new List<MbomItem>());
+			}
+			else
+			{
+				List<MbomItem> currentMbomsByPartId;
+				if (mbomsByPartId.TryGetValue(mbomItem.UserdataJson.id, out currentMbomsByPartId))
+				{
+					currentMbomsByPartId.Add(mbomItem);
+				}
+				else
+				{
+					currentMbomsByPartId = new List<MbomItem>();
+					AddToMbomsByPartId(mbomsByPartId, mbomItem, currentMbomsByPartId);
+				}
+			}
+
+			mbomItems.Add(mbomItem);
+
+			string sourceId = mbomItemJson != null ? sourceIdIfJson : Utils.GetString(reader, "source_id"); //id of parent part, another words it's related_id of mpp_ProcessPlanProducedPart.
+			List<MbomItem> parentMboms;
+
+			if (isRoot)
+			{
+				mbomItem.UserdataJson.cpid = item.getProperty("processplan_id", "");
+			}
+
+			if (!string.IsNullOrEmpty(sourceId) && mbomsByPartId.TryGetValue(sourceId, out parentMboms))
+			{
+				foreach (MbomItem parentMbom in parentMboms)
+				{
+					if (string.IsNullOrEmpty(mbomItem.UserdataJson.pid))
+					{
+						continue;
+					}
+
+					if (string.IsNullOrEmpty(parentMbom.UserdataJson.cpid))
+					{
+						parentMbom.UserdataJson.cpid = mbomItem.UserdataJson.pid;
+					}
+				}
+			}
+
+			List<MbomItem> dataOfItemList;
+
+			if (dictsForMbom.DictAllItemsByParentPartId.TryGetValue(sourceId, out dataOfItemList))
+			{
+				dataOfItemList.Add(mbomItem);
+			}
+			else
+			{
+				List<MbomItem> datList = new List<MbomItem> { mbomItem };
+				dictsForMbom.DictAllItemsByParentPartId.Add(sourceId, datList);
+			}
+
+			if (mbomItemJson != null && mbomItemJson.children != null)
+			{
+				foreach (MbomItemJson childMbomItemJson in mbomItemJson.children)
+				{
+					string partBomsIdPlusLevel = childMbomItemJson.userdata.ocid + childMbomItemJson.userdata.level.ToString(CultureInfo.InvariantCulture);
+					if (dictsForMbom.KnownPartBomsIdsPlusLevel.Contains(partBomsIdPlusLevel))
+					{
+						continue;
+					}
+					dictsForMbom.KnownPartBomsIdsPlusLevel.Add(partBomsIdPlusLevel);
+					SetItemToMbom(dictsForMbom, childMbomItemJson, null, mbomsByPartId, false, false, mbomItemJson.userdata.id, mbomItems);
+				}
+			}
+		}
+
+		private static void AddToMbomsByPartId(Dictionary<string, List<MbomItem>> mbomsByPartId, MbomItem mbomItem, List<MbomItem> currentMbomsByPartId)
+		{
+			currentMbomsByPartId.Add(mbomItem);
+			mbomsByPartId.Add(mbomItem.UserdataJson.id, currentMbomsByPartId);
+		}
+
+		private System.Data.SqlClient.SqlTransaction GetSqlTransaction(Type typeInnDb)
+		{
+			return (System.Data.SqlClient.SqlTransaction)(typeInnDb.GetProperty("CurrentTransaction", System.Reflection.BindingFlags.NonPublic |
+				System.Reflection.BindingFlags.Instance).GetValue(CCO.DB.InnDatabase, null));
+		}
+
+		private Type GetInnDbType()
+		{
+			return CCO.DB.InnDatabase.GetType();
+		}
+
+		private System.Data.SqlClient.SqlConnection GetSqlConnection(Type typeInnDb)
+		{
+			return (System.Data.SqlClient.SqlConnection)(typeInnDb.GetProperty("CurrentConnection", System.Reflection.BindingFlags.NonPublic |
+				System.Reflection.BindingFlags.Instance).GetValue(CCO.DB.InnDatabase, null));
+		}
+
+		public void SetDataToDictEbom(DictsForEbom dictOfData, Dictionary<string, List<EbomItem>> ebomsByPartId, string json, List<EbomItem> ebomItems)
+		{
+			if (!string.IsNullOrEmpty(json))
+			{
+				var jsSerializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+				EbomItemJson ebomItemJson = jsSerializer.Deserialize<EbomItemJson>(json);
+				SetItemToEbom(dictOfData, ebomItemJson, null, ebomsByPartId, true, "", ebomItems);
+				SetOccurrencesEbom(dictOfData.ZeroLevelItem, dictOfData.DictAllItemsByParentPartId, ebomItems);
+				return;
+			}
+
+			Type typeInnDb = GetInnDbType();
+			string environmentAttributesXml = CCO.EnvironmentAttributeModule.SerializeEvaluatedEnvironmentAttributes();
+			if (environmentAttributesXml != null)
+			{
+				environmentAttributesXml = environmentAttributesXml.Replace("'", "''");
+			}
+			string sql = String.Format(CultureInfo.InvariantCulture, @"EXEC [innovator].[mpp_getEBOM1] @partId = N'{0}', @identity_list=N'{1}', @ip_address=N'{2}', @cur_user_id=N'{3}', @environment_attributes_xml=N'{4}'", item.getID(),
+				Aras.Server.Security.Permissions.Current.IdentitiesList.Replace("'", ""), CCO.Variables.GetUserIPAddr(), CCO.Variables.GetUserID(), environmentAttributesXml);
+
+			using (System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand(sql, GetSqlConnection(typeInnDb), GetSqlTransaction(typeInnDb)))
+			{
+				using (System.Data.SqlClient.SqlDataReader reader = command.ExecuteReader())
+				{
+					bool isFirstRow = true;
+					while (reader.Read())
+					{
+						SetItemToEbom(dictOfData, null, reader, ebomsByPartId, isFirstRow, null, ebomItems);
+						isFirstRow = false;
+					}
+				}
+			}
+
+			SetOccurrencesEbom(dictOfData.ZeroLevelItem, dictOfData.DictAllItemsByParentPartId, ebomItems);
+		}
+
+		private static void SetOccurrencesEbom(EbomItem rootEbomItem, Dictionary<string, List<EbomItem>> dictAllItemsByParentPartId, List<EbomItem> ebomItems)
+		{
+			if (dictAllItemsByParentPartId == null || dictAllItemsByParentPartId.Count == 0)
+			{
+				return;
+			}
+
+			var rootEbomItemJson = new EbomItemJson { userdata = rootEbomItem.UserdataJson };
+
+			var occurrencesInTreeByPartBomId = new Dictionary<string, int>();
+			SetOccurrencesInTreeEbom(rootEbomItem, rootEbomItemJson, dictAllItemsByParentPartId, 0, occurrencesInTreeByPartBomId);
+
+			foreach (EbomItem ebomItem in ebomItems)
+			{
+				int occurrence;
+				if (!string.IsNullOrEmpty(ebomItem.UserdataJson.pbid) && occurrencesInTreeByPartBomId.TryGetValue(ebomItem.UserdataJson.pbid, out occurrence))
+				{
+					ebomItem.TotalOccurrenceByPartBomId = occurrence;
+				}
+			}
+		}
+
+		//recursively go throw each child to calculate OccurrencesInTree, we use the simular recursion when call GetParsedJSONDataEbom.
+		//These 2 functions should work the same way.
+		private static void SetOccurrencesInTreeEbom(EbomItem ebomItem, EbomItemJson ebomItemJson, Dictionary<string, List<EbomItem>> dictAllItems, int level, Dictionary<string, int> occurrencesInTreeByPartBomId)
+		{
+			List<EbomItem> dataOfItemList;
+			level++;
+			if (dictAllItems.TryGetValue(ebomItem.UserdataJson.id, out dataOfItemList))
+			{
+				ebomItemJson.children = new List<EbomItemJson>();
+
+				foreach (EbomItem childEbomItem in dataOfItemList)
+				{
+					if (childEbomItem.UserdataJson.level != level)
+					{
+						continue;
+					}
+
+					if (!string.IsNullOrEmpty(childEbomItem.UserdataJson.pbid))
+					{
+						int temp;
+						if (!occurrencesInTreeByPartBomId.TryGetValue(childEbomItem.UserdataJson.pbid, out temp))
+						{
+							occurrencesInTreeByPartBomId[childEbomItem.UserdataJson.pbid] = 1;
+						}
+						else
+						{
+							occurrencesInTreeByPartBomId[childEbomItem.UserdataJson.pbid]++;
+						}
+					}
+					
+					var childEbomItemJson = new EbomItemJson { userdata = childEbomItem.UserdataJson };
+					ebomItemJson.children.Add(childEbomItemJson);
+					//recursively call itself.
+					SetOccurrencesInTreeEbom(childEbomItem, childEbomItemJson, dictAllItems, level, occurrencesInTreeByPartBomId);
+				}
+			}
+		}
+
+		private void SetItemToEbom(DictsForEbom dictsForEbom, EbomItemJson ebomItemJson, System.Data.SqlClient.SqlDataReader reader, Dictionary<string, List<EbomItem>> ebomsByPartId, bool isRoot, string sourceIdIfJson, List<EbomItem> ebomItems)
+		{
+			EbomItem ebomItem = new EbomItem
+			{
+				IsRoot = isRoot,
+				ItemNumber = ebomItemJson != null ? (string)ebomItemJson.fields[0] : Utils.GetString(reader, "rel_item_number"),
+				Name = ebomItemJson != null ? (string)ebomItemJson.fields[1] : Utils.GetString(reader, "rel_name"),
+				RelClassn = ebomItemJson != null ? (string)ebomItemJson.fields[2] : Utils.GetString(reader, "rel_classn"),
+				Revision = ebomItemJson != null ? (string)ebomItemJson.fields[3] : Utils.GetString(reader, "revision")
+			};
+
+			if (ebomItemJson != null)
+			{
+				ebomItem.id = ebomItemJson.id;
+				string quantityStr = Utils.SafeCastToString(ebomItemJson.fields[4]);
+				ebomItem.Quantity = string.IsNullOrEmpty(quantityStr) ? (double?)null : double.Parse(quantityStr, CultureInfo.InvariantCulture);
+			}
+			else
+			{
+				ebomItem.id = null;
+				ebomItem.Quantity = Utils.GetFloat(reader, "quantity");
+			}
+
+			if (ebomItemJson != null)
+			{
+				ebomItem.UserdataJson = ebomItemJson.userdata;
+			}
+			else
+			{
+				ebomItem.UserdataJson.id = Utils.GetString(reader, "rel_id");
+				string relMakeBuy = Utils.GetString(reader, "rel_make_buy");
+				if (!string.IsNullOrEmpty(relMakeBuy) && relMakeBuy.ToUpperInvariant() == "BUY")
+				{
+					ebomItem.UserdataJson.buy = "1";
+				}
+				ebomItem.UserdataJson.gen = (int)Utils.GetInt(reader, "generation");
+				ebomItem.UserdataJson.conf = Utils.GetString(reader, "config_id");
+				ebomItem.UserdataJson.level = (int)Utils.GetInt(reader, "level");
+				ebomItem.UserdataJson.pbid = Utils.GetString(reader, "part_bom_id");
+			}
+
+			if (ebomItem.IsRoot)
+			{
+				dictsForEbom.ZeroLevelItem = ebomItem;
+				ebomsByPartId.Add(ebomItem.UserdataJson.id, new List<EbomItem> { ebomItem });
+			}
+			else
+			{
+				List<EbomItem> currentEbomsByPartId;
+				if (ebomsByPartId.TryGetValue(ebomItem.UserdataJson.id, out currentEbomsByPartId))
+				{
+					currentEbomsByPartId.Add(ebomItem);
+				}
+				else
+				{
+					currentEbomsByPartId = new List<EbomItem> { ebomItem };
+					ebomsByPartId.Add(ebomItem.UserdataJson.id, currentEbomsByPartId);
+				}
+			}
+
+			ebomItems.Add(ebomItem);
+
+			string sourceId = ebomItemJson != null ? sourceIdIfJson : Utils.GetString(reader, "source_id");//id of parent part, another words it's source_id of Part_Bom.
+
+			List<EbomItem> parentEbomsByPartId;
+			if (!string.IsNullOrEmpty(sourceId) && ebomsByPartId.TryGetValue(sourceId, out parentEbomsByPartId))
+			{
+				foreach (EbomItem parentEbom in parentEbomsByPartId)
+				{
+					parentEbom.ChildConfigIds.Add(ebomItem.UserdataJson.conf);
+				}
+			}
+
+			List<EbomItem> dataOfItemList;
+
+			if (dictsForEbom.DictAllItemsByParentPartId.TryGetValue(sourceId, out dataOfItemList))
+			{
+				dataOfItemList.Add(ebomItem);
+			}
+			else
+			{
+				List<EbomItem> datList = new List<EbomItem> { ebomItem };
+				dictsForEbom.DictAllItemsByParentPartId.Add(sourceId, datList);
+			}
+
+			if (ebomItemJson != null && ebomItemJson.children != null)
+			{
+				foreach (EbomItemJson childEbomItemJson in ebomItemJson.children)
+				{
+					string partBomsIdPlusLevel = childEbomItemJson.userdata.pbid + childEbomItemJson.userdata.level.ToString(CultureInfo.InvariantCulture);
+					if (dictsForEbom.KnownPartBomsIdsPlusLevel.Contains(partBomsIdPlusLevel))
+					{
+						continue;
+					}
+					dictsForEbom.KnownPartBomsIdsPlusLevel.Add(partBomsIdPlusLevel);
+					SetItemToEbom(dictsForEbom, childEbomItemJson, null, ebomsByPartId, false, ebomItemJson.userdata.id, ebomItems);
+				}
+			}
+		}
+	}
+
+	class GetMultiBom
+	{
+		private Innovator inn;
+		public string[] MbomExpandedOpConsIds;
+		public string[] EbomExpandedItemNumbers;
+		private IResourceManager _resourceManager;
+		private System.Web.Script.Serialization.JavaScriptSerializer JSONSerializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+		private readonly IClassificationHelper _classificationHelper;
+
+		public GetMultiBom(IResourceManager resourceManager, Innovator innovator, IClassificationHelper classificationHelper)
+		{
+			_resourceManager = resourceManager;
+			inn = innovator;
+			_classificationHelper = classificationHelper;
+		}
+
+		private string BuildImgTagMbom(List<MbomStatuses> statuses, string customTooltip)
+		{
+			string result = "";
+			foreach (MbomStatuses status in statuses)
+			{
+				string tooltip = !string.IsNullOrEmpty(customTooltip) ? customTooltip : ResolveResource(status.GetStatusInfoMbom().TooltipResourceKey);
+				result += "<img class='status' src='../images/" + Escape(status.GetStatusInfoMbom().ImageName) + ".svg' title='" + Escape(tooltip) + "'/>";
+			}
+			return result;
+		}
+
+		private string BuildImgTagEbom(List<EbomStatuses> statuses, string customTooltip)
+		{
+			string result = "";
+			foreach (EbomStatuses status in statuses)
+			{
+				string tooltip = !string.IsNullOrEmpty(customTooltip) ? customTooltip : ResolveResource(status.GetStatusInfoEbom().TooltipResourceKey);
+				result += "<img class='status' src='../images/" + Escape(status.GetStatusInfoEbom().ImageName) + ".svg' title='" + Escape(tooltip) + "'/>";
+			}
+			return result;
+		}
+
+		public string GetMbomGridHeader()
+		{
+			StringBuilder itemStylesheet = new StringBuilder();
+			itemStylesheet.Append("<?xml version='1.0' encoding='utf-8'?>");
+			itemStylesheet.Append("<table");
+			this.GetBaseTemplateMbom(itemStylesheet);
+			itemStylesheet.Append("</table>");
+			return itemStylesheet.ToString();
+		}
+
+		public string GetMbomGridDataJson(DictsForMbom dictOfData)
+		{
+			if (dictOfData.DictAllItemsByParentPartId != null && dictOfData.DictAllItemsByParentPartId.Count != 0 && dictOfData.ZeroLevelItem != null)
+			{
+				var mbomItemJson = new MbomItemJson { userdata = dictOfData.ZeroLevelItem.UserdataJson };
+				GetParsedJSONDataMbom(dictOfData.ZeroLevelItem, mbomItemJson, dictOfData.DictAllItemsByParentPartId, 0);
+
+				return JSONSerializer.Serialize(mbomItemJson);
+			}
+
+			return string.Empty;
+		}
+
+		public string GetEbomGridHeader()
+		{
+			StringBuilder itemStylesheet = new StringBuilder();
+			itemStylesheet.Append("<?xml version='1.0' encoding='utf-8'?>");
+			itemStylesheet.Append("<table");
+			this.GetBaseTemplateEbom(itemStylesheet);
+			itemStylesheet.Append("</table>");
+			return itemStylesheet.ToString();
+		}
+
+		public string GetEbomGridDataJson(DictsForEbom dictOfData)
+		{
+			if (dictOfData.DictAllItemsByParentPartId != null && dictOfData.DictAllItemsByParentPartId.Count != 0 && dictOfData.ZeroLevelItem != null)
+			{
+				var ebomItemJson = new EbomItemJson { userdata = dictOfData.ZeroLevelItem.UserdataJson };
+				GetParsedJSONDataEbom(dictOfData.ZeroLevelItem, ebomItemJson, dictOfData.DictAllItemsByParentPartId, 0);
+
+				return JSONSerializer.Serialize(ebomItemJson);
+			}
+
+			return string.Empty;
+		}
+
+		private string Escape(string data)
+		{
+			return System.Security.SecurityElement.Escape(data);
+		}
+
+		//note that simular recursion function is SetOccurrencesInTreeMbom. These 2 functions should work the same way.
+		internal void GetParsedJSONDataMbom(MbomItem mbomItem, MbomItemJson mbomItemJson, Dictionary<string, List<MbomItem>> dictAllItems, int level)
+		{
+			List<MbomItem> dataOfItemList;
+			//this is required, e.g., cannot be replaced by - if any of statuses in MbomSpecificStatusGroup for root item because for root item no status calculation.
+			string imageName = _classificationHelper.IsPhantomOrMbomOnly(mbomItem) ? "Phantom" : "Part";
+
+			if (mbomItem.IsRoot || (MbomExpandedOpConsIds != null && MbomExpandedOpConsIds.Contains(mbomItem.UserdataJson.ocid)))
+			{
+				mbomItemJson.expanded = "true";
+			}
+
+			// system properties section
+			mbomItemJson.uniqueId = mbomItem.UniqueId;
+			mbomItemJson.icon = "../images/" + imageName + ".svg";
+			mbomItemJson.expandedIcon = "../images/" + imageName + ".svg";
+
+			mbomItemJson.userdata.eonly = mbomItem.MbomStatusList.Contains(MbomStatuses.EbomOnlyAssembly) ? "1" : "";
+			mbomItemJson.userdata.bad = mbomItem.MbomStatusList.Exists(item => item.GetStatusInfoMbom().Result == BomStatusResult.Bad) ? "1" : "";
+
+			// fieldData section
+			mbomItemJson.fields = new List<object>
+			{
+				mbomItem.ItemNumber,
+				"",//1st: conflicts
+				mbomItem.Name,
+				mbomItem.RelClassn,
+				mbomItem.Quantity != null ? ((double)mbomItem.Quantity).ToString(CultureInfo.InvariantCulture) : "",
+				mbomItem.OperSortOrder,
+				//planned column
+				!mbomItem.IsRoot ? (object) (String.IsNullOrEmpty(mbomItem.UserdataJson.cpid) ? false : true) : "",
+				"",//7th: rec. status column1 mbom
+				"",//8th: rec. status column2 mbom
+			};
+
+			//rec. status column1 mbom
+			var firstColumnStatuses = new List<MbomStatuses>();
+			firstColumnStatuses.AddRange(mbomItem.MbomStatusList.Where(s => s == MbomStatuses.ConsumedNotMakeAssembly || s == MbomStatuses.NewRevisionAvailable
+				|| s == MbomStatuses.NewGenerationAvailable));
+
+			mbomItemJson.fields[7] = BuildImgTagMbom(firstColumnStatuses, null);
+
+			//rec. status column2 mbom
+			if (mbomItem.MbomStatusList.Contains(MbomStatuses.NotInEbom))
+			{
+				mbomItemJson.fields[8] = BuildImgTagMbom(new List<MbomStatuses> { MbomStatuses.NotInEbom }, null);
+			}
+			else if (mbomItem.MbomStatusList.Contains(MbomStatuses.PartiallyConsumedQuantity))
+			{
+				mbomItemJson.fields[8] = BuildImgTagMbom(new List<MbomStatuses> { MbomStatuses.PartiallyConsumedQuantity }, mbomItem.TotalQuantityForTooltip);
+			}
+			else if (mbomItem.MbomStatusList.Contains(MbomStatuses.ConsumedQuantitySplit))
+			{
+				mbomItemJson.fields[8] = BuildImgTagMbom(new List<MbomStatuses> { MbomStatuses.ConsumedQuantitySplit }, mbomItem.TotalQuantityForTooltip);
+			}
+			else if (mbomItem.MbomStatusList.Contains(MbomStatuses.Overconsumed))
+			{
+				mbomItemJson.fields[8] = BuildImgTagMbom(new List<MbomStatuses> { MbomStatuses.Overconsumed }, mbomItem.TotalQuantityForTooltip);
+			}
+			// end of fieldData section
+
+			level++;
+			if (dictAllItems.TryGetValue(mbomItem.UserdataJson.id, out dataOfItemList))
+			{
+				mbomItemJson.children = new List<MbomItemJson>();
+				foreach (MbomItem childMbomItem in dataOfItemList)
+				{
+					if (childMbomItem.UserdataJson.level != level)
+					{
+						continue;
+					}
+					var childMbomItemJson = new MbomItemJson { userdata = childMbomItem.UserdataJson };
+					mbomItemJson.children.Add(childMbomItemJson);
+					GetParsedJSONDataMbom(childMbomItem, childMbomItemJson, dictAllItems, level);
+				}
+			}
+		}
+
+		private string ResolveResource(string resourceKey)
+		{
+			return _resourceManager.GetResource(resourceKey);
+		}
+
+		private string GetLabel(Item itemTypeProperties, string propertyName)
+		{
+			return itemTypeProperties.getItemsByXPath(Item.XPathResult + "/Item[@type='Property' and name='" + propertyName + "']").getProperty("label");
+		}
+
+		private Item GetItemTypeProperties(string itemTypeTypeId)
+		{
+			Item item = inn.newItem("Property", "get");
+			item.setProperty("select", "label");
+			item.setProperty("source_id", itemTypeTypeId);
+			return item.apply();
+		}
+
+		private void GetBaseTemplateMbom(StringBuilder gridStyle)
+		{
+			gridStyle.Append(" font='Microsoft Sans Serif-8'");
+			gridStyle.Append(" sel_bgColor='steelbue'");
+			gridStyle.Append(" sel_TextColor='white'");
+			gridStyle.Append(" header_BgColor='buttonface'");
+			gridStyle.Append(" treelines='1'");
+			gridStyle.Append(" editable='true'");
+			gridStyle.Append(" draw_grid='true'");
+			gridStyle.Append(" multiselect='true'");
+			gridStyle.Append(" column_draggable='true'");
+			gridStyle.Append(" enableHtml='false'");
+			gridStyle.Append(" enterAsTab='false'");
+			gridStyle.Append(" bgInvert='true'");
+			gridStyle.Append(" xmlns:msxsl='urn:schemas-microsoft-com:xslt'");
+			gridStyle.Append(" xmlns:aras='http://www.aras.com'");
+			gridStyle.Append(" xmlns:usr='urn:the-xml-files:xslt'>");
+			gridStyle.Append(" <thead>");
+			Item itemTypePart = GetItemTypeProperties("4F1AC04A2B484F3ABA4E20DB63808A88");//Part
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePart, "item_number") + "</th>");
+			gridStyle.Append("  <th align='c'></th>");//column conflicts 
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePart, "name") + "</th>");
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePart, "classification") + "</th>");
+			Item itemTypePartBom = GetItemTypeProperties("C760AA9374044A1399F4029D1A91C131");//mpp_OperationConsumedPart
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePartBom, "quantity") + "</th>");
+			Item itemTypeOperation = GetItemTypeProperties("91B674D7C7AF47F99CA1C2FB26C38DBF");
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypeOperation, "sort_order") + "</th>");
+			gridStyle.Append("  <th align='c'>" + _resourceManager.GetResource("mpp_mbomGridHeader_planned") + "</th>");
+			gridStyle.Append("  <th align='c'>" + _resourceManager.GetResource("mpp_mbomGridHeader_partStatus") + "</th>");
+			gridStyle.Append("  <th align='c'>" + _resourceManager.GetResource("mpp_mbomGridHeader_reconcilationStatus") + "</th>");
+			gridStyle.Append(" </thead>");
+			gridStyle.Append(" <columns>");
+			gridStyle.Append("  <column width='260' edit='NOEDIT' align='l' order='10' colname='c_item_number_mbom'/>");
+			gridStyle.Append("  <column width='24' edit='NOEDIT' align='c' order='1' colname='c_conflict'/>");
+			gridStyle.Append("  <column width='260' edit='NOEDIT' align='l' order='20' colname='c_name'/>");
+			gridStyle.Append("  <column width='90' edit='NOEDIT' align='c' order='30' colname='c_classification'/>");
+			gridStyle.Append("  <column width='40' edit='FIELD' align='c' order='40' sort='numeric' colname='c_quantity'/>");
+			gridStyle.Append("  <column width='40' edit='FIELD' align='c' order='50' sort='numeric' colname='c_oper_sort_order'/>");
+			gridStyle.Append("  <column width='50' edit='NOEDIT' align='c' order='60' colname='c_planned' />");
+			gridStyle.Append("  <column width='90' edit='NOEDIT' align='c' order='70' colname='c_rec_status1' />");
+			gridStyle.Append("  <column width='70' edit='NOEDIT' align='c' order='80' colname='c_rec_status2' />");
+			gridStyle.Append(" </columns>");
+		}
+
+		//note that simular recursion function is SetOccurrencesInTreeEbom. These 2 functions should work the same way.
+		internal void GetParsedJSONDataEbom(EbomItem ebomItem, EbomItemJson ebomItemJson, Dictionary<string, List<EbomItem>> dictAllItems, int level)
+		{
+			List<EbomItem> dataOfItemList;
+			String imageName = "Part";
+
+			ebomItemJson.id = ebomItem.IsRoot ? "root" : ebomItem.id;
+
+			if (ebomItem.IsRoot || (EbomExpandedItemNumbers != null && EbomExpandedItemNumbers.Contains(ebomItem.ItemNumber)))
+			{
+				ebomItemJson.expanded = "true";
+			}
+
+			// system properties section
+			ebomItemJson.icon = "../images/" + imageName + ".svg";
+			ebomItemJson.expandedIcon = "../images/" + imageName + ".svg";
+
+			ebomItemJson.userdata.removed = ebomItem.EbomStatusList.Contains(EbomStatuses.RemovedFromMbom) ? "1" : "";
+			ebomItemJson.userdata.bad = ebomItem.EbomStatusList.Exists(item => item.GetStatusInfoEbom().Result == BomStatusResult.Bad) ? "1" : "";
+
+			// fieldData section
+			ebomItemJson.fields = new List<object>
+			{
+				ebomItem.ItemNumber,
+				ebomItem.Name,
+				ebomItem.RelClassn,
+				ebomItem.Revision,
+				ebomItem.Quantity != null ? ((double)ebomItem.Quantity).ToString(CultureInfo.InvariantCulture) : "",
+				"",//5th: rec. status column1 mbom
+				"",//6th: rec. status column2 mbom
+			};
+
+			//column1 ebom
+			List<EbomStatuses> firstColumnStatuses = new List<EbomStatuses>();
+			firstColumnStatuses.AddRange(ebomItem.EbomStatusList.Where(s => s == EbomStatuses.ConsumedNotMakeAssembly || s == EbomStatuses.NewRevision || s == EbomStatuses.NewGeneration));
+			ebomItemJson.fields[5] = BuildImgTagEbom(firstColumnStatuses, null);
+
+			//column2 ebom
+			if (ebomItem.EbomStatusList.Contains(EbomStatuses.NotAccountedInMbom))
+			{
+				ebomItemJson.fields[6] = BuildImgTagEbom(new List<EbomStatuses> { EbomStatuses.NotAccountedInMbom }, null);
+			}
+			else if (ebomItem.EbomStatusList.Contains(EbomStatuses.PartiallyConsumedQuantity))
+			{
+				ebomItemJson.fields[6] = BuildImgTagEbom(new List<EbomStatuses> { EbomStatuses.PartiallyConsumedQuantity }, ebomItem.TotalQuantityForTooltip);
+			}
+			else if (ebomItem.EbomStatusList.Contains(EbomStatuses.QuantitySplit))
+			{
+				ebomItemJson.fields[6] = BuildImgTagEbom(new List<EbomStatuses> { EbomStatuses.QuantitySplit }, ebomItem.TotalQuantityForTooltip);
+			}
+			else if (ebomItem.EbomStatusList.Contains(EbomStatuses.Overconsumed))
+			{
+				ebomItemJson.fields[6] = BuildImgTagEbom(new List<EbomStatuses> { EbomStatuses.Overconsumed }, ebomItem.TotalQuantityForTooltip);
+			}
+			// end of fieldData section
+
+			level++;
+			if (dictAllItems.TryGetValue(ebomItem.UserdataJson.id, out dataOfItemList))
+			{
+				ebomItemJson.children = new List<EbomItemJson>();
+				foreach (EbomItem childEbomItem in dataOfItemList)
+				{
+					if (childEbomItem.UserdataJson.level != level)
+					{
+						continue;
+					}
+					var childEbomItemJson = new EbomItemJson { userdata = childEbomItem.UserdataJson };
+					ebomItemJson.children.Add(childEbomItemJson);
+					GetParsedJSONDataEbom(childEbomItem, childEbomItemJson, dictAllItems, level);
+				}
+			}
+		}
+
+		private void GetBaseTemplateEbom(StringBuilder gridStyle)
+		{
+			gridStyle.Append(" font='Microsoft Sans Serif-8'");
+			gridStyle.Append(" sel_bgColor='steelbue'");
+			gridStyle.Append(" sel_TextColor='white'");
+			gridStyle.Append(" header_BgColor='buttonface'");
+			gridStyle.Append(" treelines='1'");
+			gridStyle.Append(" editable='true'");
+			gridStyle.Append(" draw_grid='true'");
+			gridStyle.Append(" multiselect='true'");
+			gridStyle.Append(" column_draggable='true'");
+			gridStyle.Append(" enableHtml='false'");
+			gridStyle.Append(" enterAsTab='false'");
+			gridStyle.Append(" bgInvert='true'");
+			gridStyle.Append(" xmlns:msxsl='urn:schemas-microsoft-com:xslt'");
+			gridStyle.Append(" xmlns:aras='http://www.aras.com'");
+			gridStyle.Append(" xmlns:usr='urn:the-xml-files:xslt'>");
+			gridStyle.Append(" <thead>");
+			Item itemTypePart = GetItemTypeProperties("4F1AC04A2B484F3ABA4E20DB63808A88");//Part
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePart, "item_number") + "</th>");
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePart, "name") + "</th>");
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePart, "classification") + "</th>");
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePart, "major_rev") + "</th>");
+			Item itemTypePartBom = GetItemTypeProperties("5E9C5A12CC58413A8670CF4003C57848");//Part BOM
+			gridStyle.Append("  <th align='c'>" + GetLabel(itemTypePartBom, "quantity") + "</th>");
+			gridStyle.Append("  <th align='c'>" + _resourceManager.GetResource("mpp_mbomGridHeader_partStatus") + "</th>");
+			gridStyle.Append("  <th align='c'>" + _resourceManager.GetResource("mpp_mbomGridHeader_reconcilationStatus") + "</th>");
+			gridStyle.Append(" </thead>");
+			gridStyle.Append(" <columns>");
+			gridStyle.Append("  <column width='260' edit='NOEDIT' align='l' order='0' colname='c_item_number'/>");
+			gridStyle.Append("  <column width='260' edit='NOEDIT' align='l' order='1' colname='c_name'/>");
+			gridStyle.Append("  <column width='90' edit='NOEDIT' align='c' order='2' colname='c_classification'/>");
+			gridStyle.Append("  <column width='68' edit='NOEDIT' align='c' order='3' colname='c_revision'/>");
+			gridStyle.Append("  <column width='68' edit='NOEDIT' align='c' order='4' sort='numeric' colname='c_quantity'/>");
+			gridStyle.Append("  <column width='90' edit='NOEDIT' align='c' order='6' colname='c_rec_status1' />");
+			gridStyle.Append("  <column width='70' edit='NOEDIT' align='c' order='7' colname='c_rec_status2' />");
+			gridStyle.Append(" </columns>");
+			]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_GetBomTreeGrid</name>
+ </Item>
+</AML>

@@ -1,0 +1,8 @@
+﻿<AML>
+  <Item type="Allowed Workflow" id="8240F5BB41294411BD0D865121E4267B" action="add">
+    <is_default>1</is_default>
+    <related_id type="Workflow Map"><Item type="Workflow Map" action="get" id="4061666D118647289DF5C23A629D96F9" /></related_id>
+    <sort_order>128</sort_order>
+    <source_id type="ItemType">401341C4A64B4B63915B0E94990AC21F</source_id>
+  </Item>
+</AML>

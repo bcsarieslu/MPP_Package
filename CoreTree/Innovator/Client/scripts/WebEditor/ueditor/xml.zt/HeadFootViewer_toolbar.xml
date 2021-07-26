@@ -1,0 +1,6 @@
+﻿<toolbarapplet buttonstyle="windows"  buttonsize="26,25" font="Arial-bold-10">
+	<toolbar id="toolbar">
+		<button text="导入页头页尾" id="importheadfoot" image="../images/PDFViewerOn.svg" tooltip="导入页头页尾" disabled="false" />
+		<choice id="language_list" label="语系:" tooltip="选择语系"/>
+	</toolbar>
+</toolbarapplet>

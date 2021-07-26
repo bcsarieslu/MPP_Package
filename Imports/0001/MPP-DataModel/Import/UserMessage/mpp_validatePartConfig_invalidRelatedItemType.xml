@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="C5300E91CE714E6B8320FCD070A310C2" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Relationship {0} has invalid related itemType {1} ({2} expected)</text>
+  <name>mpp_validatePartConfig_invalidRelatedItemType</name>
+ </Item>
+</AML>

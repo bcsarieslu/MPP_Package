@@ -1,0 +1,131 @@
+﻿html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	font-family: Tahoma;
+	color: #444444;
+	font-size: 12px;
+}
+
+.dijitTooltipContainer .dijitTooltipFocusNode {
+	padding: 0;
+}
+
+#borderContainer {
+	width: 100%;
+	height: 100%;
+}
+
+.dijitBorderContainer-dijitContentPane {
+	padding: 0px !important;
+}
+
+.dijitTreeContainer {
+	width: 100% !important;
+}
+
+.dijitTreeRow {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: inherit !important;
+}
+
+.bad.dojoxGridRow tr {
+	background-color: #ffedf0 !important;
+	background-image: none !important;
+}
+
+.dojoxGridCell img.status {
+	display: inline-block !important;
+	vertical-align: middle;
+	height: 22px !important;
+	width: 22px !important;
+	max-width: 22px !important;
+	max-height: 22px !important;
+	min-width: 22px !important;
+	min-height: 22px !important;
+}
+
+.removed.dojoxGridRow .dojoxGridRowTable tr td:after {
+	content: "";
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 11.5px;
+	height: 1px;
+	background-color: #d4253c;
+}
+
+.dojoxGrid .dojoxGridRow.dragOverRowValid, .dojoxGrid .dojoxGridRow.dragOverRowInvalid {
+	height: 51px;
+}
+
+.dojoxGrid .dragOverRowValid.addDropbox > .dojoxGridRowTable:after {
+	content: attr(dropMessage);
+	display: block;
+	height: 22px;
+	width: 300px;
+	padding-left: 10px;
+	border: 1px dashed #3768B1;
+	border-left: 4px solid #3768B1;
+	background-color: #FFFFFF;
+	color: #3768B1;
+	line-height: 22px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.dojoxGrid .dragOverRowValid.insertDropbox > .dojoxGridRowTable:after {
+	content: attr(dropMessage);
+	display: block;
+	box-sizing: border-box;
+	height: 24px;
+	width: 300px;
+	padding-left: 10px;
+	border: 1px dashed #3768B1;
+	border-top: 4px solid #3768B1;
+	background-color: #FFFFFF;
+	color: #3768B1;
+	line-height: 21px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.dojoxGrid .dragOverRowInvalid > .dojoxGridRowTable:after {
+	content: attr(dropMessage);
+	display:  block;
+	height: 22px;
+	width: 300px;
+	padding-left: 10px;
+	border: 1px dashed #b83b13;
+	border-left: 4px solid #b83b13;
+	background-color: #FFFFFF;
+	color: #b83b13;
+	line-height: 22px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.dojoxGrid .dojoxGridRow {
+	height: 27px;
+	position: relative;
+	transition: border-color 0.25s cubic-bezier(0, 0, 0.58, 1), background-color 0.25s cubic-bezier(0, 0, 0.58, 1), height 0.2s ease;
+}
+
+#toolbarContainer {
+	height: 30px;
+}
+
+#toolbarContainer .dijitToolbar {
+	height: 30px;
+	line-height: 30px;
+}
+
+#toolbarContainer .dijitContentPane {
+	overflow: hidden;
+}
+
+.dijitContainer .dijitContentPane {
+	padding: 0px !important;
+}

@@ -1,0 +1,28 @@
+﻿<AML>
+ <Item type="Method" id="9B0B19CC510C4409B1DA81251A48F193" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[return {
+		RenderHtml: function(/*WrappedObject*/ schemaElement, /*Object*/ parentState) {
+			var out = '';
+			var elementState = this.prepareElementState(schemaElement, parentState);
+			var rowList = schemaElement.GetRowsList();
+			var isDocumentEditable = schemaElement.ownerDocument.datamodel.isEditable();
+			var anchorContent = isDocumentEditable ? this.wrapInTag('Table', 'div', {class: 'elementAnchorLabel'}) : '';
+
+			out +=
+					'<div id="' + schemaElement.Id() + '" class="' + this.GetClassList(schemaElement, elementState).join(' ') + '" ' +
+					this._getAttributesStringArray(this.GetAttributes(schemaElement, elementState)).join(' ') + '>' +
+					anchorContent +
+					'	<table>' +
+							this._DrawColsForSetWidth(schemaElement) +
+							this.RenderInnerContent(rowList, elementState) +
+					'	</table>' +
+					'</div>';
+
+			return out;
+		}
+	};]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>mpp_TableElementRenderer</name>
+ </Item>
+</AML>

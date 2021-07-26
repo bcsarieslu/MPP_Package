@@ -1,0 +1,162 @@
+﻿.dijitTree {
+}
+
+.dijitTooltipContainer .dijitTooltipFocusNode {
+	padding: 0;
+}
+
+/* Workaround: fixed problem with svg images loading in IE11("plus" and "minus" icons sometimes do not appears) */
+.dijitTree::before {
+	content: '';
+	display: none;
+	background-image: url("../../../images/plus.svg");
+}
+
+.dijitTree::after {
+	content: '';
+	display: none;
+	background-image: url("../../../images/minus.svg");
+}
+/* end of Workaround */
+
+.dijitTreeIcon {
+	height: 22px;
+	width: 22px;
+	background-size: 22px 22px;
+	margin-bottom: 1px;
+}
+
+.producedPartPrefix {
+	background-position: 0px 0px;
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
+	margin-left: 5px;
+	padding-left: 20px;
+}
+
+.dijitTreeRow .dijitTreeExpando {
+	margin: 2px 2px 2px 7px;
+	width: 13px;
+	height: 13px;
+	background-size: 13px;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+
+.processPlanEditor .dragOverRowValid > .dijitTreeRow, .processPlanEditor .dragOverRowInvalid > .dijitTreeRow {
+	height: 55px;
+}
+
+.processPlanEditor .dragOverRowValid > .dijitTreeRowSelected, .processPlanEditor .dragOverRowInvalid > .dijitTreeRowSelected {
+	background-color: #FFFFFF;
+	border-color: #FFFFFF;
+}
+
+.processPlanEditor .dijitTreeRow.ArasXmlSchemaElementBlocked {
+	color: #b83a1d;
+	font-style: italic;
+}
+
+.processPlanEditor .dragOverRowValid.addDropbox > .dijitTreeRow:after {
+	content: attr(dropMessage);
+	display: block;
+	height: 24px;
+	padding-left: 10px;
+	border: 1px dashed #3768B1;
+	border-left: 4px solid #3768B1;
+	background-color: #FFFFFF;
+	color: #3768B1;
+	line-height: 24px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.processPlanEditor .dragOverRowValid.insertDropbox > .dijitTreeRow:after {
+	content: attr(dropMessage);
+	display: block;
+	height: 24px;
+	padding-left: 10px;
+	border: 1px dashed #3768B1;
+	border-top: 4px solid #3768B1;
+	background-color: #FFFFFF;
+	color: #3768B1;
+	line-height: 24px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.processPlanEditor .dragOverRowValid.pasteHereDropbox > .dijitTreeRow:after {
+	content: attr(dropMessage);
+	display: block;
+	height: 24px;
+	padding-left: 10px;
+	border: 1px dashed #3768B1;
+	border-top: 1px solid #3768B1;
+	background-color: #FFFFFF;
+	color: #3768B1;
+	line-height: 24px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.processPlanEditor .dragOverRowInvalid > .dijitTreeRow:after {
+	content: attr(dropMessage);
+	display:  block;
+	height: 24px;
+	padding-left: 10px;
+	border: 1px dashed #b83b13;
+	border-left: 4px solid #b83b13;
+	background-color: #FFFFFF;
+	color: #b83b13;
+	line-height: 24px;
+	font-weight: bold;
+	opacity: 0.8;
+}
+
+.processPlanEditor .dijitTreeRow {
+	height: 22px;
+	padding: 1px 15px 0 0;
+	position: relative;
+	transition: border-color 0.25s cubic-bezier(0, 0, 0.58, 1), background-color 0.25s cubic-bezier(0, 0, 0.58, 1), height 0.2s ease;
+}
+
+.ConditionMark {
+	position: absolute;
+	right: 1px;
+	top: 4px;
+	max-width: 16px;
+	max-height: 16px;
+}
+
+.processPlanEditor .dijitTreeRow .dijitTreeExpando {
+	background-image: url("../../../images/minus.svg");
+	background-position: 0px 0px;
+}
+
+.processPlanEditor .dijitTreeRow .dijitTreeExpandoClosed {
+	background-image: url("../../../images/plus.svg");
+	background-position: 0px 0px;
+}
+
+.dijitTreeRow .dijitTreeExpando.dijitTreeExpandoLeaf {
+	background-image: none;
+}
+
+.processPlanEditor .dijitTreeRowHover {
+	background-color: #dde7f5;
+	border-color: #dde7f5;
+	border-width: 0px;
+	background-image: none;
+}
+
+.processPlanEditor .dijitTreeRowSelected {
+	background-color: #dde7f5;
+	border-color: #dde7f5;
+	border-width: 0px;
+	background-image: none;
+}
+
+.DeletedModelItem, .DeletedModelItem + .dijitTreeNodeContainer {
+	font-style: italic;
+	opacity: 0.5;
+}

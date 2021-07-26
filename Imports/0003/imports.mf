@@ -1,0 +1,11 @@
+﻿<imports>
+  <package name="com.aras.innovator.solution.ApplicationCore" path="ApplicationCore\import" />
+  <package name="com.aras.innovator.solution.MPP-DataModel" path="MPP-DataModel\import">
+	<dependson name="com.aras.innovator.solution.PLM" />
+	<dependson name="com.aras.innovator.solution.ApplicationCore" />
+  </package>
+  <package name="com.aras.innovator.solution.MPP-Application" path="MPP-Application\import">
+	<dependson name="com.aras.innovator.solution.MPP-DataModel" />
+  </package>
+  <package name="DatabaseIdentifier" path="DatabaseIdentifier\Import" />
+</imports>

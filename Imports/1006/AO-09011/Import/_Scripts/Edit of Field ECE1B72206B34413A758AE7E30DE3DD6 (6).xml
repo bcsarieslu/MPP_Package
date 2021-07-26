@@ -1,0 +1,10 @@
+﻿<AML>
+  <Item type="Field" id="ECE1B72206B34413A758AE7E30DE3DD6" action="edit">
+    <propertytype_id>
+      <Item type="Property" action="get" select="id">
+        <name>classification</name>
+        <source_id>26B3F4E813104AD79CAD82D756A84432</source_id>
+      </Item>
+    </propertytype_id>
+  </Item>
+</AML>

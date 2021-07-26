@@ -1,0 +1,277 @@
+﻿<AML>
+ <Item type="Form" id="C87C7A71DBD64EFFB7228B63249FB3A2" action="add">
+  <category_form>0</category_form>
+  <height>234</height>
+  <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+  <width>699</width>
+  <name>mpp_PublishingForm</name>
+  <Relationships>
+   <Item type="Body" id="118A5CECA84548FF8E04C228A4464D6B" action="add">
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_PublishingForm" type="Form">C87C7A71DBD64EFFB7228B63249FB3A2</source_id>
+    <Relationships>
+     <Item type="Field" id="85FB2C83859643E19168535A0E9A81F4" action="add">
+      <bg_color>#ffffff</bg_color>
+      <border_width>0</border_width>
+      <css>{$this field rule} input {
+ width: 120px;
+ background-color: #5F6871;
+}</css>
+      <display_length_unit>px</display_length_unit>
+      <field_type>button</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Close</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>768</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>160</x>
+      <y>200</y>
+      <name>close_button</name>
+     </Item>
+     <Item type="Field" id="BF0E23F546FF4C36973C7CB4BB5723E5" action="add">
+      <border_width>0</border_width>
+      <css>{$this field rule} {
+ width: 110px;
+ height: 1px;
+ background-color: #CCCCCC;
+}</css>
+      <display_length_unit>px</display_length_unit>
+      <field_type>html</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <html_code />
+      <is_disabled>0</is_disabled>
+      <is_visible>0</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <sort_order>512</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>24</x>
+      <y>229</y>
+      <name>content_separator</name>
+     </Item>
+     <Item type="Field" id="CECDFE95F0424235821EB2EB080EBFAD" action="add">
+      <border_width>0</border_width>
+      <display_length>120</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>dropdown</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Conversion Format</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>1024</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>20</x>
+      <y>50</y>
+      <name>conversion_format_list</name>
+     </Item>
+     <Item type="Field" id="3132269DDEDB48B5B2142C4100244F03" action="add">
+      <border_width>0</border_width>
+      <display_length>280</display_length>
+      <display_length_unit>px</display_length_unit>
+      <field_type>dropdown</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Conversion Result</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>1664</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>20</x>
+      <y>140</y>
+      <name>conversion_result_list</name>
+     </Item>
+     <Item type="Field" id="72741EB7779E453AB81897F8B7B452C4" action="add">
+      <border_width>0</border_width>
+      <css>{$this field rule} input {
+ width: 120px;
+}</css>
+      <display_length_unit>px</display_length_unit>
+      <field_type>button</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Convert</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>640</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>20</x>
+      <y>200</y>
+      <name>convert_button</name>
+     </Item>
+     <Item type="Field" id="946C7C252E50499D96D282B846D3B30D" action="add">
+      <border_width>0</border_width>
+      <display_length_unit>px</display_length_unit>
+      <field_type>html</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <html_code><![CDATA[<img src="../images/CopyFile.svg" style="width: 36px; height: 36px;"></img>]]></html_code>
+      <is_disabled>0</is_disabled>
+      <is_visible>0</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>1792</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>179</x>
+      <y>0</y>
+      <name>input_image</name>
+     </Item>
+     <Item type="Field" id="FF935CEE6AB44AA6847D4ABFAC879555" action="add">
+      <border_width>1</border_width>
+      <css>{$this field rule} .sys_f_border {
+ position: relative;
+ width: 290px;
+ height: 205px;
+ border-width: 0px !important;
+}
+
+{$this field rule} .sys_f_legend {
+ width: 290px;
+ font-size : 16px;
+ padding: 0px 0px 5px 0px;
+ margin-bottom: 20px;
+ border-bottom: 1px solid #CCCCCC;
+}</css>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <legend xml:lang="en">Input Settings</legend>
+      <list_no_blank>0</list_no_blank>
+      <orientation>vertical</orientation>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>20</x>
+      <y>10</y>
+      <name>input_settings</name>
+     </Item>
+     <Item type="Field" id="AF945B53A1BD48D0912B9A0E18481C05" action="add">
+      <border_width>0</border_width>
+      <css />
+      <display_length_unit>px</display_length_unit>
+      <field_type>html</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <html_code><![CDATA[<img src="../images/Upload.svg" style="width: 36px; height: 36px;"></img>]]></html_code>
+      <is_disabled>0</is_disabled>
+      <is_visible>0</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>896</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>149</x>
+      <y>0</y>
+      <name>output_image</name>
+     </Item>
+     <Item type="Field" id="1B474428729A47ED9149C2F92A9413A6" action="add">
+      <border_width>1</border_width>
+      <css>{$this field rule} .sys_f_border {
+ position: relative;
+ width: 290px;
+ height: 85px;
+ border-width: 0px !important;
+}
+
+{$this field rule} .sys_f_legend {
+ width: 290px;
+ font-size : 16px;
+ padding: 0px 0px 5px 0px;
+ margin-bottom: 20px;
+ border-bottom: 1px solid #CCCCCC;
+}</css>
+      <display_length_unit>px</display_length_unit>
+      <field_type>groupbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <legend xml:lang="en">Output Settings</legend>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>1536</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>20</x>
+      <y>100</y>
+      <name>output_settings</name>
+     </Item>
+     <Item type="Field" id="F4EE1EB55D89401F984C0B6CB33C4DB3" action="add">
+      <border_width>0</border_width>
+      <css>{$this field rule} {
+ width: 1px;
+ height: 180px;
+ background-color: #CCCCCC;
+}</css>
+      <display_length_unit>px</display_length_unit>
+      <field_type>html</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>0</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <sort_order>1920</sort_order>
+      <source_id keyed_name="118A5CECA84548FF8E04C228A4464D6B" type="Body">118A5CECA84548FF8E04C228A4464D6B</source_id>
+      <tab_stop>1</tab_stop>
+      <x>100</x>
+      <y>50</y>
+      <name>vertical_separator</name>
+     </Item>
+    </Relationships>
+   </Item>
+   <Item type="Form Event" id="6F8990C94D6142A08FD6A20656AA2D5D" action="add">
+    <form_event>onload</form_event>
+    <related_id keyed_name="mpp_PublishingDialogAPI" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>mpp_PublishingDialogAPI</name>
+     </Item>
+    </related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_PublishingForm" type="Form">C87C7A71DBD64EFFB7228B63249FB3A2</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

@@ -1,0 +1,10 @@
+﻿<AML>
+ <Item type="Sequence" id="AF3E0FC8E153455C826D4A8A8E3FB94C" action="add">
+  <initial_value>0</initial_value>
+  <pad_to>6</pad_to>
+  <pad_with>0</pad_with>
+  <prefix>PPR-</prefix>
+  <step>1</step>
+  <name>mpp_ProcessPlanSeq</name>
+ </Item>
+</AML>

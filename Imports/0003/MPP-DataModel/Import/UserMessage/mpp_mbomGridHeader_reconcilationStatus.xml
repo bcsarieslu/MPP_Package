@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="DFC5A9BF71F6418F9244CBEB31AFD452" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Reconciliation Status</text>
+  <name>mpp_mbomGridHeader_reconcilationStatus</name>
+ </Item>
+</AML>

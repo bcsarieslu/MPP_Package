@@ -1,0 +1,53 @@
+﻿<AML>
+ <Item type="Method" id="EC7675C362994FF5BF38BD514FD0E0F9" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[Innovator inn = this.getInnovator();
+String conversionRuleName = "mpp_HtmlPublishingRule";
+if (!String.IsNullOrEmpty(conversionRuleName)) {
+	Item ruleItem = inn.newItem("ConversionRule", "get");
+	ruleItem.setProperty("name", conversionRuleName);
+	ruleItem.setAttribute("levels", "1");
+	ruleItem = ruleItem.apply();
+
+	if (!ruleItem.isError())
+	{
+		System.Web.Script.Serialization.JavaScriptSerializer jsSerializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = int.MaxValue };
+		Dictionary<String, String> taskData = new Dictionary<String, String>();
+
+		Aras.ConversionFramework.Models.ConversionRule publishingRule = new Aras.ConversionFramework.Models.ConversionRule { Item = ruleItem };
+		Aras.ConversionFramework.Management.InnovatorConversionManager cm = new Aras.ConversionFramework.Management.InnovatorConversionManager(inn.getConnection());
+
+		taskData.Add("content", this.getProperty("publishing_content"));
+		taskData.Add("filename", this.getProperty("publishing_filename"));
+		taskData.Add("outputFormat", this.getProperty("publishing_format"));
+
+		Aras.Server.Security.Identity conversionManagerIdentity = Aras.Server.Security.Identity.GetById("694C8B27E5D940DAA8BD336E45EC3A63");
+		bool conversionManagerPermsWasSet = Aras.Server.Security.Permissions.GrantIdentity(conversionManagerIdentity);
+		string taskId;
+		try
+		{
+			taskId = cm.CreateConversionTask(publishingRule, (task) => {
+				task.UserData = jsSerializer.Serialize(taskData);
+			});
+		}
+		finally
+		{
+			if (conversionManagerPermsWasSet)
+			{
+				Aras.Server.Security.Permissions.RevokeIdentity(conversionManagerIdentity);
+			}
+		}
+
+		return inn.newResult(taskId);
+	}
+	else {
+		return ruleItem;
+	}
+}
+else {
+	return inn.newError(CCO.ErrorLookup.Lookup("tp_SpecifyRuleNames")); //todo: fix lookup key
+}]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_CreatePublishingTask</name>
+ </Item>
+</AML>

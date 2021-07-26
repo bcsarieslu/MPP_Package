@@ -1,0 +1,234 @@
+﻿<AML>
+ <Item type="Method" id="F5C372CD0FD54826BC42B74144797504" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[var PublishingDialog = function() {
+	var topWindow = aras.getMostTopWindowWithAras(window);
+
+	this.topWindow = topWindow;
+	this.dialogArguments = parent.frameElement.dialogArguments;
+	this.formControls = {};
+	this.optionFamilies = null;
+	this.pathModule = topWindow.Path;
+
+	this.initializeControls();
+};
+
+PublishingDialog.prototype.initializeControls = function() {
+	// buttons section
+	this.formControls.okButton = document.getElementById(document.fieldsTab['convert_button']);
+	this.formControls.okButton.addEventListener('click', function() {
+		this.convertDocument();
+	}.bind(this));
+
+	this.formControls.closeButton = document.getElementById(document.fieldsTab['close_button']);
+	this.formControls.closeButton.addEventListener('click', this.Close.bind(this));
+
+	// fill conversion formats
+	this.formControls.coversionTypeList = getFieldComponentByName('conversion_format_list');
+	this.fillSelectFromList(this.formControls.coversionTypeList, 'mpp_PublishingConversionFormat');
+
+	// fill conversion results
+	this.formControls.coversionResultList = getFieldComponentByName('conversion_result_list');
+	this.fillSelectFromList(this.formControls.coversionResultList, 'mpp_PublishingConversionResult');
+};
+
+/**
+* @param {SelectControl} selectControl Control that is used for values from list selection
+* @param {String} listName Name of List Item
+*/
+PublishingDialog.prototype.fillSelectFromList = function(selectControl, listName) {
+	var listItem = aras.getItemByName('List', listName);
+
+	if (listItem) {
+		var listValueNodes = listItem.selectNodes('Relationships/Item[@type="Value"]');
+		var itemNode, i, firstValue;
+
+		for (i = 0; i < listValueNodes.length; i++) {
+			itemNode = listValueNodes[i];
+			selectControl.component.state.list.push({
+				value: aras.getItemProperty(itemNode, 'value'),
+				label: aras.getItemProperty(itemNode, 'label')
+			});
+			if (i === 0) {
+				firstValue = aras.getItemProperty(itemNode, 'value');
+			}
+		}
+
+		selectControl.setValue(firstValue);
+	}
+};
+
+PublishingDialog.prototype.getConversionType = function() {
+	var selectControl = this.formControls.coversionTypeList;
+
+	var v = selectControl.getValue();
+	return !v ? 'xml' : v;
+};
+
+PublishingDialog.prototype.getConversionResult = function() {
+	var selectControl = this.formControls.coversionResultList;
+
+	var v = selectControl.getValue();
+	return !v ? 'window' : v;
+};
+
+PublishingDialog.prototype.convertDocument = function() {
+	var spinner = parent.document.getElementById('dimmer_spinner');
+	var hideSpinner = function() {
+				spinner.style.display = 'none';
+	};
+	var documentItem = aras.newIOMItem('Method');
+	var conversionType = this.getConversionType();
+	var conversionFormat, createTaskResult, taskId;
+
+	spinner.style.display = 'block';
+
+	switch (conversionType) {
+		case 'pdf':
+			conversionFormat = 'pdf';
+			try {
+				aras.IomInnovator.ConsumeLicense('Aras.HTMLtoPDFConverter');
+			} catch (ex) {
+				if (ex.message.indexOf('FeatureHasNoLicensesException') > -1 || ex.message.indexOf('FeatureLicenseValidationException') > -1) {
+					aras.AlertWarning(aras.getResource('../Modules/aras.innovator.TDF', 'helper.feature_has_no_license', 'Aras.HTMLtoPDFConverter'));
+					hideSpinner();
+				} else {
+					aras.AlertError(ex.message);
+					hideSpinner();
+				}
+
+				return;
+			}
+			break;
+		case 'html':
+			conversionFormat = 'html';
+			break;
+		default:
+			aras.AlertError(aras.getResource('../Modules/aras.innovator.TDF', 'includes.conversiontypenotsupported'));
+			hideSpinner();
+			return;
+	}
+
+	// create Conversion task with appropriate CoversionRule
+	documentItem.setProperty('publishing_format', conversionFormat);
+	documentItem.setProperty('publishing_filename', this.dialogArguments.filename);
+	documentItem.setProperty('publishing_content', this.dialogArguments.data);
+
+	createTaskResult = documentItem.apply('mpp_CreatePublishingTask');
+	taskId = createTaskResult.getResult();
+
+	// if task was created
+	if (taskId) {
+		var mainWindow = aras.getMainWindow();
+		var targetWindow = window === mainWindow ? mainWindow.main : window;
+		var self = this;
+		var dialogParameters = {
+			dialogWidth: 300, dialogHeight: 160, resizable: false,
+			aras: aras,
+			itemType: 'ConversionTask',
+			itemId: taskId,
+			propertyName: 'status',
+			propertyState: ['Succeeded', 'Failed', 'Discarded'],
+			title: aras.getResource('../Modules/aras.innovator.TDF', 'includes.waitfortaskcompletion'),
+			timeout: 300000, //5 min
+			content: 'waitPropertyStatusDialog.html',
+			hideSpinner: hideSpinner
+		};
+
+		targetWindow.ArasModules.Dialog.show('iframe', dialogParameters).promise.then(function(taskState) {
+			if (taskState === 'Succeeded') {
+				setTimeout(function() {
+					self.processConversionResult(taskId);
+				}, 0);
+			} else if (taskState === '_timeout') {
+				aras.AlertError(aras.getResource('../Modules/aras.innovator.TDF', 'publishing.timeout_reached'));
+			}
+		});
+	}
+};
+
+/**
+* @param {String} taskId Id of ConversionTask Item
+*/
+PublishingDialog.prototype.processConversionResult = function(taskId) {
+	var conversionResult = aras.soapSend('ApplyItem', '<Item type="ConversionTaskResult" action="get" select="file_id"><source_id>' +
+		taskId + '</source_id></Item>');
+
+	if (!conversionResult.isFault()) {
+		var resultItem = conversionResult.getResult().selectSingleNode('Item');
+		var fileId = aras.getItemProperty(resultItem, 'file_id');
+		var fileItem = aras.soapSend('ApplyItem', '<Item type="File" action="get" id="' + fileId + '"></Item>');
+
+		if (!fileItem.isFault()) {
+			var resultAction = this.getConversionResult();
+			var fileNode = fileItem.getResult().selectSingleNode('Item');
+
+			switch (resultAction) {
+				case 'window':
+					this.showConvertedFile(fileNode);
+					break;
+				case 'file':
+					var documentName = this.dialogArguments.filename;
+
+					this.downloadConvertedFile(fileNode, documentName);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+};
+
+/**
+* @param {ItemNode} fileNode ItemNode of File Item
+*/
+PublishingDialog.prototype.showConvertedFile = function(fileNode) {
+	if (fileNode) {
+		aras.uiShowItemEx(fileNode, undefined);
+	}
+};
+
+/**
+* @param {ItemNode} fileNode ItemNode of File Item
+* @param {String} preferedFileName Name, that should be used instead of actual file name
+*/
+PublishingDialog.prototype.downloadConvertedFile = function(fileNode, preferedFileName) {
+	if (fileNode) {
+		if (aras.Browser.isCh()) {
+			aras.downloadPhysicalFileAs(fileNode, '', aras.getMostTopWindowWithAras(window), true);
+			return;
+		}
+
+		var targetDirectory = aras.getCommonPropertyValue('lastSelectedFolder') || aras.getWorkingDir();
+		var vaultFileName = aras.getItemProperty(fileNode, 'filename');
+		var fileName = preferedFileName || vaultFileName.substr(0, vaultFileName.indexOf('.'));
+		var fileExtension = vaultFileName.substr(vaultFileName.indexOf('.'));
+		var filePath = aras.vault.selectSavePath(targetDirectory + '\\' + fileName + fileExtension);
+
+		if (filePath) {
+			var directoryName = this.pathModule.getDirectoryName(filePath);
+			var downloadResult;
+
+			fileName = this.pathModule.getFileName(filePath);
+
+			aras.setCommonPropertyValue('lastSelectedFolder', directoryName);
+			downloadResult = aras.downloadPhysicalFileAs(fileNode, filePath, aras.getMostTopWindowWithAras(window), true);
+
+			if (downloadResult) {
+				aras.AlertSuccess(aras.getResource('', 'file_management.file_succesfully_downloaded', fileName, directoryName),
+					aras.getMostTopWindowWithAras(window));
+			}
+		}
+	}
+};
+
+PublishingDialog.prototype.Close = function() {
+	this.dialogArguments.dialog.close();
+};
+
+// Create instance
+PublishingDialog = new PublishingDialog();]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>mpp_PublishingDialogAPI</name>
+ </Item>
+</AML>

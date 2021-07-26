@@ -1,0 +1,49 @@
+﻿<AML>
+  <Item type="Method" action="add" id="22525EFE193C43BE93D81C5F74C07AB0">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[return {
+		RenderStartHtmlElement: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var startHtml = this.inherited(arguments);
+			var modelItem = schemaElement.Item();
+			var producedPart = modelItem.getProducedPart();
+			var processPlanName = modelItem.getProperty('name') || modelItem.getProperty('item_number');
+			var producedPartName = producedPart ? ' - ' + (producedPart.getProperty('name') || producedPart.getProperty('item_number')) : '';
+
+			startHtml += this.wrapInTag(schemaElement.nodeName + ' : ' + processPlanName + producedPartName, 'div', {class: 'ProcessPlanCaption'});
+			return startHtml;
+		},
+
+		GetTreeName: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var elementName = '';
+			var producedPartPrefix = '';
+
+			if (elementState.isBlocked) {
+				elementName = this.resourceStrings.itemIsBlocked;
+			} else if (!elementState.isEmpty) {
+				var modelItem = schemaElement.Item();
+				var producedPart = modelItem.getProducedPart();
+
+				elementName = modelItem.getProperty('name') || modelItem.getProperty('item_number');
+
+				if (producedPart) {
+				    //Modify By tengz 2020/1/19
+                    //调整MPP ProcessPlan Tree Root显示为MPP名称+Part KeyedName
+					//producedPartPrefix += this.wrapInTag(producedPart.getProperty('item_number') || producedPart.getProperty('name'),
+					producedPartPrefix += this.wrapInTag(producedPart.getProperty('keyed_name'),'span', {
+						class: 'producedPartPrefix',
+						style: 'background-image:url(\'' + this.enums.getImageFromName('ProducedPart') + '\')'}
+					);
+				}
+			}
+
+			return this.wrapInTag(elementName, 'span', {class: 'ArasXmlSchemaElementTypeNode'}) + producedPartPrefix;
+		}
+	};]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>mpp_ProcessPlanElementRenderer</name>
+  </Item>
+</AML>

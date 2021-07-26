@@ -1,0 +1,16 @@
+﻿<AML>
+ <Item type="SQL" id="DB07546074804FDAA8C53DF8535DCD28" action="add">
+  <execution_count>2</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <old_name>IX_mpp_producedpart_related_id_with_included</old_name>
+  <sqlserver_body><![CDATA[CREATE NONCLUSTERED INDEX [IX_mpp_producedpart_related_id_with_included] ON [innovator].[MPP_PROCESSPLANPRODUCEDPART]
+(
+	[RELATED_ID] ASC
+)
+INCLUDE ([SOURCE_ID])]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>index</type>
+  <name>IX_mpp_producedpart_related_id_with_included</name>
+ </Item>
+</AML>

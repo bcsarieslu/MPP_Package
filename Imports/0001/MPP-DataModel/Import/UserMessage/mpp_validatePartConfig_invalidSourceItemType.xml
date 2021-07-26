@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="72C13DF830B04442926E94DE60CF8EF7" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Relationship {0} has invalid source itemType {1} ({2} expected)</text>
+  <name>mpp_validatePartConfig_invalidSourceItemType</name>
+ </Item>
+</AML>

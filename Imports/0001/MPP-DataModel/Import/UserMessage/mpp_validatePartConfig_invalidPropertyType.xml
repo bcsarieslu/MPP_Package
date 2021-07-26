@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="9960C62B1A9A473A97930C08CC372130" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Property {0}(itemType {1}) has type {2} but should be {3}</text>
+  <name>mpp_validatePartConfig_invalidPropertyType</name>
+ </Item>
+</AML>

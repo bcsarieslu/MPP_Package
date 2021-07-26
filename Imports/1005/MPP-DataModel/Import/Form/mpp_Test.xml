@@ -1,0 +1,80 @@
+﻿<AML>
+  <Item type="Form" id="A9BA0710F35645178C7ADEE17411B1CD" action="add">
+    <category_form>0</category_form>
+    <height>234</height>
+    <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+    <width>699</width>
+    <name>mpp_Test</name>
+    <Relationships>
+      <Item type="Body" id="7E90515C97B0411A8A92FF186F23974D" action="add">
+        <bg_color>#FFFFFF</bg_color>
+        <sort_order>128</sort_order>
+        <Relationships>
+          <Item type="Field" id="CAF2E7EDC04B4487A874CC5B546F6455" action="add">
+            <display_length_unit>px</display_length_unit>
+            <field_type>html</field_type>
+            <html_code><![CDATA[<span id='ITEM_INFO_INTERNAL_SPAN'/>
+<script>
+  populate_ITEM_INFO_INTERNAL_SPAN = function()
+  {
+    document.getElementById('ITEM_INFO_INTERNAL_SPAN').innerHTML = aras.uiGetItemInfoTable(document.itemType);
+  }
+  window.addEventListener('load', populate_ITEM_INFO_INTERNAL_SPAN);
+</script>]]></html_code>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <list_no_blank>0</list_no_blank>
+            <sort_order>384</sort_order>
+            <tab_stop>0</tab_stop>
+            <x>0</x>
+            <y>0</y>
+            <name>item_info</name>
+          </Item>
+          <Item type="Field" id="53EE7347F5D54C6A8621F931F174F6CC" action="add">
+            <border_width>0</border_width>
+            <display_length>64</display_length>
+            <display_length_unit>px</display_length_unit>
+            <field_type>text</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">检验项编号</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">923917ACF27B4A6793935F7036916D27</propertytype_id>
+            <sort_order>128</sort_order>
+            <tab_index>128</tab_index>
+            <tab_stop>1</tab_stop>
+            <x>190</x>
+            <y>10</y>
+            <name>item_number</name>
+          </Item>
+          <Item type="Field" id="6E5DF2E90CCC4F7188749FC190887F63" action="add">
+            <border_width>0</border_width>
+            <display_length_unit>px</display_length_unit>
+            <field_type>text</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">名称</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">35702AADDA3D4DD6A35DA8C73006468C</propertytype_id>
+            <sort_order>256</sort_order>
+            <tab_index>256</tab_index>
+            <tab_stop>1</tab_stop>
+            <x>190</x>
+            <y>50</y>
+            <name>name</name>
+          </Item>
+        </Relationships>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

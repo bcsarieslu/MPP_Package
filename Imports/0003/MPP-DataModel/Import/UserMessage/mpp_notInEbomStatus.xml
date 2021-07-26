@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="970CAAC55A1F420AB42000133985F26C" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Not in EBOM</text>
+  <name>mpp_notInEbomStatus</name>
+ </Item>
+</AML>

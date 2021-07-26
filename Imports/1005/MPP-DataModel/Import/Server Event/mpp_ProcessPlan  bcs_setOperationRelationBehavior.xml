@@ -1,0 +1,10 @@
+﻿<AML>
+  <Item type="Server Event" id="5EB74E4630D740E4841EF84DBE5DE5BB" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id type="Method"><Item type="Method" action="get" id="6C18F6054EE64B09BA712DF2CE7EB3A0" /></related_id>
+    <server_event>onAfterVersion</server_event>
+    <sort_order>100</sort_order>
+    <source_id type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>
+  </Item>
+</AML>

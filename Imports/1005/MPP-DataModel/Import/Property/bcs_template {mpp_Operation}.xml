@@ -1,0 +1,21 @@
+﻿<AML>
+  <Item type="Property" id="134CE24588B24C719A85AA4AC5BED088" action="add">
+    <column_alignment>left</column_alignment>
+    <data_source type="ItemType" name="mpp_OperationTemplate">70F22428A4CB459BBFAC3431376C5579</data_source>
+    <data_type>item</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <item_behavior>float</item_behavior>
+    <label xml:lang="zc">Template</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>4224</sort_order>
+    <source_id type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+    <track_history>0</track_history>
+    <name>bcs_template</name>
+  </Item>
+</AML>

@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="15DC6ABE7B984D14B6F2B97AC1EB5C01" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Unknown itemtypes: {0}</text>
+  <name>mpp_validatePartConfig_invalidItemType</name>
+ </Item>
+</AML>

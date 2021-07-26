@@ -1,0 +1,34 @@
+﻿<AML>
+ <Item type="Method" id="AF00C22B6AF74A6293866A6586AFB615" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[	Innovator innovatorInstance = this.getInnovator();
+	string sourcePartId = this.getProperty("source_part_id");
+	string partIdList = this.getProperty("part_ids");
+	string environmentAttributesXml = CCO.EnvironmentAttributeModule.SerializeEvaluatedEnvironmentAttributes();
+	if (environmentAttributesXml != null)
+	{
+		environmentAttributesXml = environmentAttributesXml.Replace("'", "''");
+	}
+
+	var requestSQL = string.Format(CultureInfo.InvariantCulture, @"
+		SELECT * from innovator.mpp_getPartAlternateSubstitute('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')",
+		partIdList, //todo: fix injection
+		sourcePartId,
+		Aras.Server.Security.Permissions.Current.IdentitiesList.Replace("'", ""),
+		CCO.Variables.GetUserIPAddr(),
+		CCO.Variables.GetUserID(),
+		environmentAttributesXml);
+
+	Item foundParts = innovatorInstance.applySQL(requestSQL);
+
+	if (!foundParts.isError() && foundParts.getItemCount() > 0) {
+		return foundParts;
+	}
+	else {
+		//this text in result is not rendered on Client side, not for users. Just for Developers. So, it can be not in resources for now.
+		return innovatorInstance.newResult("Alternates are not found.");
+	}]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_getPartAlterSubs</name>
+ </Item>
+</AML>

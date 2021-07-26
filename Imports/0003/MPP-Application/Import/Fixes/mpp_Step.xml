@@ -1,0 +1,19 @@
+﻿<AML>
+ <Item type="ItemType" id="8A8E3342652646D6B94E9FE81D61AE4C" action="edit">
+  <Relationships>
+   <Item type="View" id="E634E2E057794A4EA0590DDFE0B305F0" action="add">
+    <client>js</client>
+    <related_id keyed_name="mpp_StepQuickEdit" type="Form">8D32CCE919734D5B9E637D545B9F996D</related_id>
+    <role keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </role>
+    <show_ssvc>0</show_ssvc>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_Step" type="ItemType" name="mpp_Step">8A8E3342652646D6B94E9FE81D61AE4C</source_id>
+    <type>default</type>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

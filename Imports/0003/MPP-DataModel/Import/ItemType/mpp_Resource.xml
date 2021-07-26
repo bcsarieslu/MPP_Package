@@ -1,0 +1,206 @@
+﻿<AML>
+ <Item type="ItemType" id="FE85C82A8B734A338EBC136F6CE71576" action="add">
+  <allow_private_permission>0</allow_private_permission>
+  <auto_search>1</auto_search>
+  <default_page_size>50</default_page_size>
+  <enforce_discovery>1</enforce_discovery>
+  <hide_where_used>0</hide_where_used>
+  <implementation_type>polymorphic</implementation_type>
+  <instance_data>MPP_RESOURCE</instance_data>
+  <is_dependent>0</is_dependent>
+  <is_relationship>0</is_relationship>
+  <is_versionable>0</is_versionable>
+  <label xml:lang="en">Resource</label>
+  <label_plural xml:lang="en">Resources</label_plural>
+  <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+  <show_parameters_tab>0</show_parameters_tab>
+  <structure_view>tabs off</structure_view>
+  <unlock_on_logout>0</unlock_on_logout>
+  <use_src_access>0</use_src_access>
+  <name>mpp_Resource</name>
+  <Relationships>
+   <Item type="Property" id="8D5A3847300F4E8EA5DCBEE6996A1C75" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>130</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>1</is_required>
+    <keyed_name_order>1</keyed_name_order>
+    <label xml:lang="en">Number</label>
+    <order_by>1</order_by>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+    <stored_length>64</stored_length>
+    <track_history>0</track_history>
+    <name>item_number</name>
+   </Item>
+   <Item type="Property" id="D167FA682412452A8B8C8E4B0BD95983" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>130</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Name</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+    <stored_length>64</stored_length>
+    <track_history>0</track_history>
+    <name>name</name>
+   </Item>
+   <Item type="View" id="3FFC64699EB340EEACAFB7A91BF02FF7" action="add">
+    <client>js</client>
+    <related_id keyed_name="mpp_Resource" type="Form">AAB157987CB5470E93E01AC940D98288</related_id>
+    <role keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </role>
+    <show_ssvc>0</show_ssvc>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+    <type>default</type>
+   </Item>
+   <Item type="Server Event" id="28F97CF4EAF14FDB869851F92772FF06" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="polymorphic_item_onBeforeAdd" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>polymorphic_item_onBeforeAdd</name>
+     </Item>
+    </related_id>
+    <server_event>onBeforeAdd</server_event>
+    <sort_order>768</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+   <Item type="Server Event" id="8B65874227384A41A34CC0694799F2B7" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="polymorphic_item_onBeforeCopy" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>polymorphic_item_onBeforeCopy</name>
+     </Item>
+    </related_id>
+    <server_event>onBeforeCopy</server_event>
+    <sort_order>896</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+   <Item type="Server Event" id="4F45AB5D1D6C4B42B61AFAD64666396D" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="polymorphic_item_onBeforeDelete" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>polymorphic_item_onBeforeDelete</name>
+     </Item>
+    </related_id>
+    <server_event>onBeforeDelete</server_event>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+   <Item type="Server Event" id="132A2010DE6E4557A83316DBD9757C58" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="polymorphic_item_onBeforeLock" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>polymorphic_item_onBeforeLock</name>
+     </Item>
+    </related_id>
+    <server_event>onBeforeLock</server_event>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+   <Item type="Server Event" id="12875C08B9BD4AB28C32BD920379DDAE" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="polymorphic_item_onBeforeUnlock" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>polymorphic_item_onBeforeUnlock</name>
+     </Item>
+    </related_id>
+    <server_event>onBeforeUnlock</server_event>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+   <Item type="Server Event" id="3C424BF1CD8049A6B8C4438E5BBFFCEF" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="polymorphic_item_onBeforeUpdate" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>polymorphic_item_onBeforeUpdate</name>
+     </Item>
+    </related_id>
+    <server_event>onBeforeUpdate</server_event>
+    <sort_order>640</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+   <Item type="Server Event" id="478C47E855AA4B01B31B44E955C08B49" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id keyed_name="polymorphic_item_onBeforeVersion" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>polymorphic_item_onBeforeVersion</name>
+     </Item>
+    </related_id>
+    <server_event>onBeforeVersion</server_event>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="ItemType" id="FE85C82A8B734A338EBC136F6CE71576" action="edit">
+  <Relationships>
+   <Item type="Property" action="edit" where="source_id='FE85C82A8B734A338EBC136F6CE71576' and name='itemtype'">
+    <column_alignment>left</column_alignment>
+    <data_source keyed_name="mpp_Resource">
+     <Item type="List" action="get" select="id" page="1" pagesize="1">
+      <name>mpp_Resource</name>
+     </Item>
+    </data_source>
+    <data_type>list</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">ItemType</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>1</readonly>
+    <sort_order>10128</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+    <stored_length>64</stored_length>
+    <track_history>0</track_history>
+    <name>itemtype</name>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="ItemType" id="FE85C82A8B734A338EBC136F6CE71576" action="edit">
+  <Relationships>
+   <Item type="Morphae" id="1BC38DA1DEDA45D9B84B50C2EA27C84B" action="add">
+    <related_id keyed_name="mpp_Tool" type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="ItemType" id="FE85C82A8B734A338EBC136F6CE71576" action="edit">
+  <Relationships>
+   <Item type="Morphae" id="96BDDDA9808E469BB709F65A2F1B4BF7" action="add">
+    <related_id keyed_name="mpp_Machine" type="ItemType" name="mpp_Machine">D554B0C8D479455A87AF07BAE564E2CF</related_id>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

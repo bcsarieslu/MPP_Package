@@ -1,0 +1,95 @@
+﻿<AML>
+ <Item type="ItemType" id="E4476490D86D42B0B52F873EC3F68282" action="add">
+  <allow_private_permission>0</allow_private_permission>
+  <auto_search>1</auto_search>
+  <default_page_size>50</default_page_size>
+  <enforce_discovery>1</enforce_discovery>
+  <hide_where_used>0</hide_where_used>
+  <implementation_type>table</implementation_type>
+  <instance_data>MPP_TOOL</instance_data>
+  <is_dependent>0</is_dependent>
+  <is_relationship>0</is_relationship>
+  <is_versionable>0</is_versionable>
+  <label xml:lang="en">Tool</label>
+  <label_plural xml:lang="en">Tools</label_plural>
+  <large_icon>../images/QualityTool.svg</large_icon>
+  <open_icon>../images/QualityTool.svg</open_icon>
+  <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+  <show_parameters_tab>0</show_parameters_tab>
+  <structure_view>tabs off</structure_view>
+  <unlock_on_logout>0</unlock_on_logout>
+  <use_src_access>0</use_src_access>
+  <name>mpp_Tool</name>
+  <Relationships>
+   <Item type="Property" id="84D9AC08C439491F9DE496B0FEE963AA" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>250</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Name</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_Tool" type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+    <stored_length>64</stored_length>
+    <track_history>0</track_history>
+    <name>name</name>
+   </Item>
+   <Item type="View" id="BF00B8C1BCB343FAA8235A52B2B5230B" action="add">
+    <client>js</client>
+    <related_id keyed_name="mpp_Tool" type="Form">867E341329804F9787CC9C595FB5D0BE</related_id>
+    <role keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </role>
+    <show_ssvc>0</show_ssvc>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Tool" type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+    <type>default</type>
+   </Item>
+   <Item type="Can Add" id="676D5CE3FDE94F46AC58BB7F403B60E4" action="add">
+    <can_add>1</can_add>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Tool" type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+   </Item>
+   <Item type="Allowed Permission" id="E6DFC8C67AF8452BA6F0F004392554B6" action="add">
+    <is_default>1</is_default>
+    <related_id keyed_name="Tool" type="Permission">22F452FB9A97419E84DAB7FAF5C57915</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Tool" type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="ItemType" id="E4476490D86D42B0B52F873EC3F68282" action="edit">
+  <Relationships>
+   <Item type="Property" id="240153C0B87C49B98C82AA145CEF05D1" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>130</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>1</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>1</is_required>
+    <keyed_name_order>1</keyed_name_order>
+    <label xml:lang="en">Tool Number</label>
+    <order_by>1</order_by>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Tool" type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+    <stored_length>64</stored_length>
+    <track_history>0</track_history>
+    <name>item_number</name>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

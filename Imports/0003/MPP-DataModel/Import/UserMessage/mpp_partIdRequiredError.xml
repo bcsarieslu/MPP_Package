@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="42DDCB9D2BE04258B5B86A62E334644E" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Part ID not specified</text>
+  <name>mpp_partIdRequiredError</name>
+ </Item>
+</AML>

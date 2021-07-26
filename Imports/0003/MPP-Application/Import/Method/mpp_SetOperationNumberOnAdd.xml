@@ -1,0 +1,27 @@
+﻿<AML>
+ <Item type="Method" id="00D0B8D896E4433E9DFD14EFEA02C9F4" action="add">
+  <comments></comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[var prevSortOrderStr = inArgs.prevOperation && inArgs.prevOperation.getProperty('sort_order');
+var prevSortOrder = prevSortOrderStr ? parseInt(prevSortOrderStr) : 0;
+var nextSortOrderStr = inArgs.nextOperation && inArgs.nextOperation.getProperty('sort_order');
+var operationNumberToSet;
+
+if (nextSortOrderStr) {
+	var nextSortOrder = parseInt(nextSortOrderStr);
+	var difference = nextSortOrder - prevSortOrder;
+
+	if (difference > 20) {
+		difference = 20;
+	}
+
+	operationNumberToSet = prevSortOrder + (difference - difference % 2) / 2;
+} else {
+	operationNumberToSet = prevSortOrder + 10;
+}
+
+inArgs.currentOperation.setProperty('sort_order', operationNumberToSet);]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>mpp_SetOperationNumberOnAdd</name>
+ </Item>
+</AML>

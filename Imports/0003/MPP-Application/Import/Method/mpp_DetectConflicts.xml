@@ -1,0 +1,142 @@
+﻿<AML>
+ <Item type="Method" id="06A4EE40FE0142A1B08B22A7F8460B31" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[			var logic = new BusinessLogic(this, RequestState);
+			return logic.Execute();
+		}
+	}
+
+	public class BusinessLogic
+	{
+		private Item self;
+		private Aras.Server.Core.IContextState requestState;
+
+		public BusinessLogic(Item thisItem, Aras.Server.Core.IContextState requestStatePar)
+		{
+			self = thisItem;
+			requestState = requestStatePar;
+		}
+
+		public Item Execute()
+		{
+
+			Dictionary<String, String> changedPlanAmls = new Dictionary<string, string>();
+			changedPlanAmls.Add(self.getProperty("root_id"), self.getProperty("root_node_xml"));
+
+			Dictionary<String, String> changedPlanAmlsChilds = (Dictionary<String, String>) requestState["MPP|ClientChanges"];
+
+			if (changedPlanAmlsChilds != null)
+			{
+				foreach (String planId in changedPlanAmlsChilds.Keys)
+				{
+					changedPlanAmls.Add(planId, changedPlanAmlsChilds[planId]);
+				}
+			}
+
+			Item conflict = self.newItem("mpp_ConflictDetected");
+
+			foreach (String planId in changedPlanAmls.Keys)
+			{
+				Item modifiedPlan = self.newItem();
+				modifiedPlan.loadAML(changedPlanAmls[planId]);
+				DetectScenario1Case3(modifiedPlan, conflict);
+			}
+
+			if (conflict.getAttribute("mpp_conflict_was_found") == "1")
+			{
+				return conflict;
+			}
+
+			return self;
+		}
+
+		private static void SetConflictWasFound(Item conflict)
+		{
+			conflict.setAttribute("mpp_conflict_was_found", "1");
+		}
+
+		private void DetectScenario1Case3(Item modifiedPlan, Item conflict)
+		{
+			//Scenario 1 case 3: User1 or User2 changes Part, User2 or User1 do different changes with the same Part. 
+			//When User1 or User2 changes Part, they do one of the following:
+			// *moving Part to another Operation, for now move in MBOM means remove Consumed Part from Operation and add another CP with new id.
+			// *removing Part from Operation
+			// *changing quantity
+
+			StringBuilder dbItemsIdList = new StringBuilder();
+			Item consumedParts = modifiedPlan.getItemsByXPath("//Item[@type='mpp_OperationConsumedPart' and (@action='edit' or @action='update')]");
+			int consumedPartsCount = consumedParts.getItemCount();
+			List<Item> consumedPartsList = new List<Item>();
+
+			for (int i = 0; i < consumedPartsCount; i++)
+			{
+				Item consumedPart = consumedParts.getItemByIndex(i);
+				if (consumedPart.getPropertyAttribute("quantity", "mpp_old_value_is_set") != "1")
+				{
+					continue;
+				}
+
+				consumedPartsList.Add(consumedPart);
+				dbItemsIdList.Append(consumedPart.getID() + (consumedPartsCount - 1 != i ? "," : String.Empty));
+			}
+
+			if (consumedPartsList.Count == 0)
+			{
+				return;
+			}
+
+			Item dbItems = self.newItem("mpp_OperationConsumedPart", "get");
+			dbItems.setAttribute("idlist", dbItemsIdList.ToString());
+			dbItems = dbItems.apply();
+			dbItems = dbItems.getItemsByXPath("//Item[@type='mpp_OperationConsumedPart']");
+
+			Dictionary<string, Item> dbItemsById = new Dictionary<string, Item>();
+
+			int dbItemsCount = dbItems.getItemCount();
+			for (int i = 0; i < dbItemsCount; i++)
+			{
+				Item dbItem = dbItems.getItemByIndex(i);
+				dbItemsById.Add(dbItem.getID(), dbItem);
+			}
+
+			foreach (Item consumedPart in consumedPartsList)
+			{
+				Item dbItem;
+				bool notFound = false;
+				if (!dbItemsById.TryGetValue(consumedPart.getID(), out dbItem))
+				{
+					notFound = true;
+					dbItem = self.newItem("mpp_OperationConsumedPart");
+					dbItem.setID(consumedPart.getID());
+					dbItem.setProperty("quantity", String.Empty);
+				}
+
+				string oldQuantity = consumedPart.getPropertyAttribute("quantity", "mpp_old_value");
+				string newQuantity = consumedPart.getProperty("quantity");
+
+				string dbQuantity = dbItem.getProperty("quantity");
+
+				oldQuantity = string.IsNullOrEmpty(oldQuantity) ? String.Empty : oldQuantity;
+				newQuantity = string.IsNullOrEmpty(newQuantity) ? String.Empty : newQuantity;
+				dbQuantity = string.IsNullOrEmpty(dbQuantity) ? String.Empty : dbQuantity;
+
+				//notFound: Use case 7 - When User2 removes a part and saves. And User1 edits the Quantity of the part that was removed
+				//after ||: Use case 5 - When User1 and User2 change the quantity of a part to a different value 
+				if (notFound || (oldQuantity != dbQuantity && dbQuantity != newQuantity))
+				{
+					SetConflictWasFound(conflict);
+					dbItem.setPropertyAttribute("quantity", "old_value", oldQuantity);
+					dbItem.setPropertyAttribute("quantity", "new_value", newQuantity);
+					dbItem.setPropertyAttribute("mpp_crf_data", "mpp_conflict_case", notFound ? "cp_not_found" : "qty_changed");
+					if (notFound)
+					{
+						dbItem.setPropertyAttribute("mpp_crf_data", "mpp_new_operation_number", consumedPart.getPropertyAttribute("quantity", "mpp_new_operation_number"));
+					}
+					conflict.addRelationship(dbItem);
+				}
+			}
+]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_DetectConflicts</name>
+ </Item>
+</AML>

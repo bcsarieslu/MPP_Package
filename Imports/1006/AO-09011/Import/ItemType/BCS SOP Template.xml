@@ -1,0 +1,171 @@
+﻿<AML>
+  <Item type="ItemType" id="26B3F4E813104AD79CAD82D756A84432" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <class_structure><![CDATA[<class id="26B3F4E813104AD79CAD82D756A84432">
+  <class id="685C9622A93D458781E3B39306E954A4" name="模板" />
+  <class id="E8BBF198D1554E6BB40CA14F90274259" name="页头页尾" />
+</class>]]></class_structure>
+    <enforce_discovery>1</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>BCS_SOP_TEMPLATE</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>0</is_relationship>
+    <is_versionable>0</is_versionable>
+    <label xml:lang="zc">Operation Template</label>
+    <label_plural xml:lang="zc">Operation Template</label_plural>
+    <large_icon>../Images/Columns.svg</large_icon>
+    <open_icon>../Images/Columns.svg</open_icon>
+    <revisions type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs off</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>0</use_src_access>
+    <name>BCS SOP Template</name>
+    <Relationships>
+      <Item type="Allowed Permission" id="A7725D4443CB4E22B91869968A47BC22" action="add">
+        <is_default>1</is_default>
+        <related_id type="Permission">F963A06CE64A475CB1C21B6101CB4F0B</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Can Add" id="00BCCD41DD864EA8BFD7726793757489" action="add">
+        <can_add>1</can_add>
+        <related_id type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Property" id="3126616AE3A84648882D68FA6963B30C" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>text</data_type>
+        <is_hidden>1</is_hidden>
+        <is_hidden2>1</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">模板內容</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3200</sort_order>
+        <track_history>0</track_history>
+        <name>bcs_details</name>
+      </Item>
+      <Item type="Property" id="6D50477DC9404BF2863FEBADA9EA6EB7" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>text</data_type>
+        <is_hidden>1</is_hidden>
+        <is_hidden2>1</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">页尾</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3456</sort_order>
+        <track_history>0</track_history>
+        <name>bcs_footer</name>
+      </Item>
+      <Item type="Property" id="FB8790E9ED2F451CBD0D14145BC55C0C" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>text</data_type>
+        <is_hidden>1</is_hidden>
+        <is_hidden2>1</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">页头</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3328</sort_order>
+        <track_history>0</track_history>
+        <name>bcs_head</name>
+      </Item>
+      <Item type="Property" id="CDC0C84ACBB948F69D37A3892E1D2DC5" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>1</is_required>
+        <label xml:lang="zc">模板名称</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>100</sort_order>
+        <stored_length>64</stored_length>
+        <track_history>0</track_history>
+        <name>name</name>
+      </Item>
+      <Item type="TOC Access" id="E028EADED9B04296BE90F98C0EE7B81F" action="add">
+        <related_id type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+        <sort_order>384</sort_order>
+        <category>MPP/Standard Resource</category>
+      </Item>
+      <Item type="View" id="C3EB83C3EAF4455AA2FAB8ED727C5DA7" action="add">
+        <client>js</client>
+        <related_id type="Form">
+          <Item type="Form" id="251C5081862344DDAB029FC765AAF689" action="add">
+            <category_form>0</category_form>
+            <height>234</height>
+            <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+            <width>699</width>
+            <name>BCS SOP Template Add</name>
+          </Item>
+        </related_id>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </role>
+        <show_ssvc>0</show_ssvc>
+        <sort_order>256</sort_order>
+        <type>add</type>
+      </Item>
+      <Item type="View" id="03E15E5CB5214EB0B99E07399A81152B" action="add">
+        <client>js</client>
+        <form_classification>页头页尾</form_classification>
+        <related_id type="Form">
+          <Item type="Form" id="F772195648AB407790BE83E39A2B2C95" action="add">
+            <category_form>0</category_form>
+            <height>234</height>
+            <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+            <width>699</width>
+            <name>BCS SOP Template 页头页尾</name>
+          </Item>
+        </related_id>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </role>
+        <show_ssvc>0</show_ssvc>
+        <sort_order>384</sort_order>
+        <type>default</type>
+      </Item>
+      <Item type="View" id="94EE79B2496F431C85C642EB680A996A" action="add">
+        <client>js</client>
+        <form_classification>模板</form_classification>
+        <related_id type="Form">
+          <Item type="Form" id="F59A1E07B53446BD9B4293E45FD9BCD7" action="add">
+            <category_form>0</category_form>
+            <height>234</height>
+            <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+            <width>699</width>
+            <name>BCS SOP Template</name>
+          </Item>
+        </related_id>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </role>
+        <show_ssvc>0</show_ssvc>
+        <sort_order>512</sort_order>
+        <type>default</type>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

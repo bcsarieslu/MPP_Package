@@ -1,0 +1,38 @@
+﻿<AML>
+  <Item type="List" id="E0DEBDD2D0644FE9920FD03C4BE0A856" action="add">
+    <description>设备类型</description>
+    <name>bcs_mpp_toolType</name>
+    <Relationships>
+      <Item type="Value" id="E2BCEF1360BA487D8129E1772790743B" action="add">
+        <label xml:lang="zc">检具</label>
+        <sort_order>512</sort_order>
+        <value>checktool</value>
+      </Item>
+      <Item type="Value" id="73C3ACA24F544F6A972243977B04C3D4" action="add">
+        <label xml:lang="zc">夹具</label>
+        <sort_order>640</sort_order>
+        <value>fixture</value>
+      </Item>
+      <Item type="Value" id="0C298FB4516A44458FEEBAB1B0402189" action="add">
+        <label xml:lang="zc">量具</label>
+        <sort_order>768</sort_order>
+        <value>measuringtool</value>
+      </Item>
+      <Item type="Value" id="377A442539DD4A3EBF97C2C7F3471D22" action="add">
+        <label xml:lang="zc">模具</label>
+        <sort_order>384</sort_order>
+        <value>mool</value>
+      </Item>
+      <Item type="Value" id="578F10A3A62D47539E296C2978B11DD6" action="add">
+        <label xml:lang="zc">一般工具</label>
+        <sort_order>128</sort_order>
+        <value>tool</value>
+      </Item>
+      <Item type="Value" id="F1A76E7CFB1B44FAA238562D2F1BE8B6" action="add">
+        <label xml:lang="zc">工裝</label>
+        <sort_order>256</sort_order>
+        <value>tooling</value>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

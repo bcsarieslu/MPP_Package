@@ -1,0 +1,31 @@
+﻿<AML>
+ <Item type="Method" id="F57F6056D7AE48C38E5F0897C70F25F4" action="add">
+  <comments>检验项目与工时定额页面网格数据读取方法</comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[//Creator:Tengzhuang
+//Name:bcs_mpp_readMPPTemplateFile
+//Type: C#
+//Comments:v0.1 Developed By Tengzhuang @Broadway
+//============================================================
+
+const string ERR_PREFIX = "Error[GetTestWorkHourTreeGrid]:";
+
+try{
+	Innovator inn = this.getInnovator();
+	
+	bcsMPP.Core.MPP bcsMPP = new bcsMPP.Core.MPP(inn);
+    
+    Item result=bcsMPP.GetTestWorkHourTreeGrid(this);
+    
+    return result;
+	
+}
+catch(Exception ex)
+{
+	return this.getInnovator().newError(ERR_PREFIX + ex.Message);
+}
+return this;]]></method_code>
+  <method_type>C#</method_type>
+  <name>bcs_mpp_GetTestWorkHourTreeGrid</name>
+ </Item>
+</AML>

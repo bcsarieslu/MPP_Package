@@ -1,0 +1,74 @@
+﻿<AML>
+  <Item type="ItemType" id="8E3DC86FEB3E4847BAA10DF978C01FF8" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>1</auto_search>
+    <default_page_size>50</default_page_size>
+    <enforce_discovery>1</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>MPP_TEST</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>0</is_relationship>
+    <is_versionable>0</is_versionable>
+    <label xml:lang="zc">检验项</label>
+    <label_plural xml:lang="zc">检验项</label_plural>
+    <large_icon>../Images/ViewWorkflow.svg</large_icon>
+    <open_icon>../Images/ViewWorkflow.svg</open_icon>
+    <revisions type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs off</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>0</use_src_access>
+    <name>mpp_Test</name>
+    <Relationships>
+      <Item type="Allowed Permission" id="95EAE9D8FFB04A22A2BD2091ED176D40" action="add">
+        <is_default>1</is_default>
+        <related_id type="Permission">25233C806DA741BABCB6B2EB0A2C5D3F</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Can Add" id="C5637AC3959D40BDA82B21E92E8A46F7" action="add">
+        <can_add>1</can_add>
+        <related_id type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Property" id="35702AADDA3D4DD6A35DA8C73006468C" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>300</column_width>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">名称</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>256</sort_order>
+        <stored_length>32</stored_length>
+        <track_history>0</track_history>
+        <name>name</name>
+      </Item>
+      <Item type="View" id="96EC68CA3AD94B2BAA1F6F4B5BE892ED" action="add">
+        <client>js</client>
+        <related_id type="Form">
+          <Item type="Form" id="A9BA0710F35645178C7ADEE17411B1CD" action="add">
+            <category_form>0</category_form>
+            <height>234</height>
+            <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+            <width>699</width>
+            <name>mpp_Test</name>
+          </Item>
+        </related_id>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </role>
+        <show_ssvc>0</show_ssvc>
+        <sort_order>128</sort_order>
+        <type>default</type>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

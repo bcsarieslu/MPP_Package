@@ -1,0 +1,95 @@
+﻿<AML>
+ <Item type="ItemType" id="01DEC1A413AF49C3971A97355743BA38" action="add">
+  <allow_private_permission>1</allow_private_permission>
+  <auto_search>1</auto_search>
+  <default_page_size>50</default_page_size>
+  <enforce_discovery>1</enforce_discovery>
+  <hide_where_used>0</hide_where_used>
+  <implementation_type>table</implementation_type>
+  <instance_data>MPP_SKILL</instance_data>
+  <is_dependent>0</is_dependent>
+  <is_relationship>0</is_relationship>
+  <is_versionable>0</is_versionable>
+  <label xml:lang="en">Skill</label>
+  <label_plural xml:lang="en">Skills</label_plural>
+  <large_icon>../images/Skill.svg</large_icon>
+  <open_icon>../images/Skill.svg</open_icon>
+  <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+  <show_parameters_tab>1</show_parameters_tab>
+  <structure_view>tabs off</structure_view>
+  <unlock_on_logout>0</unlock_on_logout>
+  <use_src_access>0</use_src_access>
+  <name>mpp_Skill</name>
+  <Relationships>
+   <Item type="Property" id="408A99D99CC74F0F99FB6ED18DC33D26" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>300</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Name</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_Skill" type="ItemType" name="mpp_Skill">01DEC1A413AF49C3971A97355743BA38</source_id>
+    <stored_length>32</stored_length>
+    <track_history>0</track_history>
+    <name>name</name>
+   </Item>
+   <Item type="View" id="FFD90ADDC0084EBCB5F2CEDB5E0A1CDF" action="add">
+    <client>js</client>
+    <related_id keyed_name="mpp_Skill" type="Form">576AF1A341ED40D8A375F4F46A432F89</related_id>
+    <role keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </role>
+    <show_ssvc>0</show_ssvc>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Skill" type="ItemType" name="mpp_Skill">01DEC1A413AF49C3971A97355743BA38</source_id>
+    <type>default</type>
+   </Item>
+   <Item type="Can Add" id="074CC61D7AB34820813DBB23D1F07638" action="add">
+    <can_add>1</can_add>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Skill" type="ItemType" name="mpp_Skill">01DEC1A413AF49C3971A97355743BA38</source_id>
+   </Item>
+   <Item type="Allowed Permission" id="0D02385C10344341A627C97025F072D0" action="add">
+    <is_default>1</is_default>
+    <related_id keyed_name="Skill" type="Permission">25233C806DA741BABCB6B2EB0A2C5D3F</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Skill" type="ItemType" name="mpp_Skill">01DEC1A413AF49C3971A97355743BA38</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="ItemType" id="01DEC1A413AF49C3971A97355743BA38" action="edit">
+  <Relationships>
+   <Item type="Property" id="8AC57A2B9BA840E9B53E1E7331EB63D1" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>130</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>1</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>1</is_required>
+    <keyed_name_order>1</keyed_name_order>
+    <label xml:lang="en">Skill Number</label>
+    <order_by>1</order_by>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Skill" type="ItemType" name="mpp_Skill">01DEC1A413AF49C3971A97355743BA38</source_id>
+    <stored_length>64</stored_length>
+    <track_history>0</track_history>
+    <name>item_number</name>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

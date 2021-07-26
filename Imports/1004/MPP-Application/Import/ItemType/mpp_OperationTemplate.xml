@@ -1,0 +1,188 @@
+﻿<AML>
+  <Item type="ItemType" id="70F22428A4CB459BBFAC3431376C5579" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <enforce_discovery>1</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>MPP_OPERATIONTEMPLATE</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>0</is_relationship>
+    <is_versionable>1</is_versionable>
+    <label xml:lang="zc">标准工序库</label>
+    <label_plural xml:lang="zc">標準工序庫</label_plural>
+    <large_icon>../Images/ProcessFunction.svg</large_icon>
+    <manual_versioning>1</manual_versioning>
+    <open_icon>../Images/ProcessFunction.svg</open_icon>
+    <revisions type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs on</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>0</use_src_access>
+    <name>mpp_OperationTemplate</name>
+    <Relationships>
+      <Item type="Allowed Permission" id="DC8D2F11C9094327A71179EDD701E7FE" action="add">
+        <is_default>1</is_default>
+        <related_id type="Permission">624F4D19940849EFA7D9319CED7E4716</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Can Add" id="213D691E41FD44F0961B26614CD0CCCA" action="add">
+        <can_add>1</can_add>
+        <related_id type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Item Action" id="83C802E3AB134A3996BE0FC13CFA3E90" action="add">
+        <related_id type="Action">83FB72FC3E4D42B8B51BCD7F4194E527</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="ItemType Life Cycle" id="17258FB7D8B8402CA27CFC1764A39718" action="add">
+        <related_id type="Life Cycle Map">89AAAC828A444FD39BFD8DBB339910E4</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Property" id="7BEF1179B3F54C4BB76A42C0FD807DF3" action="add">
+        <column_alignment>left</column_alignment>
+        <data_source type="ItemType" name="mpp_Location">CC2E5B8519EC48C5A3A0BDAC2A0842C3</data_source>
+        <data_type>item</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <item_behavior>float</item_behavior>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3328</sort_order>
+        <track_history>0</track_history>
+        <name>cn_location</name>
+      </Item>
+      <Item type="Property" id="2F976962A8374A23A5949B8B3FD33351" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3200</sort_order>
+        <stored_length>200</stored_length>
+        <track_history>0</track_history>
+        <name>description</name>
+      </Item>
+      <Item type="Property" id="C7188BF5D66644759DC153552686B861" action="add">
+        <column_alignment>center</column_alignment>
+        <column_width>60</column_width>
+        <data_type>boolean</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">变更中</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>95000</sort_order>
+        <track_history>0</track_history>
+        <name>has_change_pending</name>
+      </Item>
+      <Item type="Property" id="6D6BB4A6DC6F4647B04532213A316BF2" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <keyed_name_order>1</keyed_name_order>
+        <label xml:lang="zc">编号</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3456</sort_order>
+        <stored_length>64</stored_length>
+        <track_history>0</track_history>
+        <name>item_number</name>
+      </Item>
+      <Item type="Property" id="403F219B227E4F0C898ADA6353E6D9FE" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>1</is_required>
+        <keyed_name_order>2</keyed_name_order>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3072</sort_order>
+        <stored_length>40</stored_length>
+        <track_history>0</track_history>
+        <name>name</name>
+      </Item>
+      <Item type="Server Event" id="325A107C4D874DC783D93CE385BB8350" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="DB6A7506779F42F596433298E0855FD1" /></related_id>
+        <server_event>onAfterCopy</server_event>
+        <sort_order>384</sort_order>
+      </Item>
+      <Item type="Server Event" id="339A165A200748729A0D82B39626E0E3" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="DB6A7506779F42F596433298E0855FD1" /></related_id>
+        <server_event>onAfterVersion</server_event>
+        <sort_order>512</sort_order>
+      </Item>
+      <Item type="Server Event" id="CC1771188DA64EAB90A047F5ED655EDE" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="60DEAB207EC44B8BB6E21FCF52C43825" /></related_id>
+        <server_event>onAfterVersion</server_event>
+        <sort_order>896</sort_order>
+      </Item>
+      <Item type="Server Event" id="7CAF6687D1144C92A8265308228F2EB7" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="F1B7B3EDC8C348A7AD0382D55A9AD99A" /></related_id>
+        <server_event>onBeforeAdd</server_event>
+        <sort_order>640</sort_order>
+      </Item>
+      <Item type="Server Event" id="53B02EA7DF9D483297F63763B5433014" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="F1B7B3EDC8C348A7AD0382D55A9AD99A" /></related_id>
+        <server_event>onBeforeUpdate</server_event>
+        <sort_order>768</sort_order>
+      </Item>
+      <Item type="View" id="5267838CB73E45B7B28246A5BAA02164" action="add">
+        <client>js</client>
+        <related_id type="Form">
+          <Item type="Form" id="6F98828617FF47118DA6C94C8E896899" action="add">
+            <category_form>0</category_form>
+            <height>234</height>
+            <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+            <width>699</width>
+            <name>mpp_OperationTemplate</name>
+          </Item>
+        </related_id>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </role>
+        <show_ssvc>0</show_ssvc>
+        <sort_order>128</sort_order>
+        <type>default</type>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

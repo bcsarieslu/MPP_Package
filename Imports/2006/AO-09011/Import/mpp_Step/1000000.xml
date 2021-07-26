@@ -1,0 +1,8 @@
+﻿<AML>
+ <Item type="mpp_Step" id="000A5818CF884943B3A2E6F5687CC167" action="add">
+  <source_id keyed_name="1" type="mpp_Operation">6D52DB8C18EF46B19D0D7FCB172D5101</source_id>
+  <name>mpp_Step system default</name>
+  <sort_order>1000000</sort_order>
+  <permission_id></permission_id>
+ </Item>
+</AML>

@@ -1,0 +1,62 @@
+﻿<AML>
+  <Item type="Method" action="add" id="4A43CD0558C84B408638311DA2586214">
+    <comments>AO-09011:MPP-Application</comments>
+	<execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[switch (inArgs.control.id) {
+	case 'mpp_show_pp_view':
+		inArgs.switchToTabId = 'pp_viewer';
+		inArgs.enabledButtonImage = '../images/ProcessPlanEditor.svg';
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		break;
+	case 'mpp_show_ebom_view':
+		inArgs.switchToTabId = 'ebom_viewer';
+		inArgs.enabledButtonImage = '../images/EBOM.svg';
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_pp_view', '../images/ProcessPlanEditorOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		break;
+	case 'mpp_show_mbom_view':
+		inArgs.switchToTabId = 'mbom_viewer';
+		inArgs.enabledButtonImage = '../images/MBOM.svg';
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_pp_view', '../images/ProcessPlanEditorOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		break;
+	//Add by tengz For MPP
+	//页头页尾SideBar图标处理
+	case 'mpp_show_headerfooter':
+	    inArgs.switchToTabId = 'headerfooter_viewer';
+		inArgs.enabledButtonImage = '../images/PDFViewerOn.svg';
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_pp_view', '../images/ProcessPlanEditorOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+	    break;
+	//Add by tengz For MPP
+	//检验项目&工时定额SideBar图标处理
+	case 'mpp_show_testworkhour':
+	    inArgs.switchToTabId = 'testworkhour_viewer';
+		inArgs.enabledButtonImage = '../images/xClassification.svg';
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_pp_view', '../images/ProcessPlanEditorOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
+	    break;	    
+	default:
+		return;
+}
+
+aras.evalMethod('cui_ShowTab_ButtonClick', '', inArgs);]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>mpp_ShowEditor_ButtonClick</name>
+  </Item>
+</AML>

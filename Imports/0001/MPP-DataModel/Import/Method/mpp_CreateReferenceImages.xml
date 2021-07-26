@@ -1,0 +1,180 @@
+﻿<AML>
+ <Item type="Method" id="B9233F66E95C4C639C977CEEC996CEE0" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[
+			var bisinessLogic = new BusinessLogic(CCO, RequestState, this);
+			return bisinessLogic.Execute(tmpItem => tmpItem.apply());
+		}
+	}
+
+	public class BusinessLogic
+	{
+		private readonly Aras.Server.Core.CallContext CCO;
+		private Aras.Server.Core.IContextState requestState;
+		private Item self;
+
+		public BusinessLogic(Aras.Server.Core.CallContext callContext, Aras.Server.Core.IContextState requestStateArg, Item selfArg)
+		{
+			requestState = requestStateArg;
+			CCO = callContext;
+			self = selfArg;
+		}
+
+		public Item Execute(Func<Item, Item> applyFunc)
+		{
+			var items = self.node.SelectNodes("//Item[@type='mpp_Step' or @type='mpp_Operation']").OfType<XmlElement>().Select(WrapNode).GroupBy(item => item.getType());
+			foreach (IGrouping<string, Item> typeGroup in items)
+			{
+				string itemType = typeGroup.Key;
+				HashSet<string> idStorage = GetSessionIdStorage(requestState, itemType);
+				var processedIds = new List<string>();
+				foreach (Item item in typeGroup)
+				{
+					string itemId = item.getID();
+					if (string.IsNullOrEmpty(itemId))
+					{
+						throw new Exception(CCO.ErrorLookup.Lookup("mpp_missingId", item.getType()));
+					}
+					var imageReferenceItemType = GetImageReferenceItemType(itemType);
+					if (idStorage.Contains(itemId))
+					{
+						continue;
+					}
+					Dictionary<string, Item> dbReferences = GetImageReferencesFromDb(itemType, itemId);
+					var imageNodes = new Dictionary<string, string>();
+					Dictionary<string, XmlElement> wiDetailsNodes = GetWiDetailsGroupByLang(item.node);
+					FillImageNodes(imageNodes, wiDetailsNodes.Values);
+					Item dbItem = GetDbItem(itemType, itemId, applyFunc);
+					if (!dbItem.isError())
+					{
+						Dictionary<string, XmlElement> dbWiDetailsNodes = GetWiDetailsGroupByLang(dbItem.node);
+						IEnumerable<XmlElement> absentWiDetailsNodes = dbWiDetailsNodes.Keys.Except(wiDetailsNodes.Keys)
+							.Select(lang => dbWiDetailsNodes[lang]);
+						FillImageNodes(imageNodes, absentWiDetailsNodes);
+					}
+					foreach (string referenceId in imageNodes.Keys.Except(dbReferences.Keys))
+					{
+						string imageId = imageNodes[referenceId];
+
+						Item referencedItem = getReferencedItem("tp_Image", imageId);
+						if (referencedItem == null || referencedItem.isError())
+						{
+							throw new Exception(CCO.ErrorLookup.Lookup("mpp_referenceNotFoundError", "tp_Image", imageId));
+						}
+
+						Item relationshipItem = self.getInnovator().newItem(imageReferenceItemType, "add");
+						relationshipItem.setProperty("reference_id", referenceId);
+						relationshipItem.setProperty("related_id", imageId);
+						item.addRelationship(relationshipItem);
+					}
+					foreach (string referenceID in dbReferences.Keys.Except((imageNodes.Keys)))
+					{
+						Item relationshipItem = self.getInnovator().newItem(imageReferenceItemType, "delete");
+						relationshipItem.setID(dbReferences[referenceID].getID());
+						item.addRelationship(relationshipItem);
+					}
+					processedIds.Add(itemId);
+				}
+				processedIds.ForEach(id => idStorage.Add(id));
+			}
+			return self;
+		}
+
+		private Item GetDbItem(string itemType, string itemId, Func<Item, Item> applyFunc)
+		{
+			Item queryItem = self.getInnovator().newItem(itemType, "get");
+			queryItem.setID(itemId);
+			queryItem.setAttribute("language", "*");
+			queryItem.setAttribute("select", "wi_details");
+			return applyFunc(queryItem);
+		}
+
+		private Hashtable referencedItemsHash = new Hashtable();
+
+		private Item getReferencedItem(String itemType, String itemId)
+		{
+			if (!String.IsNullOrEmpty(itemId) && !referencedItemsHash.ContainsKey(itemId))
+			{
+				Item referencedItem = self.newItem(itemType, "get");
+				referencedItem.setID(itemId);
+				referencedItemsHash.Add(itemId, referencedItem.apply());
+			}
+
+			return (Item)referencedItemsHash[itemId];
+		}
+
+		private static Dictionary<string, XmlElement> GetWiDetailsGroupByLang(XmlNode contentNode)
+		{
+			return contentNode.SelectNodes("./*[local-name()='wi_details']", new XmlNamespaceManager(contentNode.OwnerDocument.NameTable))
+					.OfType<XmlElement>().GroupBy(node => node.GetAttribute("xml:lang")).ToDictionary(node => node.Key, node => node.First());
+		}
+
+		private static void FillImageNodes(Dictionary<string, string> imageNodes, IEnumerable<XmlNode> wiNodes)
+		{
+			foreach (XmlNode node in wiNodes)
+			{
+				var contentXml = node.InnerText;
+				XmlDocument document = new XmlDocument();
+				document.PreserveWhitespace = true;
+				document.LoadXml("<AdditionalContent xmlns='http://www.aras.com/MPP' xmlns:aras='http://aras.com/ArasTechDoc'>" + contentXml + "</AdditionalContent>");
+				XmlNodeList foundImageElementNodes = document.DocumentElement.SelectNodes("descendant::*[@imageId]", new XmlNamespaceManager(document.NameTable));
+
+				foreach (XmlNode imageNode in foundImageElementNodes)
+				{
+					String referenceId = getNodeAttributeValue(imageNode, "ref-id");
+					imageNodes[referenceId] = getNodeAttributeValue(imageNode, "imageId");
+				}
+			}
+		}
+
+		private Dictionary<string, Item> GetImageReferencesFromDb(string itemType, string itemId)
+		{
+			Item relationships = self.getInnovator().newItem(GetImageReferenceItemType(itemType), "get");
+			relationships.setProperty("source_id", itemId);
+			relationships = relationships.apply();
+
+			//+++get dictionary of all root image's relationships
+			Dictionary<String, Item> imageReferencesFromDB = new Dictionary<String, Item>();
+
+			for (int i = 0, count = relationships.getItemCount(); i < count; i++)
+			{
+				Item relationshipItem = relationships.getItemByIndex(i);
+				String referenceId = relationshipItem.getProperty("reference_id");
+
+				imageReferencesFromDB[referenceId] = relationshipItem;
+			}
+			return imageReferencesFromDB;
+		}
+
+		private static string GetImageReferenceItemType(string itemType)
+		{
+			return itemType + "ImageReference";
+		}
+
+		private Item WrapNode(XmlElement node)
+		{
+			Item item = self.getInnovator().newItem();
+			item.node = node;
+			item.dom = node.OwnerDocument;
+			return item;
+		}
+
+		private static HashSet<string> GetSessionIdStorage(Aras.Server.Core.IContextState requestState, string itemType)
+		{
+			string key = "mppIdStorage_" + itemType;
+			if (requestState.Contains(key))
+			{
+				return (HashSet<string>)requestState[key];
+			}
+			var set = new HashSet<string>();
+			requestState.Add(key, set);
+			return set;
+		}
+
+		private static string getNodeAttributeValue(XmlNode node, string attributeName)
+		{
+			return ((XmlElement)node).GetAttribute(attributeName);]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_CreateReferenceImages</name>
+ </Item>
+</AML>

@@ -1,0 +1,52 @@
+﻿<AML>
+ <Item type="SQL" id="6F037C35378849238AB39E1E3FC4A978" action="add">
+  <execution_count>1</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <old_name>mpp_getPartAlternateSubstitute</old_name>
+  <sqlserver_body><![CDATA[CREATE FUNCTION mpp_getPartAlternateSubstitute
+(
+	@part_ids VARCHAR(MAX),
+	@source_part_id VARCHAR(32),
+	@identity_list VARCHAR(MAX),
+	@ip_address VARCHAR(32),
+	@cur_user_id CHAR(32),
+	@environment_attributes_xml NVARCHAR(MAX)
+)
+RETURNS TABLE  
+AS
+RETURN
+(
+	SELECT DISTINCT 
+		Alternates.source_id source_part, 
+		Part.id id,
+		Part./*mpp_configurable:item_number_p_name*/item_number/*mpp_configurable*/ item_number,
+		'alternate' relative_type 
+	FROM [innovator]./*mpp_configurable:part_alternate_it_name*/Part_Alternate/*mpp_configurable*/ Alternates 
+		INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) Part ON Part.id = Alternates.related_id 
+	WHERE Alternates.source_id IN (
+			SELECT id 
+			FROM innovator.GenerateTableOfIds(@part_ids)
+		)
+
+	UNION ALL
+
+	SELECT DISTINCT 
+		Bom.related_id source_part,
+		Part.id id,
+		Part./*mpp_configurable:item_number_p_name*/item_number/*mpp_configurable*/ item_number,
+		'substitute' relative_type
+	FROM [innovator]./*mpp_configurable:bom_substitute_it_name*/BOM_Substitute/*mpp_configurable*/ Substitutes 
+		INNER JOIN [innovator]./*mpp_configurable:bom_it_name*/Part_BOM/*mpp_configurable*/ Bom ON Bom.id = Substitutes.source_id 
+		INNER JOIN [secured]./*mpp_configurable:part_it_name*/Part/*mpp_configurable*/('can_get', @identity_list, @ip_address, @cur_user_id, '', @environment_attributes_xml) Part ON Part.id = Substitutes.related_id 
+	WHERE Bom.source_id = @source_part_id
+		AND Bom.related_id IN (
+			SELECT id 
+			FROM innovator.GenerateTableOfIds(@part_ids)
+		)
+)]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>function</type>
+  <name>mpp_getPartAlternateSubstitute</name>
+ </Item>
+</AML>

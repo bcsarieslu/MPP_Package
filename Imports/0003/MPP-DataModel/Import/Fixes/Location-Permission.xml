@@ -1,0 +1,17 @@
+﻿<AML>
+ <Item type="Permission" id="FBF0CBFD01844B26B632EDF6CD73539D" action="edit">
+  <Relationships>
+   <Item type="Access" id="F0750320D28443C397998B19B094E587" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <show_permissions_warning>1</show_permissions_warning>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="Location" type="Permission">FBF0CBFD01844B26B632EDF6CD73539D</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

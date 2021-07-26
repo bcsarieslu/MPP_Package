@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="CACE5A7C49FC47299DC57062A0DDDD6B" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Partially Consumed Quantity</text>
+  <name>mpp_partiallyConsumedQuantityStatus</name>
+ </Item>
+</AML>

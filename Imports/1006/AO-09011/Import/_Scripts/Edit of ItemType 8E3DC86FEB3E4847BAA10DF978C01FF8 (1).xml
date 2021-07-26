@@ -1,0 +1,26 @@
+﻿<AML>
+  <Item type="ItemType" id="8E3DC86FEB3E4847BAA10DF978C01FF8" action="edit">
+    <Relationships>
+      <Item type="Property" id="923917ACF27B4A6793935F7036916D27" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>130</column_width>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>1</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>1</is_required>
+        <keyed_name_order>1</keyed_name_order>
+        <label xml:lang="zc">检验项编号</label>
+        <order_by>1</order_by>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>128</sort_order>
+        <stored_length>64</stored_length>
+        <track_history>0</track_history>
+        <name>item_number</name>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

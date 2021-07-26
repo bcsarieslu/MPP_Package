@@ -1,0 +1,19 @@
+﻿<AML>
+ <Item type="SQL" id="8D8795E23DC34CDFA189360DDFBEE27E" action="add">
+  <execution_count>2</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <old_name>IX_mpp_consumedpart_source_id_with_included</old_name>
+  <sqlserver_body><![CDATA[CREATE NONCLUSTERED INDEX [IX_mpp_consumedpart_source_id_with_included] ON [innovator].[MPP_OPERATIONCONSUMEDPART]
+(
+	[SOURCE_ID] ASC
+)
+INCLUDE ( 	[id],
+	[SORT_ORDER],
+	[QUANTITY],
+	[RELATED_ID])]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>index</type>
+  <name>IX_mpp_consumedpart_source_id_with_included</name>
+ </Item>
+</AML>

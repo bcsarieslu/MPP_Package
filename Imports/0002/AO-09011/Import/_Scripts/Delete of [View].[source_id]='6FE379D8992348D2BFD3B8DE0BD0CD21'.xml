@@ -1,0 +1,3 @@
+﻿<AML>
+  <Item type="View" action="delete" where="[View].[source_id]='6FE379D8992348D2BFD3B8DE0BD0CD21'" />
+</AML>

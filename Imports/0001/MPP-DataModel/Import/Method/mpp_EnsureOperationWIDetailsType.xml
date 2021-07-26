@@ -1,0 +1,11 @@
+﻿<AML>
+ <Item type="Method" id="6D2D6FE3588441D2B3012623341B8AE1" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[Aras.Server.Core.InnovatorDatabase conn = CCO.DB.InnDatabase;
+string sqlQueryFormat = "EXEC [mpp_SetNvarcharMaxForWIDetailsProps] 'mpp_Operation'";
+conn.ExecuteSQL(sqlQueryFormat);
+return this;]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_EnsureOperationWIDetailsType</name>
+ </Item>
+</AML>

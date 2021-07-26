@@ -1,0 +1,12 @@
+﻿<AML>
+ <Item type="ItemType" id="CC2E5B8519EC48C5A3A0BDAC2A0842C3" action="edit">
+  <Relationships>
+   <Item type="Can Add" id="C7ECFCE8FC1643328B9833B82F50BFBB" action="add">
+    <can_add>1</can_add>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Location" type="ItemType" name="mpp_Location">CC2E5B8519EC48C5A3A0BDAC2A0842C3</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

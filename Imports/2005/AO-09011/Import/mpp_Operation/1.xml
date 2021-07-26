@@ -1,0 +1,10 @@
+﻿<AML>
+ <Item type="mpp_Operation" id="6D52DB8C18EF46B19D0D7FCB172D5101" action="add">
+  <description xml:lang="en" />
+  <name xml:lang="en" >mpp_Operation system default</name>
+  <source_id keyed_name="MPP-DEFAULT" type="mpp_ProcessPlan">E4DE834788D1440194F2D078938DBBBE</source_id>
+  <wi_details xml:lang="en" />
+  <sort_order>1</sort_order>
+  <permission_id></permission_id>
+ </Item>
+</AML>

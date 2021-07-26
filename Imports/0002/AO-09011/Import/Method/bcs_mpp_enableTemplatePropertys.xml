@@ -1,0 +1,42 @@
+﻿<AML>
+  <Item type="Method" action="add" id="32D9EDC801874D0F94238A0CEEC56C43">
+    <comments>AO-09011</comments>
+	<execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[var operationItem = document.thisItem;
+if (!operationItem.getProperty("bcs_template")) {
+    return;
+}
+
+var inn = aras.IomInnovator;
+
+var variableItem = aras.getItemByKeyedName("Variable", "bcs_mpp_OperationChangePropertys");
+if (!variableItem) {
+    return;
+}
+var disablePropertys = aras.getItemProperty(variableItem,"value", "").split(",");
+if (disablePropertys.length < 1) {
+    return;
+}
+disablePropertys.forEach(function(property) {
+    var field = getFieldByName(property);
+    if(!field)
+    {
+        return;
+    }
+    var fieldId = field.getAttribute("id").substring(0, 32);
+    var setExpHandler = window['expression_' + fieldId + '_setExpression'];
+
+    if (setExpHandler) {
+        //setTimeout("window.setExpHandler(false)",1000);
+        setTimeout("window['expression_" + fieldId + "_setExpression'](false)",100);
+    }
+});
+]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>bcs_mpp_enableTemplatePropertys</name>
+  </Item>
+</AML>

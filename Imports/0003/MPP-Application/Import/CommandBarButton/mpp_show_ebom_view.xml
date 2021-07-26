@@ -1,0 +1,9 @@
+﻿<AML>
+ <Item type="CommandBarButton" id="C584D5EAEA2C4E7F975A80008C5FD556" action="add">
+  <image>../Images/EBOMOff.svg</image>
+  <label xml:lang="en">Show EBOM</label>
+  <on_click_handler keyed_name="mpp_ShowEditor_ButtonClick" type="Method">4A43CD0558C84B408638311DA2586214</on_click_handler>
+  <on_init_handler keyed_name="mpp_InitSidebarItems" type="Method">8E03B7E9980E4EFFB977C76FF13CCBB2</on_init_handler>
+  <name>mpp_show_ebom_view</name>
+ </Item>
+</AML>

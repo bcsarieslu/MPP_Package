@@ -1,0 +1,223 @@
+﻿<AML>
+  <Item type="Method" action="add" id="37AC5EC7A54E480DB10379D727759861">
+    <comments>AO-09011:MPP-Application</comments>
+	<execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[		Innovator innovatorInstance = this.getInnovator();
+		StringBuilder gridHeader = new StringBuilder();
+		String gridType = this.getProperty("grid_type");
+
+		gridHeader.Append("<table").Append(getCommonGridAttributes()).Append(">");
+
+		switch (gridType) {
+			case "Parts":
+				gridHeader.Append(getPartsHeader(CCO));
+				break;
+			case "Tools":
+				gridHeader.Append(getToolsHeader(CCO));
+				break;
+			case "Machines":
+				gridHeader.Append(getMachinesHeader(CCO));
+				break;
+			case "Documents":
+				gridHeader.Append(getDocumentsHeader(CCO));
+				break;
+			case "Skills":
+				gridHeader.Append(getSkillsHeader(CCO));
+				break;
+			//Add by tengz 2019/6/4
+			//Process Plan workbench 内添加对象类
+			case "CAD":
+			    gridHeader.Append(getCADsHeader(CCO));
+			    break;
+			case "Test":
+			    gridHeader.Append(getTestsHeader(CCO));
+			    break;
+			default:
+				gridHeader.Append(getEmptyHeader(CCO));
+				break;
+		}
+
+		gridHeader.Append("</table>");
+
+		return innovatorInstance.newResult(gridHeader.ToString());
+	}
+
+	private String getCommonGridAttributes()
+	{
+		StringBuilder gridAttributes = new StringBuilder();
+
+		gridAttributes.Append(" font='Microsoft Sans Serif-8'");
+		gridAttributes.Append(" sel_bgColor='steelbue'");
+		gridAttributes.Append(" sel_TextColor='white'");
+		gridAttributes.Append(" header_BgColor='buttonface'");
+		gridAttributes.Append(" treelines='1'");
+		gridAttributes.Append(" editable='true'");
+		gridAttributes.Append(" draw_grid='true'");
+		gridAttributes.Append(" multiselect='true'");
+		gridAttributes.Append(" column_draggable='true'");
+		gridAttributes.Append(" enableHtml='false'");
+		gridAttributes.Append(" enterAsTab='false'");
+		gridAttributes.Append(" bgInvert='true'");
+		gridAttributes.Append(" xmlns:msxsl='urn:schemas-microsoft-com:xslt'");
+		gridAttributes.Append(" xmlns:aras='http://www.aras.com'");
+		gridAttributes.Append(" xmlns:usr='urn:the-xml-files:xslt'");
+
+		return gridAttributes.ToString();
+	}
+
+	private String getToolsHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+		String toolItemTypeId = "E4476490D86D42B0B52F873EC3F68282";
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(toolItemTypeId, "item_number").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(toolItemTypeId, "name").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='l' order='0' colname='item_number'/>");
+		gridHeader.Append("		<column width='100' edit='NOEDIT' align='c' order='1' colname='name'/>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();
+	}
+
+	private String getMachinesHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+		String machineItemTypeId = "D554B0C8D479455A87AF07BAE564E2CF";
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(machineItemTypeId, "item_number").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(machineItemTypeId, "name").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='l' order='0' colname='item_number'/>");
+		gridHeader.Append("		<column width='100' edit='NOEDIT' align='c' order='1' colname='name'/>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();
+	}
+
+	private String getSkillsHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+		String machineItemTypeId = "01DEC1A413AF49C3971A97355743BA38";
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(machineItemTypeId, "item_number").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(machineItemTypeId, "name").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='l' order='0' colname='item_number'/>");
+		gridHeader.Append("		<column width='100' edit='NOEDIT' align='c' order='1' colname='name'/>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();
+	}
+
+	private String getDocumentsHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+		String documentItemTypeId = "B88C14B99EF449828C5D926E39EE8B89";
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(documentItemTypeId, "item_number").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(documentItemTypeId, "name").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(documentItemTypeId, "major_rev").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='l' order='0' colname='item_number'/>");
+		gridHeader.Append("		<column width='100' edit='NOEDIT' align='c' order='1' colname='name'/>");
+		gridHeader.Append("		<column width='20' edit='NOEDIT' align='c' order='2' colname='revision'/>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();
+	}
+
+	private String getEmptyHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();
+	}
+
+	private String getPartsHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+		String partItemTypeId = "4F1AC04A2B484F3ABA4E20DB63808A88";
+		String consumedPartTypeId = "5E9C5A12CC58413A8670CF4003C57848";
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(partItemTypeId, "item_number").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(partItemTypeId, "name").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(partItemTypeId, "major_rev").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(partItemTypeId, "make_buy").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(partItemTypeId, "classification").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(consumedPartTypeId, "quantity").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='l' order='0' colname='item_number'/>");
+		gridHeader.Append("		<column width='80' edit='NOEDIT' align='c' order='1' colname='name'/>");
+		gridHeader.Append("		<column width='15' edit='NOEDIT' align='c' order='2' colname='revision'/>");
+		gridHeader.Append("		<column width='40' edit='NOEDIT' align='c' order='3' colname='make_buy'/>");
+		gridHeader.Append("		<column width='50' edit='NOEDIT' align='c' order='4' colname='classification'/>");
+		gridHeader.Append("		<column width='50' edit='NOEDIT' align='c' order='5' sort='numeric' colname='quantity'/>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();
+	}
+	
+	//Add by tengz 2019/6/4
+	//Process Plan workbench 内添加对象类
+	private String getTestsHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+		String cadItemTypeId = "8E3DC86FEB3E4847BAA10DF978C01FF8";
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(cadItemTypeId, "item_number").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(cadItemTypeId, "name").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='l' order='0' colname='item_number'/>");
+		gridHeader.Append("		<column width='80' edit='NOEDIT' align='c' order='1' colname='name'/>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();
+	}
+	
+	//Add by tengz 2019/6/4
+	//Process Plan workbench 内添加对象类
+	private String getCADsHeader(Aras.Server.Core.CallContext CCO)
+	{
+		StringBuilder gridHeader = new StringBuilder();
+		String cadItemTypeId = "CCF205347C814DD1AF056875E0A880AC";
+
+		gridHeader.Append("	<thead>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(cadItemTypeId, "item_number").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(cadItemTypeId, "name").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(cadItemTypeId, "major_rev").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("		<th align='c'>").Append(CCO.Cache.GetPropertyFromCache(cadItemTypeId, "classification").GetAttribute("label")).Append("</th>");
+		gridHeader.Append("	</thead>");
+		gridHeader.Append("	<columns>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='l' order='0' colname='item_number'/>");
+		gridHeader.Append("		<column width='80' edit='NOEDIT' align='c' order='1' colname='name'/>");
+		gridHeader.Append("		<column width='80' edit='NOEDIT' align='c' order='2' colname='revision'/>");
+		gridHeader.Append("		<column width='120' edit='NOEDIT' align='c' order='3' colname='classification'/>");
+		gridHeader.Append("	</columns>");
+
+		return gridHeader.ToString();]]></method_code>
+    <method_type>C#</method_type>
+    <name>mpp_GetWorkbenchGridHeader</name>
+  </Item>
+</AML>

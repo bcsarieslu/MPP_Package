@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="58D73609FC374CD3BFD884885BBC2492" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Overconsumed Quantity</text>
+  <name>mpp_overconsumedStatus</name>
+ </Item>
+</AML>

@@ -1,0 +1,20 @@
+﻿<AML>
+  <Item type="Property" id="93221C36639A47D3871E921458E77CB1" action="add">
+    <column_alignment>left</column_alignment>
+    <data_type>ml_string</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>1</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="zc">bcs_head</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>3712</sort_order>
+    <source_id type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>
+    <stored_length>4000</stored_length>
+    <track_history>0</track_history>
+    <name>bcs_head</name>
+  </Item>
+</AML>

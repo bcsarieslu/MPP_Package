@@ -1,0 +1,5 @@
+<imports>
+  <package name="com.aras.innovator.solution.PLM" path="PLM\Import"/>
+  <package name="com.aras.innovator.solution.MPP-DataModel" path="MPP-DataModel\import" />
+  <package name="com.aras.innovator.cui_default" path=".\" />
+</imports>

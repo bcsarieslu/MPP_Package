@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="A91B1D16FF9F4AEBA74B70C377F35229" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Mandatory parameter '{0}' was missed.</text>
+  <name>mpp_parameterMissed</name>
+ </Item>
+</AML>

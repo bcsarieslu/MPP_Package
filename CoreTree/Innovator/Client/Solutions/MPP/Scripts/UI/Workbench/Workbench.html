@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="../../../../../javascript/dojo/../dijit/themes/claro/claro.css">
+	<link rel="stylesheet" href="../../../../../public/styles/controls.css">
+	<link rel="stylesheet" href="../../../Styles/Dnd.css">
+	<link rel="stylesheet" href="../../../Styles/FindControl.css">
+	<style>
+	html, body {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		overflow: hidden;
+
+		font-family: Tahoma;
+		color: #444444;
+		font-size: 12px;
+	}
+	</style>
+	<script type="text/javascript" src="../../../../../javascript/include.aspx?classes=/dojo.js" data-dojo-config="packages: [{name: 'MPP', location: '../../Modules/aras.innovator.solutions.MPP/Scripts'}], isDebug: false, parseOnLoad: false, baseUrl:'../../../../../javascript/dojo'"></script>
+	<script type="text/javascript" src="../../../../../javascript/include.aspx?classes=XmlDocument"></script>
+	<script>
+	initWorkbench = function(workbenchControl, initialArguments) {
+		require(['dojo/parser', 'dojo/aspect'],
+			function(parser, aspect) {
+				var gridType = initialArguments.gridType || (workbenchControl.supportedTypes.length && workbenchControl.supportedTypes[0]) || 'Parts';
+				var targetNode = document.body;
+				// creating new HtmlStructure
+				targetNode.innerHTML = workbenchControl.generateWorkbenchControlHtml({title: initialArguments.title});
+				workbenchControl.domNode = targetNode.firstChild;
+
+				// new control initialization
+				parser.parse(workbenchControl.domNode);
+
+				workbenchControl.uiControls = {
+					toolbar: null,
+					grid: null,
+					container: null,
+					handlers: []
+				};
+
+				clientControlsFactory.createControl('Aras.Client.Controls.Public.Toolbar', {connectId: 'WorkbenchToolbar' + workbenchControl.idPrefix}, function(toolbarControl) {
+					var typeSelector, i;
+
+					clientControlsFactory.on(toolbarControl, {
+						'onClick': this.toolbarEventHandler.bind(this),
+						'onChange': this.toolbarEventHandler.bind(this)
+					});
+
+					this.uiControls.toolbar = toolbarControl;
+
+					toolbarControl.loadXml(this.aras.getI18NXMLResource('workbenchToolbar.xml', this.aras.getBaseURL() + '/Modules/aras.innovator.solutions.MPP/'));
+					toolbarControl.show();
+
+					function getTypeTitle(type) {
+						if (type === ' ')
+							return type;
+						return initialArguments.uiUtils.getResource('workbenchDropdown.' + type);
+					}
+					// init supported types list
+					typeSelector = toolbarControl.getItem('item_types_list');
+					for (i = 0; i < this.supportedTypes.length; i++) {
+						typeSelector.add(this.supportedTypes[i], getTypeTitle(this.supportedTypes[i]));
+					}
+				}.bind(workbenchControl));
+
+				// grid control creation
+				clientControlsFactory.createControl('MPP.UI.Workbench.WorkbenchGrid', {
+						connectId: 'WorkbenchGrid' + workbenchControl.idPrefix,
+						canEdit_Experimental: function (rowId) { return false; },
+						workbench: workbenchControl,
+						activeDnD: workbenchControl.isEditable
+					},
+					function(gridControl) {
+						aspect.after(gridControl, 'gridClick', this.onGridSelectItem.bind(this));
+
+						if (!initialArguments.gridMultiselect) {
+							gridControl.setMultiselect(false);
+						}
+
+						this.dndController.registerSource(gridControl);
+
+						this.uiControls.grid = gridControl;
+						this.initGrid(gridType);
+					}.bind(workbenchControl)
+				);
+		});
+	}
+	</script>
+</head>
+<body class="claro">
+</body>
+</html>

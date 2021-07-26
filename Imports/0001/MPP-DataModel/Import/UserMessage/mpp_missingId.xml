@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="DEC6D18C54394500B7253EC988C94E8F" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Mandatory attribute "id" is missed at {0} item node</text>
+  <name>mpp_missingId</name>
+ </Item>
+</AML>

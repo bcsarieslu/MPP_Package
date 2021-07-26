@@ -1,0 +1,29 @@
+﻿<AML>
+ <Item type="ItemType" id="4E030A4723224002B3E94F40F01AC1DE" action="edit">
+  <name>mpp_ProcessPlan</name>
+  <Relationships>
+   <Item type="Client Event" id="20C90EA752954FC2A6F1C5E79276D1FF" action="add">
+    <client_event>OnShowItem</client_event>
+    <related_id keyed_name="mpp_OnShowProcessPlan" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>mpp_OnShowProcessPlan</name>
+     </Item>
+    </related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_ProcessPlan" type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>
+   </Item>
+   <Item type="ITPresentationConfiguration" id="CE46493438FF47E6A4E6834A2779BDAF" action="add">
+    <client>js</client>
+    <related_id keyed_name="mpp_ProcessPlan" type="PresentationConfiguration">D34A249037424EFC860EDFA30E914634</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_ProcessPlan" type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>
+   </Item>
+   <Item type="TOC Access" id="85BE5550D27A4A779547CC3194AA5BAA" action="add">
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="mpp_ProcessPlan" type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>
+    <category>Process</category>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

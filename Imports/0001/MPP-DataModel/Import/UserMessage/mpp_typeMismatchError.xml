@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="F11D9BCDBFBF44108B7350E0F22A39BB" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Item of type {0} required</text>
+  <name>mpp_typeMismatchError</name>
+ </Item>
+</AML>

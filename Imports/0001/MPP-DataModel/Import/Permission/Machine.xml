@@ -1,0 +1,60 @@
+﻿<AML>
+ <Item type="Permission" id="B6A692ACA6904CDDB9B14C0C3E1729D1" action="add">
+  <is_private>0</is_private>
+  <name>Machine</name>
+  <Relationships>
+   <Item type="Access" id="18F0446028674C48BF4DEC4BE54F3432" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Creator" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Creator</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>1</show_permissions_warning>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="Machine" type="Permission">B6A692ACA6904CDDB9B14C0C3E1729D1</source_id>
+   </Item>
+   <Item type="Access" id="396A92B70B894E9DBD7294F5C0CD9645" action="add">
+    <can_change_access>1</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Administrators" type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</related_id>
+    <show_permissions_warning>1</show_permissions_warning>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="Machine" type="Permission">B6A692ACA6904CDDB9B14C0C3E1729D1</source_id>
+   </Item>
+   <Item type="Access" id="6AD675AB3A8942B68B2C0E6A3ED4EFFD" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <show_permissions_warning>1</show_permissions_warning>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="Machine" type="Permission">B6A692ACA6904CDDB9B14C0C3E1729D1</source_id>
+   </Item>
+   <Item type="Access" id="F0A65AE382114875989AB59952D2C23B" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>0</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>0</can_update>
+    <related_id keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>1</show_permissions_warning>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="Machine" type="Permission">B6A692ACA6904CDDB9B14C0C3E1729D1</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

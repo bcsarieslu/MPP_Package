@@ -1,0 +1,172 @@
+﻿<AML>
+  <Item type="Life Cycle Map" id="9BA615F1FFB34DFF934E06D1704F8807" action="add">
+    <description>Default Process Plan Life Cycle</description>
+    <start_state type="Life Cycle State">0FA07664271446AC936A1A75F4BA1313</start_state>
+    <name>Process Plan</name>
+    <Relationships>
+      <Item type="Life Cycle State" id="4E90092784394594B3A72A575923B468" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>fixed</item_behavior>
+        <label xml:lang="en">In Change</label>
+        <set_is_released>1</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>512</sort_order>
+        <x>682</x>
+        <y>66</y>
+        <name>In Change</name>
+      </Item>
+      <Item type="Life Cycle State" id="339BD896B4E84CFF9380184700188A93" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>float</item_behavior>
+        <label xml:lang="en">In Review</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>256</sort_order>
+        <state_permission_id type="Permission">CB921986209844568A90C6C2A57151C4</state_permission_id>
+        <x>325</x>
+        <y>65</y>
+        <name>In Review</name>
+      </Item>
+      <Item type="Life Cycle State" id="ECFB99691D83471395BCD5CC7D80CFE3" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>fixed</item_behavior>
+        <label xml:lang="en">Obsolete</label>
+        <set_is_released>1</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>896</sort_order>
+        <x>676</x>
+        <y>238</y>
+        <name>Obsolete</name>
+      </Item>
+      <Item type="Life Cycle State" id="0FA07664271446AC936A1A75F4BA1313" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>float</item_behavior>
+        <label xml:lang="en">Preliminary</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>128</sort_order>
+        <state_permission_id type="Permission">A78D55EDCF4F4595AA34B8F29EE4F2AD</state_permission_id>
+        <x>26</x>
+        <y>64</y>
+        <name>Preliminary</name>
+      </Item>
+      <Item type="Life Cycle State" id="7109CDD337C84AFF87F55B21CCAC34AC" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>fixed</item_behavior>
+        <label xml:lang="en">Released</label>
+        <set_is_released>1</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>384</sort_order>
+        <state_permission_id type="Permission">E4EB045B2622409BA09AC91778FAE18C</state_permission_id>
+        <x>473</x>
+        <y>62</y>
+        <name>Released</name>
+      </Item>
+      <Item type="Life Cycle State" id="9F7597215E5F4D65A9B0568AA3744D52" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>fixed</item_behavior>
+        <label xml:lang="en">Superseded</label>
+        <set_is_released>1</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>640</sort_order>
+        <x>923</x>
+        <y>66</y>
+        <name>Superseded</name>
+      </Item>
+      <Item type="Life Cycle Transition" id="9F95FB8760F749CE9BEA61A7ED9D9D8D" action="add">
+        <from_state type="Life Cycle State">0FA07664271446AC936A1A75F4BA1313</from_state>
+        <get_comment>0</get_comment>
+        <post_action type="Method"><Item type="Method" action="get" id="6C18F6054EE64B09BA712DF2CE7EB3A0" /></post_action>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments>247,198</segments>
+        <sort_order>1536</sort_order>
+        <to_state type="Life Cycle State">7109CDD337C84AFF87F55B21CCAC34AC</to_state>
+        <x>36</x>
+        <y>91</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="AF883C2DD23D44C29431C58EBE9ACE92" action="add">
+        <from_state type="Life Cycle State">0FA07664271446AC936A1A75F4BA1313</from_state>
+        <get_comment>0</get_comment>
+        <post_action type="Method"><Item type="Method" action="get" id="6C18F6054EE64B09BA712DF2CE7EB3A0" /></post_action>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments />
+        <sort_order>128</sort_order>
+        <to_state type="Life Cycle State">339BD896B4E84CFF9380184700188A93</to_state>
+        <x>31</x>
+        <y>14</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="C5A5092F86B74144B4FB148C5B8D22BB" action="add">
+        <from_state type="Life Cycle State">339BD896B4E84CFF9380184700188A93</from_state>
+        <get_comment>0</get_comment>
+        <post_action type="Method"><Item type="Method" action="get" id="6C18F6054EE64B09BA712DF2CE7EB3A0" /></post_action>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments />
+        <sort_order>256</sort_order>
+        <to_state type="Life Cycle State">7109CDD337C84AFF87F55B21CCAC34AC</to_state>
+        <x>-41</x>
+        <y>-24</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="CB8574FEE89F4890AD50F21E23A6562D" action="add">
+        <from_state type="Life Cycle State">339BD896B4E84CFF9380184700188A93</from_state>
+        <get_comment>0</get_comment>
+        <post_action type="Method"><Item type="Method" action="get" id="6C18F6054EE64B09BA712DF2CE7EB3A0" /></post_action>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments>191,36</segments>
+        <sort_order>1152</sort_order>
+        <to_state type="Life Cycle State">0FA07664271446AC936A1A75F4BA1313</to_state>
+        <x>-153</x>
+        <y>-49</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="3E8E600523EF443F915707631FCB9F6F" action="add">
+        <from_state type="Life Cycle State">4E90092784394594B3A72A575923B468</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments />
+        <sort_order>1024</sort_order>
+        <to_state type="Life Cycle State">9F7597215E5F4D65A9B0568AA3744D52</to_state>
+        <x>-22</x>
+        <y>-19</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="1EAC7AE285E04B828B562EB6B758EBEB" action="add">
+        <from_state type="Life Cycle State">7109CDD337C84AFF87F55B21CCAC34AC</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments />
+        <sort_order>384</sort_order>
+        <to_state type="Life Cycle State">4E90092784394594B3A72A575923B468</to_state>
+        <x>-32</x>
+        <y>-19</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="29F7D171F37D485A9F0164653F1B3C74" action="add">
+        <from_state type="Life Cycle State">7109CDD337C84AFF87F55B21CCAC34AC</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments>680,174</segments>
+        <sort_order>1664</sort_order>
+        <to_state type="Life Cycle State">9F7597215E5F4D65A9B0568AA3744D52</to_state>
+        <x>66</x>
+        <y>43</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="82E884402BC945DDAE35C3306FBFD80A" action="add">
+        <from_state type="Life Cycle State">7109CDD337C84AFF87F55B21CCAC34AC</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments>480,246</segments>
+        <sort_order>1792</sort_order>
+        <to_state type="Life Cycle State">ECFB99691D83471395BCD5CC7D80CFE3</to_state>
+        <x>20</x>
+        <y>93</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="4974863145FF4C6D9E32E6469890FC6F" action="add">
+        <from_state type="Life Cycle State">9F7597215E5F4D65A9B0568AA3744D52</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+        <segments>926,247</segments>
+        <sort_order>1920</sort_order>
+        <to_state type="Life Cycle State">ECFB99691D83471395BCD5CC7D80CFE3</to_state>
+        <x>-171</x>
+        <y>98</y>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

@@ -1,0 +1,350 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		@@import '../../javascript/dojo/../dijit/themes/claro/claro.css';
+		@@import '../../public/styles/controls.css';
+		@@import 'Styles/MEBOMs.css';
+		@@import 'Styles/MBOMTreeGrid.css';
+
+		#toolbarContainer .dijitToolbar {
+			height: 30px;
+			line-height: 30px;
+		}
+
+		#toolbarContainer .dijitContentPane {
+			overflow: hidden;
+		}
+
+		.dijitContainer .dijitContentPane {
+			padding: 0px !important;
+		}
+	</style>
+	<script type="text/javascript" src="../../javascript/include.aspx?classes=/dojo.js" data-dojo-config="packages: [{ name: 'MPP', location: '../../Modules/aras.innovator.solutions.MPP/Scripts' }], isDebug: false, parseOnLoad: false, baseUrl:'../../javascript/dojo'"></script>
+	<script type="text/javascript" src="../../javascript/include.aspx?classes=XmlDocument"></script>
+	<script type="text/javascript" src="../../modules/polyfills/promises.js"></script>
+	<script>
+	var aras = parent.aras;
+	var topWindow = aras.getMostTopWindowWithAras(window);
+	var viewController = parent.viewController;
+	var dataModel = viewController.dataModel;
+	var shareData = viewController.shareData;
+	var sharedBomData = shareData.BOM;
+	var isViewEditable = dataModel.isEditable();
+	var isUIControlsCreated = false;
+	var mbomGrid = null;
+	var viewToolbar = null;
+	var isDataChanged = false;
+	var isViewReloading = false;
+	var menuEventHandlers = [];
+	var uiUtils;
+	var processPlanItem;
+	var workbenchWidget;
+	var listeners = [];
+
+	loadView = function (targetItem) {
+		var refreshFunction = topWindow.onRefresh;
+		topWindow.onRefresh = function () {
+			aras.AlertError(aras.getResource('MPP', 'functionNotAvailable'));
+		}
+		listeners.push({
+			remove: function () {
+				topWindow.onRefresh = refreshFunction;
+			}
+		});
+
+		processPlanItem = targetItem;
+
+		if (!isUIControlsCreated) {
+			createUIControls();
+		}
+		else {
+			mbomGrid.attachDataModelListeners();
+
+			workbenchWidget.attachDataModelListeners();
+			workbenchWidget.initGrid(workbenchWidget.itemsType, true);
+		}
+
+		setEditState(dataModel.isEditable());
+		setupUIControls();
+	}
+
+	setEditState = function(editState) {
+		editState = Boolean(editState);
+
+		if (editState !== isViewEditable) {
+			isViewEditable = editState;
+
+			workbenchWidget.setEditable(isViewEditable);
+			mbomGrid.setEditable(isViewEditable);
+		}
+	}
+
+	reloadView = function(newItem) {
+		if (!isViewReloading) {
+			var producedPartItem = viewController.getProducedPartItem();
+
+			isViewReloading = true;
+
+			processPlanItem = newItem;
+			setEditState(dataModel.isEditable());
+
+			setupUIControls(true);
+			isViewReloading = false;
+		}
+	}
+
+	unloadView = function () {
+		for (var i = 0; i < listeners.length; i++) {
+			listeners[i].remove();
+		}
+		listeners = [];
+
+		if (sharedBomData.data !== mbomGrid.data) {
+			sharedBomData.data = mbomGrid.data;
+		}
+
+		mbomGrid.destroy();
+		mbomGrid.removeDataModelListeners();
+		workbenchWidget.removeDataModelListeners();
+	}
+
+	manageCrfToolbarItems = function () {
+		mbomGrid.setToolbarItemUseMy(viewToolbar.getItem('crf_use_my'));
+		mbomGrid.setToolbarItemUseOther(viewToolbar.getItem('crf_use_other'));
+
+		mbomGrid.manageToolbarItems();
+	}
+
+	setupUIControls = function(isViewReload) {
+		if (isUIControlsCreated) {
+			var currentProducedPart = shareData.producedPartItem;
+			var locationsToolbarItem;
+			// toolbar section
+			manageCrfToolbarItems();
+
+			// init location list
+			locationsToolbarItem = viewToolbar.getItem('location_list');
+			locationsToolbarItem.removeAll();
+			locationsToolbarItem.add('', '');
+
+			// grid section
+			if (shareData.oldProducedPartItem && currentProducedPart.Id() !== shareData.oldProducedPartItem.Id()) {
+				mbomGrid.producedPartId = currentProducedPart.Id();
+				mbomGrid.producedPartIsPhantom = currentProducedPart.getProperty('classification') == 'Phantom';
+
+				workbenchWidget.dropData('Parts');
+			}
+
+			mbomGrid.data = sharedBomData.data;
+			mbomGrid.refreshEnumerationIndex();
+			
+			if(mbomGrid.itemToRequest.getProperty('location_id')!=shareData.locationId)
+			{
+				mbomGrid.setRequestProperty('location_id', shareData.locationId || '');
+				mbomGrid.initTree(true, {isViewReload: isViewReload});
+			}
+			else
+			{
+				mbomGrid.setRequestProperty('location_id', shareData.locationId || '');
+				mbomGrid.initTree(false, {isViewReload: isViewReload});
+			}
+			
+
+			if (dataModel.rootProcessPlan) {
+				var processPlanLocations = dataModel.rootProcessPlan.getLocations();
+
+				if (processPlanLocations.length) {
+					var locationItem, locationId, i;
+
+					for (i = 0; i < processPlanLocations.length; i++) {
+						locationItem = processPlanLocations[i];
+						locationId = locationItem.getProperty('id');
+
+						locationsToolbarItem.add(locationId, locationItem.getProperty('name') || locationItem.getProperty('item_number'));
+					}
+
+					locationsToolbarItem.setSelected(shareData.locationId);
+				}
+
+				locationsToolbarItem.setEnabled(processPlanLocations.length > 0);
+
+				if (!isViewReloading && dataModel.rootProcessPlan.isModified()) {
+					mbomGrid.refreshFromModelItem(dataModel.rootProcessPlan);
+				}
+			}
+			else {
+				locationsToolbarItem.setEnabled(false);
+			}
+		}
+	}
+
+	createUIControls = function() {
+		require(['dojo/parser', 'MPP/UI/TestWorkHour/MBOMTreeGrid', 'MPP/UI/Workbench/Workbench', 'MPP/UI/Utils/UIUtils', 'dojo/_base/declare', 'MPP/UI/TestWorkHour/ConflictResolving'],
+			function (parser, MBOMTreeGrid, Workbench, UIUtils, declare, ConflictResolving) {
+				var producedPartItem = viewController.getProducedPartItem();
+				var MBOMGrid;
+
+				parser.parse();
+				uiUtils = new UIUtils({aras: aras});
+
+				// toolbar initialization
+				clientControlsFactory.createControl("Aras.Client.Controls.Public.Toolbar", {connectId: 'toolbarContainer'}, function(toolbarControl) {
+					clientControlsFactory.on(toolbarControl, {
+						'onClick': toolbarEventHandler.bind(this),
+						'onChange': toolbarEventHandler.bind(this)
+					});
+
+					toolbarControl.loadXml(this.aras.getI18NXMLResource('mbomToolbar.xml', this.aras.getBaseURL() + '/Modules/aras.innovator.solutions.MPP/'));
+					toolbarControl.show();
+
+					viewToolbar = toolbarControl;
+				}.bind(this));
+
+				// mbom grid initialization
+				sharedBomData.loadStashedData(processPlanItem);
+
+				MBOMGrid = declare([MBOMTreeGrid, ConflictResolving]);
+				mbomGrid = new MBOMGrid({
+					aras: aras,
+					dragController: viewController.dndController,
+					datamodel: dataModel,
+					data: sharedBomData.data,
+					controlsFactory: clientControlsFactory
+				});
+
+				mbomGrid.producedPartId = producedPartItem.Id();
+				mbomGrid.producedPartIsPhantom = producedPartItem.getProperty('classification') == 'Phantom';
+				mbomGrid.setRequestProperty('processplan_id', aras.getItemProperty(processPlanItem, 'id'));
+
+				clientControlsFactory.on(mbomGrid, {
+					'onDataChanged': dataChangedEventHandler.bind(this)
+				});
+
+				parent.mbomTreeGrid = mbomGrid;
+				if (parent.mbomTreeGridErrorDetails) {
+					mbomGrid.setConflict(parent.mbomTreeGridErrorDetails);
+					parent.mbomTreeGridErrorDetails = null;
+				}
+
+				// workbench initialization
+				workbenchWidget = new Workbench({
+					aras: aras,
+					datamodel: dataModel,
+					dndController: viewController.dndController,
+					gridMultiselect: true,
+					createControl: true,
+					title: uiUtils.getResource('workbench'),
+					controlType: 'iframe',
+					containerId: 'workbenchContainer',
+					supportedTypes: [' ', 'Test'],
+					workbenchData: shareData.workbenchData,
+					uiUtils: uiUtils,
+					clientControlsFactory: clientControlsFactory
+				});
+
+				registerTopMenuEventsHandlers();
+				window.addEventListener('beforeunload', onBeforeUnload);
+				isUIControlsCreated = true;
+			}
+		);
+	}
+
+	dataChangedEventHandler =  function() {
+		sharedBomData.data = mbomGrid.data;
+		sharedBomData.isDataChanged = true;
+	}
+
+	registerTopMenuEventsHandlers = function() {
+		var registerCommandHandler = topWindow.registerCommandEventHandler;
+
+		if (registerCommandHandler) {
+			menuEventHandlers.push(registerCommandHandler(window, onAfterSaveCommand, 'after', 'save'));
+			menuEventHandlers.push(registerCommandHandler(window, onAfterSaveCommand, 'after', 'unlock'));
+			menuEventHandlers.push(registerCommandHandler(window, onBeforeRefreshCommand, 'before', 'refresh'));
+		}
+	}
+
+	unRegisterTopMenuEventsHandlers = function() {
+		var unregisterCommandHandler = topWindow.unregisterCommandEventHandler;
+
+		if (unregisterCommandHandler) {
+			for (var i = 0; i < menuEventHandlers.length; i++) {
+				unregisterCommandHandler(menuEventHandlers[i]);
+			}
+		}
+	}
+
+	onAfterSaveCommand = function() {
+		mbomGrid.dropStashedData();
+	}
+
+	onBeforeRefreshCommand = function() {
+		mbomGrid.dropStashedData(sharedBomData.isDataChanged ? 'ebom' : '');
+
+		return true;
+	}
+
+	onBeforeUnload = function() {
+		//remove registered handlers
+		mbomGrid.removeWaitTearoffListeners();
+		unRegisterTopMenuEventsHandlers();
+		window.removeEventListener('beforeunload', onBeforeUnload);
+	}
+	
+	//Modify by tengz 
+	toolbarEventHandler = function(toolbarItem) {
+		var toolbarItemId = toolbarItem.getId();
+
+		switch (toolbarItemId) {
+			case 'location_list':
+				var selectedValue = toolbarItem.getSelectedItem();
+				var previousValue = shareData.locationId;
+
+				if (selectedValue !== shareData.locationId) {
+					mbomGrid.setRequestProperty('location_id', selectedValue);
+					dataModel.setFilterParameter('locationId', selectedValue, true);
+					shareData.locationId = selectedValue;
+
+					viewController.performActionWithDirtyCheck(function(wasSaved) {
+						parent.setItem(processPlanItem);
+						
+						if (!wasSaved) {
+							dataModel.updateProcessPlansHash();
+						}
+						
+						mbomGrid.dropStashedData();
+						mbomGrid.initTree();
+						
+						
+					}, function() {
+						mbomGrid.setRequestProperty('location_id', previousValue);
+						dataModel.setFilterParameter('locationId', previousValue, true);
+
+						toolbarItem.setSelected(previousValue);
+						shareData.locationId = previousValue;
+					},
+					{message: uiUtils.getResource('warning.changeUnsavedItemLocation')});
+				}
+				break;
+			case 'crf_use_my':
+				mbomGrid.clickUseMy();
+				break;
+			case 'crf_use_other':
+				mbomGrid.clickUseOthers();
+				break;
+		}
+	}
+	</script>
+</head>
+<body class="claro">
+	<div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="gutters:false, liveSplitters:false" id="borderContainer">
+		<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'" id="toolbarContainer" style="height:30px; overflow:hidden;"></div>
+		<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center', splitter:true" id="mbom_grid" style="height:70%;"></div>
+		<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom', splitter:true" id="workbenchContainer" style="position:relative; overflow:hidden; height:30%;"></div>
+	</div>
+</body>
+</html>

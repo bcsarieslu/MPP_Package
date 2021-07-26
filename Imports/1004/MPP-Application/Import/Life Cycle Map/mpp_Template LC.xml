@@ -1,0 +1,103 @@
+﻿<AML>
+  <Item type="Life Cycle Map" id="42AE32F6DD144096B313BC6DE57D9F9D" action="add">
+    <description>MPP範本 狀態週期</description>
+    <start_state type="Life Cycle State">4E05C563C8584BA49AC9F37367CE9B98</start_state>
+    <name>mpp_Template LC</name>
+    <Relationships>
+      <Item type="Life Cycle State" id="2A1F2F08165B436187966C371E014FAC" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <label xml:lang="zc">啟用</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>256</sort_order>
+        <x>477</x>
+        <y>151</y>
+        <name>Activate</name>
+      </Item>
+      <Item type="Life Cycle State" id="C336AEAC4AB34854AB7B5D4FF29846C6" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <label xml:lang="zc">停用</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>384</sort_order>
+        <x>361</x>
+        <y>269</y>
+        <name>Disable</name>
+      </Item>
+      <Item type="Life Cycle State" id="4E05C563C8584BA49AC9F37367CE9B98" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <label xml:lang="zc">未啟用</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>128</sort_order>
+        <x>224</x>
+        <y>152</y>
+        <name>Pending</name>
+      </Item>
+      <Item type="Life Cycle Transition" id="4E660604ABD54044B895FD71C2B277BC" action="add">
+        <from_state type="Life Cycle State">2A1F2F08165B436187966C371E014FAC</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>Owner</name>
+          </Item>
+        </role>
+        <segments>360,107</segments>
+        <sort_order>256</sort_order>
+        <to_state type="Life Cycle State">4E05C563C8584BA49AC9F37367CE9B98</to_state>
+        <x>-141</x>
+        <y>-69</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="721E89BFEB1C4FC2B5F6CC475517A6A1" action="add">
+        <from_state type="Life Cycle State">2A1F2F08165B436187966C371E014FAC</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>Owner</name>
+          </Item>
+        </role>
+        <sort_order>384</sort_order>
+        <to_state type="Life Cycle State">C336AEAC4AB34854AB7B5D4FF29846C6</to_state>
+      </Item>
+      <Item type="Life Cycle Transition" id="9DBE137D21464F97B252EF922DECD334" action="add">
+        <from_state type="Life Cycle State">4E05C563C8584BA49AC9F37367CE9B98</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>Owner</name>
+          </Item>
+        </role>
+        <segments />
+        <sort_order>128</sort_order>
+        <to_state type="Life Cycle State">2A1F2F08165B436187966C371E014FAC</to_state>
+        <x>108</x>
+        <y>10</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="CE5A132DCA384DB3ADCEAA0C69C84F30" action="add">
+        <from_state type="Life Cycle State">4E05C563C8584BA49AC9F37367CE9B98</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>Owner</name>
+          </Item>
+        </role>
+        <sort_order>512</sort_order>
+        <to_state type="Life Cycle State">C336AEAC4AB34854AB7B5D4FF29846C6</to_state>
+      </Item>
+      <Item type="Life Cycle Transition" id="E29D77ACAD3A426AAF47E7DBEA3B80F1" action="add">
+        <from_state type="Life Cycle State">C336AEAC4AB34854AB7B5D4FF29846C6</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>Owner</name>
+          </Item>
+        </role>
+        <segments>238,266</segments>
+        <sort_order>640</sort_order>
+        <to_state type="Life Cycle State">4E05C563C8584BA49AC9F37367CE9B98</to_state>
+        <x>-149</x>
+        <y>-2</y>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

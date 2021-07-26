@@ -1,0 +1,81 @@
+﻿<AML>
+  <Item type="Method" action="add" id="075B11DAEC8445F9886B45C0F5E106DC">
+    <comments>AO-09011</comments>
+	<execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[/*
+ * 設定方式
+ * Workflow Map : PPR Workflow
+ * Activity : End
+ * Server Events : onActive
+ * Add by tengz 2019/9/26
+ * 变更标准工序库后同步更新使用到标准工序库的MPP工序
+ */
+
+Innovator inn = this.getInnovator();
+
+Aras.Server.Security.Identity plmIdentity = Aras.Server.Security.Identity.GetByName("Aras PLM");
+bool PermissionWasSet = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity);
+
+try {
+    Item changePropertyVar=inn.getItemByKeyedName("Variable","bcs_mpp_OperationChangePropertys");
+    if(changePropertyVar==null)
+    {
+        return inn.newError("未设置标准工序库与MPP工序同步属性!");
+    }
+    string[] propertys=changePropertyVar.getProperty("value","").Split(',');
+    if(propertys.Length<1)
+    {
+        return inn.newError("未设置标准工序库与MPP工序同步属性!");
+    }
+    
+    Item workflowDocumentFromActivity = this.apply("Get My Controlled Item");
+    Item relationshipAndRelatedItem = inn.newItem("PPR Affected Item", "get");
+    relationshipAndRelatedItem.setAttribute("select", "related_id(action,new_item_id)");
+    relationshipAndRelatedItem.setProperty("source_id", workflowDocumentFromActivity.getID());
+    relationshipAndRelatedItem = relationshipAndRelatedItem.apply();
+    
+    for (int i = 0; i < relationshipAndRelatedItem.getItemCount(); i++) {
+        Item relatedItem = relationshipAndRelatedItem.getItemByIndex(i).getRelatedItem();
+        string new_item_id=relatedItem.getProperty("new_item_id");
+        if(relatedItem.getProperty("action", "")== "Change")
+        {
+            Item changeItem=inn.getItemById("Change Controlled Item",new_item_id);
+            if(changeItem.getType()!="mpp_OperationTemplate")
+            {
+                continue;
+            }
+            
+            Item affectedOperations=inn.applySQL("select id from innovator.mpp_operation where bcs_template='"+new_item_id+"'");
+            if(affectedOperations.getItemCount()<1){continue;}
+            string sql="";
+            foreach(string property in propertys)
+            {
+                sql+=property+"=N'"+changeItem.getProperty(property,"")+"',";
+            }
+            sql=sql.Substring(0,sql.Length-1);
+            for(int m=0;m<affectedOperations.getItemCount();m++)
+            {
+                Item affectedOperation=affectedOperations.getItemByIndex(m);
+                Item result=inn.applySQL("update innovator.mpp_operation set "+sql+" where id='"+affectedOperation.getID()+"'");
+                if(result.isError())
+                {
+                    return result;
+                }
+            }
+        }
+    }
+
+} catch (Exception ex) {
+    throw new Exception(ex.Message);
+} finally {
+    if (PermissionWasSet) Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity);
+}
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_mpp_ChangeMppOperation</name>
+  </Item>
+</AML>

@@ -1,0 +1,42 @@
+﻿<AML>
+ <Item type="SQL" id="F5A7814C6BF940E89C9649A83A235349" action="add">
+  <execution_count>9</execution_count>
+  <execution_flag>immediate</execution_flag>
+  <old_name>mpp_SetNvarcharMaxForWIDetailsProps</old_name>
+  <sqlserver_body><![CDATA[CREATE PROCEDURE [mpp_SetNvarcharMaxForWIDetailsProps] (@tableName varchar(32))
+AS 
+  BEGIN 
+	DECLARE @SQLString nvarchar(500)
+	DECLARE @suffix nvarchar(4) 
+
+	DECLARE languageSuffixCursor CURSOR LOCAL FOR  
+	SELECT SUFFIX FROM innovator.[LANGUAGE]
+
+	IF NOT EXISTS (
+		SELECT 1 
+		FROM sys.tables t 
+		JOIN sys.columns c on t.object_id = c.object_id
+		WHERE t.name = @tableName AND c.name LIKE 'wi_details%' AND c.max_length <> -1
+	)
+	RETURN;
+
+	OPEN languageSuffixCursor   
+	FETCH NEXT FROM languageSuffixCursor INTO @suffix   
+
+	WHILE @@FETCH_STATUS = 0   
+	BEGIN   
+		SET @SQLString = 'ALTER TABLE innovator.' + @tableName + ' ALTER COLUMN wi_details' + COALESCE(@suffix, '') + ' nvarchar(max)'
+		EXECUTE sp_executesql @SQLString
+
+		FETCH NEXT FROM languageSuffixCursor INTO @suffix   
+	END   
+
+	CLOSE languageSuffixCursor   
+	DEALLOCATE languageSuffixCursor
+  END]]></sqlserver_body>
+  <stale>0</stale>
+  <transform_first>0</transform_first>
+  <type>procedure</type>
+  <name>mpp_SetNvarcharMaxForWIDetailsProps</name>
+ </Item>
+</AML>

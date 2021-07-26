@@ -1,0 +1,48 @@
+﻿<AML>
+  <Item type="Method" action="add" id="6C18F6054EE64B09BA712DF2CE7EB3A0">
+    <comments>AO-09011</comments>
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[//Add by tengz 2020/2/5
+//MPP状态转变时更新Operation关系类的浮动模式
+
+// System.Diagnostics.Debugger.Break();
+Innovator inn=this.getInnovator();
+
+Item mpp=inn.newItem("mpp_processplan","getItemLastVersion");
+mpp.setID(this.getID());
+mpp=mpp.apply();
+
+Item itemType=inn.getItemByKeyedName("itemtype","mpp_Operation");
+//读取Operation所有关系类
+Item RelationshipTypes=inn.newItem("RelationshipType","get");
+RelationshipTypes.setAttribute("select","name");
+RelationshipTypes.setProperty("source_id",itemType.getID());
+RelationshipTypes=RelationshipTypes.apply();
+//读取MPP所有Operation
+Item operations=inn.newItem("mpp_Operation","get");
+operations.setAttribute("select","id,behavior");
+operations.setProperty("source_id",mpp.getID());
+operations=operations.apply();
+for(int i=0;i<operations.getItemCount();i++)
+{
+    Item operation=operations.getItemByIndex(i);
+    for(int j=0;j<RelationshipTypes.getItemCount();j++)
+    {
+        Item RelationshipType=RelationshipTypes.getItemByIndex(j);
+        
+        Item result=inn.newItem(RelationshipType.getProperty("name"),"edit");
+        result.setAttribute("where","source_id='"+operation.getID()+"'");
+        result.setProperty("behavior",operation.getProperty("behavior",""));
+        result=result.apply();
+    }
+}
+
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_setOperationRelationBehavior</name>
+  </Item>
+</AML>

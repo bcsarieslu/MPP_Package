@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="127A909702634D988B56F361912174D1" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Can't resolve structure for this Part. Several Process Plans were found.</text>
+  <name>mpp_multiplePlansError</name>
+ </Item>
+</AML>

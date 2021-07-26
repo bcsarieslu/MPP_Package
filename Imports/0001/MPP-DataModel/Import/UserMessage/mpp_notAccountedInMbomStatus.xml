@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="BAEAD2845CFC437188561000586441DA" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Not accounted in MBOM</text>
+  <name>mpp_notAccountedInMbomStatus</name>
+ </Item>
+</AML>

@@ -1,0 +1,3 @@
+﻿<imports>
+  <package name="com.aras.innovator.solution.MPP-Application" path="MPP-Application\import" />
+</imports>

@@ -1,0 +1,7 @@
+<sections creation="20120528 175222">
+  <section name="support" >
+	<item name="showdatabases" value="true" />
+	<item name="ad" value="false" />
+	<item name="automaticallylogin" value="true" />
+  </section>
+</sections>

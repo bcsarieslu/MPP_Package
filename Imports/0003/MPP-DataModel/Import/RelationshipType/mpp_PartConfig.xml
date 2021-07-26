@@ -1,0 +1,451 @@
+﻿<AML>
+ <Item type="RelationshipType" id="7A71885D25F04627A1A4DD4614D9F3DF" action="add" dependencyLevel="0">
+  <auto_search>1</auto_search>
+  <behavior>float</behavior>
+  <copy_permissions>0</copy_permissions>
+  <create_related>0</create_related>
+  <hide_in_all>0</hide_in_all>
+  <inc_rel_key_name>1</inc_rel_key_name>
+  <inc_related_key_name>1</inc_related_key_name>
+  <is_list_type>0</is_list_type>
+  <label xml:lang="en">MPP Custom Part Mapping</label>
+  <new_show_related>0</new_show_related>
+  <related_notnull>0</related_notnull>
+  <related_option>2</related_option>
+  <relationship_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">
+   <Item type="ItemType" id="05E304F810104E1BAED44B9BBA901030" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <enforce_discovery>0</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>MPP_PARTCONFIG</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>1</is_relationship>
+    <is_versionable>0</is_versionable>
+    <label xml:lang="en">MPP Custom Part Mapping</label>
+    <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs off</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>1</use_src_access>
+    <name>mpp_PartConfig</name>
+    <Relationships>
+     <Item type="Property" id="D38B7D45E90A4585981DAAF7565D9DC9" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Part BOM ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>5120</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>bom_it_name</name>
+     </Item>
+     <Item type="Property" id="483082A68DE044CBAE0779E35DE7D17F" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Part BOM Quantity Property Name</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>6144</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>bom_quantity_p_name</name>
+     </Item>
+     <Item type="Property" id="DEC55069DB1144DD8610EED2EAC4DEE3" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">BOM Substitute ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>5888</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>bom_substitute_it_name</name>
+     </Item>
+     <Item type="Property" id="ABFAF8D48722480597FF7A4FAFCA325E" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Part BOM ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>5248</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>default_bom_it_name</name>
+     </Item>
+     <Item type="Property" id="112396FA0BA849E1AD54A908579DF72F" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Part BOM Quantity Property Name</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>6272</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>default_bom_quantity_p_name</name>
+     </Item>
+     <Item type="Property" id="389FFD3217B743188577260E6A4EB393" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default BOM Substitute ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>6016</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>default_bom_substitute_it_name</name>
+     </Item>
+     <Item type="Property" id="265F58B426C04AF2A78C2BEC6CD25F6D" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Part Item Number Property</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4224</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>default_item_number_p_name</name>
+     </Item>
+     <Item type="Property" id="BE9EB588A9B4446EBCC3E7F7F8F36B93" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Make/Buy Property</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4480</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>default_make_buy_p_name</name>
+     </Item>
+     <Item type="Property" id="040944C161264535A14DC06EDC702FD2" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default MBOM Only Class Path</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4992</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>512</stored_length>
+      <track_history>0</track_history>
+      <name>default_mbom_only_class_path</name>
+     </Item>
+     <Item type="Property" id="76EC1FB60A2D46BFB770E77A04A94EEF" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Part Name Property</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>3968</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>default_name_p_name</name>
+     </Item>
+     <Item type="Property" id="B992346E20834A67BFC57ED7F85722CE" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Part Alternate ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>5760</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>default_part_alternate_it_name</name>
+     </Item>
+     <Item type="Property" id="73D80B5A60E24E4090795E3CBE8A76B5" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Part ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>3712</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>default_part_it_name</name>
+     </Item>
+     <Item type="Property" id="0521C1316D7645DE950AA4EA710E543C" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>1</is_required>
+      <label xml:lang="en">Default Phantom Class Path</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4736</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>512</stored_length>
+      <track_history>0</track_history>
+      <name>default_phantom_class_path</name>
+     </Item>
+     <Item type="Property" id="C8F09C4E73BA4FCBA0D0667FFA65F473" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Part Item Number Property</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4096</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>item_number_p_name</name>
+     </Item>
+     <Item type="Property" id="F1802069821E4D7C8CBD38E035C097DE" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Part Make/Buy Property</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4352</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>make_buy_p_name</name>
+     </Item>
+     <Item type="Property" id="15A1C770010B41DFAF89FF7C9C3A93D6" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">MBOM Only Part Class Path</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4864</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>64</stored_length>
+      <track_history>0</track_history>
+      <name>mbom_only_class_path</name>
+     </Item>
+     <Item type="Property" id="EE28DFC99E3549FD9A587C3E409FCF38" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Part Name Property</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>3840</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>32</stored_length>
+      <track_history>0</track_history>
+      <name>name_p_name</name>
+     </Item>
+     <Item type="Property" id="9461C461ED18423F9702332811BFA66C" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Part Alternate ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>5632</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>part_alternate_it_name</name>
+     </Item>
+     <Item type="Property" id="B45AEE24CE94412FA8B742996608A9CB" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Part ItemType</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>3584</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>30</stored_length>
+      <track_history>0</track_history>
+      <name>part_it_name</name>
+     </Item>
+     <Item type="Property" id="09C116B3091A4914A69A89331A60E62F" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Phantom Class Path</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>4608</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <stored_length>512</stored_length>
+      <track_history>0</track_history>
+      <name>phantom_class_path</name>
+     </Item>
+     <Item type="View" id="734FA8840129407E9458F10BEBB46F4E" action="add">
+      <client>js</client>
+      <related_id keyed_name="mpp_PartConfig" type="Form">F778E3AC0DE24AD5BA28300A10EF54B2</related_id>
+      <role keyed_name="World" type="Identity">
+       <Item type="Identity" action="get" select="id">
+        <name>World</name>
+       </Item>
+      </role>
+      <show_ssvc>0</show_ssvc>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+      <type>default</type>
+     </Item>
+     <Item type="Server Event" id="27090E63CCA44A95929033641BE7FAC0" action="add">
+      <event_version>version_1</event_version>
+      <is_required>1</is_required>
+      <related_id keyed_name="mpp_changePartItemType" type="Method">
+       <Item type="Method" action="get" select="id">
+        <name>mpp_changePartItemType</name>
+       </Item>
+      </related_id>
+      <server_event>onAfterUpdate</server_event>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+     </Item>
+     <Item type="Server Event" id="4D8C390460B742D58BB830463706C78E" action="add">
+      <event_version>version_1</event_version>
+      <is_required>1</is_required>
+      <related_id keyed_name="mpp_ValidatePartConfig" type="Method">
+       <Item type="Method" action="get" select="id">
+        <name>mpp_ValidatePartConfig</name>
+       </Item>
+      </related_id>
+      <server_event>onBeforeUpdate</server_event>
+      <sort_order>256</sort_order>
+      <source_id keyed_name="mpp_PartConfig" type="ItemType" name="mpp_PartConfig">05E304F810104E1BAED44B9BBA901030</source_id>
+     </Item>
+    </Relationships>
+   </Item>
+  </relationship_id>
+  <sort_order>1920</sort_order>
+  <source_id keyed_name="Preference" type="ItemType" name="Preference">7C63771EBC8D46FE8E902C5188033515</source_id>
+  <name>mpp_PartConfig</name>
+  <Relationships>
+   <Item type="Relationship View" id="38F46CE437A0497BB1209752637EF630" action="add">
+    <parameters>"mpp_PartConfig"</parameters>
+    <related_id keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_PartConfig" type="RelationshipType">7A71885D25F04627A1A4DD4614D9F3DF</source_id>
+    <start_page>SitePreference/commonTabPage.html</start_page>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

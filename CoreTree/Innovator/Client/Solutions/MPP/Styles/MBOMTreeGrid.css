@@ -1,0 +1,7 @@
+﻿.component.dojoxGridRow .aras_grid_checkbox {
+	background-image: url('../../../images/checkbox-disabled.svg');
+}
+
+.component.dojoxGridRow .aras_grid_checkbox.checked {
+	background-image: url('../../../images/checkbox-disabled-checked.svg');
+}

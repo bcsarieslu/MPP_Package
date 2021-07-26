@@ -1,0 +1,19 @@
+﻿<AML>
+  <Item type="Property" id="1DE3AFF4C60140809B66EDA3908F74C4" action="add">
+    <column_alignment>left</column_alignment>
+    <data_type>image</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="zc">Image</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>3072</sort_order>
+    <source_id type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+    <track_history>0</track_history>
+    <name>bcs_image</name>
+  </Item>
+</AML>

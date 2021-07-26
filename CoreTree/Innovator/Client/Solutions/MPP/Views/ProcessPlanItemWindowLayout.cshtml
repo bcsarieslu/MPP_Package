@@ -1,0 +1,511 @@
+﻿@{
+	Layout = "../../../Modules/aras.innovator.core.ItemWindow/Views/Shared/_cuiTabItemViewLayout.cshtml";
+}
+
+@section extra_header
+{
+	<script type="text/javascript">
+		var processPlanItem = item;
+		var tabsWasSelected = false; //TODO: the flag should be reset on Save, Refresh, Lock
+		var defaultSetItem = window.setItem;
+		var savedGridHeight = null;
+		var modelItemChangeHandler;
+		var menuEventHandlers = [];
+		var uiUtils = null;
+		var partConfig = null;
+		var viewController = {
+			views: {},
+			dataModel: null,
+			activeViewer: null,
+			shareData: {
+				producedPartItem: null,
+				oldProducedPartItem: null,
+				workbenchData: {
+					gridHeaders: {},
+					gridItems: {}
+				},
+				BOM: {
+					isDataChanged: false,
+					isPartlyLoaded: false,
+					loadStashedData: function(targetItem) {
+						if (targetItem && !this.isDataChanged) {
+							var mbomGridHeaderData = aras.getItemProperty(targetItem, 'bomSnapshot_mbomGridHeader');
+							var ebomGridHeaderData = aras.getItemProperty(targetItem, 'bomSnapshot_ebomGridHeader');
+							var mbomItemsData = aras.getItemProperty(targetItem, 'bomSnapshot_mbomItems');
+							var ebomItemsData = aras.getItemProperty(targetItem, 'bomSnapshot_ebomItems');
+
+							if (mbomItemsData && ebomItemsData && mbomGridHeaderData && ebomGridHeaderData) {
+								this.data = {
+									mbomGridHeader: mbomGridHeaderData,
+									ebomGridHeader: ebomGridHeaderData,
+									mbomItems: JSON.parse(mbomItemsData),
+									ebomItems: JSON.parse(ebomItemsData)
+								}
+
+								this.isDataChanged = true;
+							}
+						}
+					},
+					stashDataChanges: function(targetItem) {
+						if (targetItem && this.isDataChanged) {
+							// data stashed in separate properties, because JSON.stringify call can significantly encrease
+							// memory consumption for short period(browser crashes in some cases), if will be called on big MBOM structures for full BOM object
+							aras.setItemProperty(targetItem, 'bomSnapshot_mbomGridHeader', this.data.mbomGridHeader);
+							aras.setItemProperty(targetItem, 'bomSnapshot_mbomItems', JSON.stringify(this.data.mbomItems));
+
+							aras.setItemProperty(targetItem, 'bomSnapshot_ebomGridHeader', this.data.ebomGridHeader);
+							aras.setItemProperty(targetItem, 'bomSnapshot_ebomItems', JSON.stringify(this.data.ebomItems));
+						}
+					},
+					dropData: function() {
+						this.data = null;
+						this.isDataChanged = false;
+					},
+					data: null
+				}
+			},
+
+			addViewer: function(viewerName, viewerControl) {
+				if (viewerName && viewerControl) {
+					this.views[viewerName] = viewerControl;
+				}
+			},
+
+			getViewer: function(viewerName) {
+				return this.views[viewerName];
+			},
+
+			loadViewer: function(viewerName, targetItem) {
+				if (viewerName && viewerName !== this.activeViewer) {
+					var targetViewer = this.views[viewerName];
+
+					this.unloadViewer(this.activeViewer);
+
+					if (targetViewer) {
+						this.activeViewer = viewerName;
+						aras.browserHelper.toggleSpinner(document, true);
+
+						// setTimeout is required, because IE doesn't show spinner till loadViewer method will be finished
+						setTimeout(function() {
+							var viewerWindow = targetViewer.domNode.contentWindow || targetViewer.domNode.ownerDocument.defaultView;
+
+							if (viewerWindow && viewerWindow.loadView) {
+								viewerWindow.loadView(targetItem);
+							}
+
+							aras.browserHelper.toggleSpinner(document, false);
+						}.bind(this), 0);
+					}
+				}
+			},
+
+			reloadActiveViewer: function(newItem) {
+				if (this.activeViewer) {
+					var targetViewer = this.views[this.activeViewer];
+
+					if (targetViewer) {
+						var viewerWindow = targetViewer.domNode.contentWindow || targetViewer.domNode.ownerDocument.defaultView;
+
+						if (viewerWindow && viewerWindow.reloadView) {
+							viewerWindow.reloadView(newItem);
+						}
+					}
+				}
+			},
+
+			unloadViewer: function(viewerName) {
+				if (viewerName) {
+					var targetViewer = this.views[viewerName];
+
+					if (targetViewer) {
+						var viewerWindow = targetViewer.domNode.contentWindow || targetViewer.domNode.ownerDocument.defaultView;
+
+						if (viewerWindow && viewerWindow.unloadView) {
+							viewerWindow.unloadView();
+						}
+					}
+
+					this.activeViewer = null;
+				}
+			},
+
+			performActionWithDirtyCheck: function(actionHandler, rejectHandler, optionalParameters) {
+				if (actionHandler && typeof actionHandler == 'function') {
+					var hasChanges = aras.isDirtyEx(processPlanItem);
+
+					optionalParameters = optionalParameters || {};
+
+					if (hasChanges) {
+						var dialogParams = {
+							buttons: {
+								btnSaveAndChange: aras.getResource('', 'item_methods_ex.save_first'),
+								btnCancel: aras.getResource('', 'common.cancel')
+							},
+							defaultButton: 'btnCancel',
+							message: optionalParameters.message || uiUtils.getResource('warning.actionOnUnsavedItem'),
+							aras: aras,
+							dialogWidth: 400,
+							dialogHeight: 200,
+							center: true,
+							content: 'groupChgsDialog.html'
+						};
+
+						topWindow.ArasModules.Dialog.show('iframe', dialogParams).promise.then(function (buttonId) {
+							if (buttonId === 'btnSaveAndChange') {
+								if (topWindow.onSaveCommand()) {
+									actionHandler(true);
+								}
+								else {
+									rejectHandler();
+								}
+							}
+							else if (rejectHandler && typeof rejectHandler == 'function') {
+								rejectHandler();
+							}
+						});
+					}
+					else {
+						actionHandler(false);
+					}
+				}
+			},
+
+			getProducedPartItem: function() {
+				var dataModelPlan = this.dataModel.rootProcessPlan;
+				var producedPartItem = dataModelPlan && dataModelPlan.getProducedPart();
+
+				if (!producedPartItem) {
+					var producedPartXPath = 'Relationships/Item[@@type="mpp_ProcessPlanProducedPart"]/related_id/Item[@@type="'+ partConfig.part_it_name +'"]';
+					var producedPartNode = processPlanItem.selectSingleNode(producedPartXPath);
+
+					if (producedPartNode) {
+						producedPartItem = this.dataModel.elementFactory.createElementFromItemNode(producedPartNode);
+					}
+				}
+
+				return producedPartItem;
+			}
+		};
+
+		fixRelationshipsGridHandlers = function() {
+			//we need to apply a temp fix because the problem in Innovator.git after commit cc49053f9f9431c18a1226d5c1db563f454c6ebd.
+			//this temp fix should be removed if it will be fixed in Innovator.git
+			//START of temp fix
+			var i,
+				iframe;
+			
+			for (i = 0; i < window.frames.length; i++) {
+				iframe = window.frames[i];
+				if (iframe && iframe.whenGetResponse && !iframe.whenGetResponseFakedByMpp) {
+					iframe.whenGetResponseFakedByMpp = true;
+					iframe.whenGetResponse = iframe.eval('(' + iframe.whenGetResponse.toString().replace('grid.grid_Experimental.domNode.focus();', '') + ')');
+				}
+			}
+			//END of temp fix
+		}
+		
+		var setEditModeBase = setEditMode;
+		var setEditMode = function() {
+			//HACK: see content of the function below
+			fixRelationshipsGridHandlers();
+			setEditModeBase(arguments);
+		}
+
+		var setViewModeBase = setViewMode;
+		var setViewMode = function() {
+			//HACK: see content of the function below
+			fixRelationshipsGridHandlers();
+			setViewModeBase(arguments);
+		}
+
+		setItem = function(newItem) {
+			var dataModel = viewController.dataModel;
+
+			if (defaultSetItem) {
+				defaultSetItem(newItem);
+			}
+
+			processPlanItem = newItem;
+			dataModel.Reload(newItem);
+			setShareData();
+			dataModel.setFilterParameter('locationId', viewController.shareData.locationId);
+
+			// update share data before view reloading
+			viewController.reloadActiveViewer(newItem);
+		}
+
+		dojoConfig.packages.push({name: 'MPP', location: '../../Modules/aras.innovator.solutions.MPP/Scripts'}, {name: 'TechDoc', location: '../../Modules/aras.innovator.TDF/Scripts'});
+		
+		//Modify by tengz
+		require(dojoConfig, ['dojo/ready', 'dojo/_base/connect', 'MPP/Model/Model', 'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/PPViewer',
+			'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/EBOMViewer', 'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/MBOMViewer',
+			'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/HeadFootViewer','Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/TestWorkHourViewer',
+			'MPP/UI/ProcessPlan/DnD/DndController', 'MPP/UI/Utils/UIUtils', 'MPP/Model/PartConfig', 'dojo/domReady!'],
+			function (ready, connect, Model, PPViewer, EBOMViewer, MBOMViewer,HeadFootViewer,TestWorkHourViewer, DnDController, UIUtils, PartConfig) {
+				ready(function () {
+					var tabViewContol = window.getViewersTabs();
+					var currentViewer;
+
+					uiUtils = new UIUtils({ aras: aras });
+					partConfig = PartConfig;
+					loadEnvironmentSettings();
+
+					// datamodel initialization
+					viewController.dataModel = new Model({ aras: aras, item: processPlanItem });
+					viewController.dndController = new DnDController();
+
+					// viewers initialization
+					viewController.addViewer('formTab', tabViewContol.getTabById('formTab'));
+					viewController.activeViewer = 'formTab';
+
+					currentViewer = new PPViewer();
+					viewController.addViewer('pp_viewer', currentViewer);
+					tabViewContol.createTab(currentViewer, 'pp_viewer');
+
+					currentViewer = new EBOMViewer();
+					viewController.addViewer('ebom_viewer', currentViewer);
+					tabViewContol.createTab(currentViewer, 'ebom_viewer');
+
+					currentViewer = new MBOMViewer();
+					viewController.addViewer('mbom_viewer', currentViewer);
+					tabViewContol.createTab(currentViewer, 'mbom_viewer');
+					
+					//Add by tengz 2019/6/24 MPP
+					//页头页尾页面
+					currentViewer = new HeadFootViewer();
+					viewController.addViewer('headerfooter_viewer', currentViewer);
+					tabViewContol.createTab(currentViewer, 'headerfooter_viewer');
+					
+					//Add by tengz 2019/7/24 MPP
+					//检验项目&工时定额页面
+					currentViewer = new TestWorkHourViewer();
+					viewController.addViewer('testworkhour_viewer', currentViewer);
+					tabViewContol.createTab(currentViewer, 'testworkhour_viewer');
+					
+					setShareData();
+					viewController.dataModel.setFilterParameter('locationId', viewController.shareData.locationId);
+
+					// register events
+					connect.connect(tabViewContol, 'onSelectTab', onSelectTabHandler);
+					connect.connect(tabViewContol, 'onPreSelectTab', onPreSelectTabHandler);
+
+					registerTopMenuEventsHandlers();
+					window.addEventListener('beforeunload', onBeforeUnload);
+					modelItemChangeHandler = viewController.dataModel.addEventListener(window, null, 'onModelItemChanged', onModelItemChanged);
+				});
+			});
+		onSelectTabHandler = function(sender, eventArguments) {
+			viewController.loadViewer(eventArguments.id, processPlanItem);
+		}
+
+		onPreSelectTabHandler = function(sender, eventArguments) {
+			var targetTabId = eventArguments.id;
+
+			if (targetTabId !== 'formTab') {
+				if (!viewController.getProducedPartItem()) {
+					aras.AlertWarning(uiUtils.getResource('warning.addProducedPart'));
+					return true;
+				}
+				if (!viewController.dataModel.rootProcessPlan) {
+					aras.AlertWarning(uiUtils.getResource('warning.saveProcessPlan'));
+					return true;
+				}
+			}
+
+			viewController.unloadViewer(viewController.activeViewer);
+		}
+
+		setShareData = function() {
+			// share data initialization
+			var rootProcessPlan = viewController.dataModel.rootProcessPlan;
+
+			if (rootProcessPlan) {
+				var processPlanLocations = rootProcessPlan.getLocations();
+				var shareData = viewController.shareData;
+				var sharedLocationId = shareData.locationId;
+				var isLocationExists, locationId, producedPartItem;
+
+				// set shared locationId
+				if (processPlanLocations.length && (sharedLocationId || sharedLocationId === undefined)) {
+					for (i = 0; i < processPlanLocations.length; i++) {
+						locationItem = processPlanLocations[i];
+						locationId = locationItem.getProperty('id');
+
+						if (sharedLocationId && locationId == sharedLocationId) {
+							isLocationExists = true;
+							break;
+						}
+					}
+
+					sharedLocationId = isLocationExists ? sharedLocationId : processPlanLocations[0].getProperty('id');
+				}
+
+				//Modify by tengz 2019/6/24 MPP
+				//打开ProcessPlan Tree页面时Location设置默认为空
+				//shareData.locationId = sharedLocationId;
+				
+				// set shared producedPartId
+				producedPartItem = viewController.getProducedPartItem();
+
+				shareData.oldProducedPartItem = (shareData.producedPartItem && shareData.producedPartItem.Clone()) || shareData.oldProducedPartItem;
+				shareData.producedPartItem = producedPartItem;
+			}
+		}
+
+		loadEnvironmentSettings = function() {
+			var environmentSettings = aras.getItemProperty(processPlanItem, 'environmentSettings');
+
+			if (environmentSettings) {
+				var shareData = viewController.shareData;
+
+				environmentSettings = JSON.parse(environmentSettings);
+
+				shareData.locationId = environmentSettings.locationId;
+				shareData.languageCode = environmentSettings.languageCode;
+			}
+		}
+
+		registerTopMenuEventsHandlers = function() {
+			if (registerCommandEventHandler) {
+				menuEventHandlers.push(registerCommandEventHandler(window, onBeforeSaveCommand, 'before', 'save'));
+				menuEventHandlers.push(registerCommandEventHandler(window, onBeforeSaveCommand, 'before', 'unlock'));
+
+				menuEventHandlers.push(registerCommandEventHandler(window, onAfterSaveCommand, 'after', 'save'));
+				menuEventHandlers.push(registerCommandEventHandler(window, onAfterSaveCommand, 'after', 'unlock'));
+
+				menuEventHandlers.push(registerCommandEventHandler(window, onAfterEditCommand, 'after', 'edit'));
+			}
+		}
+
+		unRegisterTopMenuEventsHandlers = function() {
+			if (unregisterCommandEventHandler) {
+				for (var i = 0; i < menuEventHandlers.length; i++) {
+					unregisterCommandEventHandler(menuEventHandlers[i]);
+				}
+			}
+		}
+
+		onModelItemChanged = function(modelItem) {
+			if (!aras.isDirtyEx(processPlanItem)) {
+				processPlanItem.setAttribute('isDirty', '1');
+				processPlanItem.setAttribute('action', 'update');
+
+				if (updateItemsGrid) {
+					updateItemsGrid(processPlanItem);
+				}
+			}
+		}
+
+		onBeforeUnload = function() {
+			var registeredPlans = viewController.dataModel.getRegisteredProcessPlans();
+			var stashedChanges = {};
+			var processPlan, processPlanId, i;
+			var currentTooltipDialog = uiUtils.getCurrentTooltipDialog();
+
+			if (currentTooltipDialog && currentTooltipDialog.isActive()) {
+				currentTooltipDialog.cancel();
+			}
+
+			for (i = 0; i < registeredPlans.length; i++) {
+				processPlan = registeredPlans[i];
+				processPlanId = processPlan.Id();
+
+				if (processPlan && processPlan.isModified()) {
+					stashedChanges[processPlanId] = processPlan.serializeToAml({fullHierarchy: true, onlyChanges: false, expandRelated: true});
+				}
+			}
+
+			if (Object.keys(stashedChanges).length) {
+				var environmentSettings = {
+					locationId: viewController.shareData['locationId'],
+					languageCode: viewController.shareData['languageCode']
+				};
+
+				aras.setItemProperty(processPlanItem, 'clientChanges', JSON.stringify(stashedChanges));
+				aras.setItemProperty(processPlanItem, 'environmentSettings', JSON.stringify(environmentSettings));
+			}
+
+			viewController.shareData.BOM.stashDataChanges(processPlanItem);
+
+			// remove registered handlers
+			modelItemChangeHandler.remove();
+			unRegisterTopMenuEventsHandlers();
+			window.removeEventListener('beforeunload', onBeforeUnload);
+		}
+
+		onAfterEditCommand = function() {
+			viewController.dataModel.setEditState(true);
+		}
+
+		replaceArasAlertMethod = function () {
+			aras.originalAlertError = aras.originalAlertError || aras.AlertError;
+
+			aras.AlertError = function (errorObj) {
+				viewController.shareData['saveInProgress'] = false;
+
+				if (errorObj.getFaultCode && errorObj.getFaultCode() === 'mpp_conflict_detected') {
+					var errorDetails = errorObj.getFaultDetails();
+
+					this.AlertError = this.originalAlertError;
+					this.AlertError(uiUtils.getResource('crf.error_message'));
+
+					if (!window.mbomTreeGrid) {
+						window.mbomTreeGridErrorDetails = errorDetails;
+					} else {
+						window.mbomTreeGrid.clearAllConflicts(true);
+						window.mbomTreeGrid.setConflict(errorDetails);
+					}
+				} else {
+					return this.originalAlertError.apply(this, arguments);
+				}
+			};
+		}
+
+		restoreArasAlertMethod = function() {
+			if (aras.originalAlertError) {
+				aras.AlertError = aras.originalAlertError;
+				delete aras.originalAlertError;
+			}
+		}
+
+		onBeforeSaveCommand = function() {
+			var registeredPlans = viewController.dataModel.getRegisteredProcessPlans();
+			var stashedChanges = {};
+			var processPlan, childItems, processPlanId, i, j;
+
+			for (i = 0; i < registeredPlans.length; i++) {
+				processPlan = registeredPlans[i];
+				processPlanId = processPlan.Id();
+
+				if (processPlan && processPlan.isModified()) {
+					childItems = processPlan.getAllChildren();
+
+					for (j = 0; j < childItems.length; j++) {
+						if (childItems[j].isNew()) {
+							aras.itemsCache.deleteItem(childItems[j].Id());
+						}
+					}
+
+					stashedChanges[processPlanId] = processPlan.serializeToAml({fullHierarchy: true, onlyChanges: false});
+				}
+			}
+
+			if (Object.keys(stashedChanges).length) {
+				aras.setItemProperty(processPlanItem, 'clientChanges', JSON.stringify(stashedChanges));
+			}
+
+			viewController.shareData['saveInProgress'] = true;
+			replaceArasAlertMethod();
+		}
+
+		onAfterSaveCommand = function () {
+			restoreArasAlertMethod();
+
+			window.mbomTreeGrid && window.mbomTreeGrid.clearAllConflicts(false);
+
+			viewController.dataModel.dropModifiedStates();
+			viewController.shareData['saveInProgress'] = false;
+			viewController.shareData.BOM.dropData();
+		}
+	</script>
+}

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<toolbarapplet buttonsize="26,25" buttonstyle="windows">
+	<toolbar id="mbomToolbar">
+		<choice id="location_list" label="厂区：" tooltip="选择厂区"/>
+		<separator/>
+		<button image="../../images/ResolvedMyEdits.svg" id="crf_use_my" tooltip="使用我的编辑" disabled="true"/>
+		<button image="../../images/ResolvedOtherEdits.svg" id="crf_use_other" tooltip="使用其他用户的编辑" disabled="true"/>
+	</toolbar>
+</toolbarapplet>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<toolbarapplet buttonsize="26,25">
+	<toolbar id="workbenchToolbar">
+		<button image="../images/SelectItem.svg" id="add_items" tooltip="Add Items" text="Add Items"/>
+		<button image="../images/OpenInTab.svg" id="view_item" tooltip="View Item" text="View Item"/>
+		<button image="../images/Delete.svg" id="remove_items" tooltip="Remove Items" text="Remove Items"/>
+		<separator id="separator"/>
+		<choice id="item_types_list"/>
+	</toolbar>
+</toolbarapplet>

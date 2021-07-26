@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<toolbarapplet buttonsize="26,25">
+	<toolbar id="ppToolbar">
+		<choice id="location_list" label="厂区：" tooltip="选择厂区"/>
+		<button image="../images/PublishWorkInstructions.svg" id="publish" tooltip="发布作业指导书"/>
+		<choice id="language_list" label="语言：" tooltip="选择语言"/>
+		<separator/>
+		<button image="../images/EditItem.svg" id="viewedititem" tooltip="编辑项目"/>
+		<separator/>
+		<button image="../images/ProcessPlan.svg" id="importmpp" tooltip="导入MPP"/>
+		<button image="../images/ProcessFunction.svg" id="importoperation" tooltip="导入工序"/>
+	</toolbar>
+</toolbarapplet>

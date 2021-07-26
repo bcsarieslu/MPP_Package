@@ -1,0 +1,937 @@
+﻿<AML>
+ <Item type="Workflow Map" id="4061666D118647289DF5C23A629D96F9" action="add">
+  <description xml:lang="en">BCS Express DCO Workflow</description>
+  <label xml:lang="en">BCS Express DCO Workflow</label>
+  <node_bg_color>       </node_bg_color>
+  <node_label1_color>       </node_label1_color>
+  <node_label1_font />
+  <node_label2_color>       </node_label2_color>
+  <node_label2_font />
+  <node_name_color>       </node_name_color>
+  <node_name_font />
+  <node_size />
+  <process_owner keyed_name="Engineering Manager" type="Identity">EFD172C17CC743A6A44E224141BDA307</process_owner>
+  <transition_line_color>       </transition_line_color>
+  <transition_name_color>       </transition_name_color>
+  <transition_name_font />
+  <name>PPR Workflow</name>
+  <Relationships>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">End</act_label>
+    <related_id keyed_name="End" type="Activity Template">
+     <Item type="Activity Template" id="F54A02E4C7034F658D8E8DDA6345EF39" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../Images/Checkmark.svg</icon>
+      <is_auto>1</is_auto>
+      <is_end>1</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">End</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>1</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>709</x>
+      <y>42</y>
+      <name>End</name>
+      <Relationships>
+       <Item type="Activity Template EMail" id="62788673469F4341B05BFD6614D8528A" action="add">
+        <alternate_identity keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </alternate_identity>
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM completed Notification" type="EMail Message">2C0DE0C2B2754BC3AF2DE212DBC42074</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="End" type="Activity Template">F54A02E4C7034F658D8E8DDA6345EF39</source_id>
+        <target>alternate</target>
+       </Item>
+       <Item type="Activity Template EMail" id="80842A1637034CBEBD7CC15DEB2A6D57" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM completed Notification" type="EMail Message">2C0DE0C2B2754BC3AF2DE212DBC42074</related_id>
+        <sort_order>256</sort_order>
+        <source_id keyed_name="End" type="Activity Template">F54A02E4C7034F658D8E8DDA6345EF39</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template EMail" id="CBCD080146524C9DBFDFB56621928B6F" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM completed Notification" type="EMail Message">2C0DE0C2B2754BC3AF2DE212DBC42074</related_id>
+        <sort_order>384</sort_order>
+        <source_id keyed_name="End" type="Activity Template">F54A02E4C7034F658D8E8DDA6345EF39</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template Method" id="E5B1AACA939847CE8DF67A45FAF55D92" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="bcs_mpp_ChangeMppOperation" type="Method">
+         <Item type="Method" action="get" select="id">
+          <name>bcs_mpp_ChangeMppOperation</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="End" type="Activity Template">F54A02E4C7034F658D8E8DDA6345EF39</source_id>
+       </Item>
+       <Item type="Activity Template Transition" id="BB78AE79FF5B4CACAD84093D83F9BB46" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="A522A43C24A542688EDF6747F37CB43F" type="Life Cycle Transition">A522A43C24A542688EDF6747F37CB43F</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="End" type="Activity Template">F54A02E4C7034F658D8E8DDA6345EF39</source_id>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>结束</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Start</act_label>
+    <related_id keyed_name="Start" type="Activity Template">
+     <Item type="Activity Template" id="8302E43DF82644039193D2ADC848E8EA" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../images/WorkflowStart.svg</icon>
+      <is_auto>1</is_auto>
+      <is_end>0</is_end>
+      <is_start>1</is_start>
+      <label xml:lang="en">Start</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>2</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>14</x>
+      <y>44</y>
+      <name>Start</name>
+      <Relationships>
+       <Item type="Workflow Map Path" id="A5C94FFB834C4887A04FB8A6E352F846" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept</label>
+        <name>Accept</name>
+        <related_id>A1A73D5A7EDE47B4966AA24CCB73C9FB</related_id>
+        <segments />
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Start" type="Activity Template">8302E43DF82644039193D2ADC848E8EA</source_id>
+        <x>-10</x>
+        <y>40</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>开始</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Auto Verify</act_label>
+    <related_id keyed_name="Auto Verify" type="Activity Template">
+     <Item type="Activity Template" id="0A346BFB22B441BF8822C5809B4B8B2E" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>1</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Auto Verify</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>100</x>
+      <y>45</y>
+      <name>Auto Verify</name>
+      <Relationships>
+       <Item type="Activity Template Assignment" id="6FD15BE7BEB944D8A3F7383471F7B2E8" action="add">
+        <escalate_to keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </escalate_to>
+        <related_id keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Auto Verify" type="Activity Template">0A346BFB22B441BF8822C5809B4B8B2E</source_id>
+        <is_required>0</is_required>
+        <for_all_members>0</for_all_members>
+        <voting_weight>100</voting_weight>
+       </Item>
+       <Item type="Activity Template Method" id="A7ACD3AAB824463EBD9AB575363505E8" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="bcs_SubmitPPR" type="Method">
+         <Item type="Method" action="get" select="id">
+          <name>bcs_SubmitPPR</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Auto Verify" type="Activity Template">0A346BFB22B441BF8822C5809B4B8B2E</source_id>
+       </Item>
+       <Item type="Workflow Map Path" id="984253BC7F084C03A708071DC02FD70C" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to change</label>
+        <name>Accept to change</name>
+        <related_id>F58D8D05F07A43639BA97736EB217771</related_id>
+        <segments />
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Auto Verify" type="Activity Template">0A346BFB22B441BF8822C5809B4B8B2E</source_id>
+        <x>25</x>
+        <y>-6</y>
+       </Item>
+       <Item type="Workflow Map Path" id="AAB46AA7F934488B979500556E2E442C" action="add">
+        <authentication>none</authentication>
+        <is_default>0</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to Review</label>
+        <name>Accept to Review</name>
+        <related_id>2879719CCE34405CB9FE204F5EC63248</related_id>
+        <segments>164,18|381,17</segments>
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Auto Verify" type="Activity Template">0A346BFB22B441BF8822C5809B4B8B2E</source_id>
+        <x>88</x>
+        <y>-40</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>自动送审</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Change Plan Review</act_label>
+    <related_id keyed_name="Change Plan Review" type="Activity Template">
+     <Item type="Activity Template" id="F58D8D05F07A43639BA97736EB217771" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>0</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Change Plan Review</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>211</x>
+      <y>44</y>
+      <name>Change Plan Review</name>
+      <Relationships>
+       <Item type="Activity Template Assignment" id="DE9B620FF61240B6AACE5810758C6930" action="add">
+        <escalate_to keyed_name="Owner" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Owner</name>
+         </Item>
+        </escalate_to>
+        <related_id keyed_name="Owner" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Owner</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Change Plan Review" type="Activity Template">F58D8D05F07A43639BA97736EB217771</source_id>
+        <is_required>0</is_required>
+        <for_all_members>0</for_all_members>
+        <voting_weight>100</voting_weight>
+       </Item>
+       <Item type="Activity Template EMail" id="BF2B9BB6724145998D1FDB2365DD0953" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM Activity Notification" type="EMail Message">C09E8CF301464250AC64C26458F914C1</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Change Plan Review" type="Activity Template">F58D8D05F07A43639BA97736EB217771</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template Task" id="F46DB06DE5EA4F6692FB9A3254756DB7" action="add">
+        <description xml:lang="en">Review Affected Item be corrected! If not, pls reject it.</description>
+        <is_required>1</is_required>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Change Plan Review" type="Activity Template">F58D8D05F07A43639BA97736EB217771</source_id>
+        <sequence>1</sequence>
+       </Item>
+       <Item type="Activity Template Transition" id="11E62291EFC8494B8FE97CC40E0CBEC2" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="5C7EC272E4EB40BA85D95237E572FC7A" type="Life Cycle Transition">5C7EC272E4EB40BA85D95237E572FC7A</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Change Plan Review" type="Activity Template">F58D8D05F07A43639BA97736EB217771</source_id>
+       </Item>
+       <Item type="Workflow Map Path" id="234F8AA99F094199910FF2B84EAE2201" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to Execute</label>
+        <name>Accept to Execute</name>
+        <related_id>72FC997E058F4A6FB98963366668F2BF</related_id>
+        <segments />
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Change Plan Review" type="Activity Template">F58D8D05F07A43639BA97736EB217771</source_id>
+        <x>23</x>
+        <y>-8</y>
+       </Item>
+       <Item type="Workflow Map Path" id="AB5AEA6134A14A3EAA82F1FDA52F31DE" action="add">
+        <authentication>none</authentication>
+        <is_default>0</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Reject to planning</label>
+        <name>Reject to planning</name>
+        <related_id>35AB1981A0754AD3A0D3DE89C3FC5E00</related_id>
+        <segments>160,81</segments>
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Change Plan Review" type="Activity Template">F58D8D05F07A43639BA97736EB217771</source_id>
+        <x>-71</x>
+        <y>36</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>变更规划审查</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Execute change</act_label>
+    <related_id keyed_name="Execute change" type="Activity Template">
+     <Item type="Activity Template" id="72FC997E058F4A6FB98963366668F2BF" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>0</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Execute change</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>318</x>
+      <y>44</y>
+      <name>Execute change</name>
+      <Relationships>
+       <Item type="Activity Template Assignment" id="7D1C7A507A6A404087E30338E5EC7BE5" action="add">
+        <escalate_to keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </escalate_to>
+        <related_id keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Execute change" type="Activity Template">72FC997E058F4A6FB98963366668F2BF</source_id>
+        <is_required>0</is_required>
+        <for_all_members>0</for_all_members>
+        <voting_weight>100</voting_weight>
+       </Item>
+       <Item type="Activity Template EMail" id="5D8DF2A7CAC9416DB8DA7691A09B14EB" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM Activity Notification" type="EMail Message">C09E8CF301464250AC64C26458F914C1</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Execute change" type="Activity Template">72FC997E058F4A6FB98963366668F2BF</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template Task" id="5BA643BB0C5B468C8B80B1AA7025B7D0" action="add">
+        <description xml:lang="en">Please complete the change and submit.</description>
+        <is_required>1</is_required>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Execute change" type="Activity Template">72FC997E058F4A6FB98963366668F2BF</source_id>
+        <sequence>1</sequence>
+       </Item>
+       <Item type="Activity Template Transition" id="33205A5DE45844C29780D9872E45A9A9" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="A54647F01D9044E794875F2C8ED706B8" type="Life Cycle Transition">A54647F01D9044E794875F2C8ED706B8</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Execute change" type="Activity Template">72FC997E058F4A6FB98963366668F2BF</source_id>
+       </Item>
+       <Item type="Activity Template Transition" id="BE1BE1079DF74F909D2855CF681F517C" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="64ABEFF8966447A388BD30519E983DFB" type="Life Cycle Transition">64ABEFF8966447A388BD30519E983DFB</related_id>
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Execute change" type="Activity Template">72FC997E058F4A6FB98963366668F2BF</source_id>
+       </Item>
+       <Item type="Workflow Map Path" id="017DEBF130F4445DABF5C54FDF549F11" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to Review</label>
+        <name>Accept to Review</name>
+        <related_id>2879719CCE34405CB9FE204F5EC63248</related_id>
+        <segments />
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Execute change" type="Activity Template">72FC997E058F4A6FB98963366668F2BF</source_id>
+        <x>39</x>
+        <y>-5</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>640</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>执行变更</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Initial Review</act_label>
+    <related_id keyed_name="Initial Review" type="Activity Template">
+     <Item type="Activity Template" id="2879719CCE34405CB9FE204F5EC63248" action="add">
+      <bcs_comment_required>1</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>1</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>0</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Initial Review</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>1</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>2</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>433</x>
+      <y>44</y>
+      <name>Initial Review</name>
+      <Relationships>
+       <Item type="Activity Template EMail" id="ED47B59BC15F4858851421505B5D8CCC" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM Activity Notification" type="EMail Message">C09E8CF301464250AC64C26458F914C1</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template Task" id="1F97F62FE8FC42D0A4F1F4CEC108951C" action="add">
+        <description xml:lang="en">Please review the change content be corrected.</description>
+        <is_required>1</is_required>
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <sequence>1</sequence>
+       </Item>
+       <Item type="Activity Template Task" id="75196FD5FD8A47BAAA6A97AEF2AA0F1A" action="add">
+        <description xml:lang="en">If you wat released direct, please vote to DCC.</description>
+        <is_required>1</is_required>
+        <sort_order>384</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <sequence>2</sequence>
+       </Item>
+       <Item type="Activity Template Task" id="E5C651357BBC4474A9E067867D4D5D5C" action="add">
+        <description xml:lang="en">If need confirm by leader, pls vote accept</description>
+        <is_required>1</is_required>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <sequence>3</sequence>
+       </Item>
+       <Item type="Activity Template Task" id="82A89668864945F2A0DA3150E8A36C30" action="add">
+        <description xml:lang="en">If the contents not match, pls reject.</description>
+        <is_required>1</is_required>
+        <sort_order>512</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <sequence>4</sequence>
+       </Item>
+       <Item type="Activity Template Transition" id="BA2019D24CE040049404E3CD9BE531AD" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="9E0DB601B9064C84B7ADBB4D0D327A6E" type="Life Cycle Transition">9E0DB601B9064C84B7ADBB4D0D327A6E</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+       </Item>
+       <Item type="Activity Template Transition" id="5FBE8CE7A9EA414CA17C1686DEF528F0" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="9E06CE80615C4E2591D96DF150E95F32" type="Life Cycle Transition">9E06CE80615C4E2591D96DF150E95F32</related_id>
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+       </Item>
+       <Item type="Workflow Map Path" id="DBA2DE1472D64218A203D3458DAFC462" action="add">
+        <authentication>none</authentication>
+        <is_default>0</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Reject to execute</label>
+        <name>Reject to execute</name>
+        <related_id>72FC997E058F4A6FB98963366668F2BF</related_id>
+        <segments>387,95</segments>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <x>-91</x>
+        <y>34</y>
+       </Item>
+       <Item type="Workflow Map Path" id="679807837A4C4134A87E83E5F3B77EA7" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to Review</label>
+        <name>Accept to Review</name>
+        <related_id>71A2EBAAE9934C15BC0460704552DC2F</related_id>
+        <segments />
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <x>19</x>
+        <y>-5</y>
+       </Item>
+       <Item type="Workflow Map Path" id="D5CB0BA788114428A2EFE8419824B59E" action="add">
+        <authentication>none</authentication>
+        <is_default>0</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to DCC</label>
+        <name>Accept to DCC</name>
+        <related_id>5761A5CF9BC94FD4A770B1E75EAF98A4</related_id>
+        <segments>476,20|596,19</segments>
+        <sort_order>384</sort_order>
+        <source_id keyed_name="Initial Review" type="Activity Template">2879719CCE34405CB9FE204F5EC63248</source_id>
+        <x>49</x>
+        <y>-37</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>768</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>初审</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Final Review</act_label>
+    <related_id keyed_name="Final Review" type="Activity Template">
+     <Item type="Activity Template" id="71A2EBAAE9934C15BC0460704552DC2F" action="add">
+      <bcs_comment_required>1</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>3</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>0</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Final Review</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>1</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>3</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>521</x>
+      <y>40</y>
+      <name>Final Review</name>
+      <Relationships>
+       <Item type="Activity Template EMail" id="5C2064FE267947AD9EDFE032B9C982FA" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM Activity Notification" type="EMail Message">C09E8CF301464250AC64C26458F914C1</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Final Review" type="Activity Template">71A2EBAAE9934C15BC0460704552DC2F</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template Method" id="2919F280B98B4F64ABB3613106D45EDD" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="bcs_AssignmentMatrix" type="Method">
+         <Item type="Method" action="get" select="id">
+          <name>bcs_AssignmentMatrix</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Final Review" type="Activity Template">71A2EBAAE9934C15BC0460704552DC2F</source_id>
+       </Item>
+       <Item type="Activity Template Task" id="EB1F5BFEB2134F759B5D108CDC54D5CC" action="add">
+        <description xml:lang="en">Please review the contents.</description>
+        <is_required>1</is_required>
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Final Review" type="Activity Template">71A2EBAAE9934C15BC0460704552DC2F</source_id>
+        <sequence>1</sequence>
+       </Item>
+       <Item type="Activity Template Task" id="9575B0B2EE9F4B3AAB2C06762D30E219" action="add">
+        <description xml:lang="en">If OK, pls vote to DCC.</description>
+        <is_required>1</is_required>
+        <sort_order>384</sort_order>
+        <source_id keyed_name="Final Review" type="Activity Template">71A2EBAAE9934C15BC0460704552DC2F</source_id>
+        <sequence>2</sequence>
+       </Item>
+       <Item type="Activity Template Task" id="8521F42C22924F4EA04EA49180098BE9" action="add">
+        <description xml:lang="en">If the contents not match, pls reject.</description>
+        <is_required>1</is_required>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Final Review" type="Activity Template">71A2EBAAE9934C15BC0460704552DC2F</source_id>
+        <sequence>3</sequence>
+       </Item>
+       <Item type="Workflow Map Path" id="F29B1F366D3146239969A4A573EB39CB" action="add">
+        <authentication>none</authentication>
+        <is_default>0</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Reject to execute</label>
+        <name>Reject to execute</name>
+        <related_id>72FC997E058F4A6FB98963366668F2BF</related_id>
+        <segments>437,129</segments>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Final Review" type="Activity Template">71A2EBAAE9934C15BC0460704552DC2F</source_id>
+        <x>-84</x>
+        <y>36</y>
+       </Item>
+       <Item type="Workflow Map Path" id="2537104A1A7A4635BF90231C06FBF590" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to DCC</label>
+        <name>Accept to DCC</name>
+        <related_id>5761A5CF9BC94FD4A770B1E75EAF98A4</related_id>
+        <segments />
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Final Review" type="Activity Template">71A2EBAAE9934C15BC0460704552DC2F</source_id>
+        <x>16</x>
+        <y>-6</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>896</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>复审</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">DCC approval</act_label>
+    <related_id keyed_name="DCC approval" type="Activity Template">
+     <Item type="Activity Template" id="5761A5CF9BC94FD4A770B1E75EAF98A4" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>1</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>0</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">DCC approval</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>1</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>2</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>622</x>
+      <y>42</y>
+      <name>DCC approval</name>
+      <Relationships>
+       <Item type="Activity Template Assignment" id="F5EBDB130F064E5EBCA477292E79B4FF" action="add">
+        <escalate_to keyed_name="DCC" type="Identity">ACA2091317B84AEEB74A530EC0E92A36</escalate_to>
+        <related_id keyed_name="DCC" type="Identity">ACA2091317B84AEEB74A530EC0E92A36</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="DCC approval" type="Activity Template">5761A5CF9BC94FD4A770B1E75EAF98A4</source_id>
+        <is_required>0</is_required>
+        <for_all_members>0</for_all_members>
+        <voting_weight>100</voting_weight>
+       </Item>
+       <Item type="Activity Template EMail" id="8684301813B04235859BEE8E8049CBEE" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM Activity Notification" type="EMail Message">C09E8CF301464250AC64C26458F914C1</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="DCC approval" type="Activity Template">5761A5CF9BC94FD4A770B1E75EAF98A4</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template Task" id="7AD9B8D36C994641B59EB0C549A3DC08" action="add">
+        <description xml:lang="en">Finish the release process, Pls assign the notice list if need.</description>
+        <is_required>1</is_required>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="DCC approval" type="Activity Template">5761A5CF9BC94FD4A770B1E75EAF98A4</source_id>
+        <sequence>1</sequence>
+       </Item>
+       <Item type="Workflow Map Path" id="C99974E28B8B4AF5889A047BDC4BEE27" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>1</is_select_assignment>
+        <label xml:lang="en">Finish</label>
+        <name>Finish</name>
+        <related_id>F54A02E4C7034F658D8E8DDA6345EF39</related_id>
+        <segments />
+        <sort_order>128</sort_order>
+        <source_id keyed_name="DCC approval" type="Activity Template">5761A5CF9BC94FD4A770B1E75EAF98A4</source_id>
+        <x>5</x>
+        <y>-14</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>1024</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>DCC发行</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Replanning</act_label>
+    <related_id keyed_name="Replanning" type="Activity Template">
+     <Item type="Activity Template" id="35AB1981A0754AD3A0D3DE89C3FC5E00" action="add">
+      <bcs_comment_required>1</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>0</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Replanning</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>210</x>
+      <y>167</y>
+      <name>Replanning</name>
+      <Relationships>
+       <Item type="Activity Template Assignment" id="51CAE1CFBC3D42F6AAA8960BC647A883" action="add">
+        <escalate_to keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </escalate_to>
+        <related_id keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Replanning" type="Activity Template">35AB1981A0754AD3A0D3DE89C3FC5E00</source_id>
+        <is_required>0</is_required>
+        <for_all_members>0</for_all_members>
+        <voting_weight>100</voting_weight>
+       </Item>
+       <Item type="Activity Template EMail" id="B9D78946E7DF4AFC9289E958502A1F00" action="add">
+        <event>on_activate</event>
+        <related_id keyed_name="BCS_CM Activity Notification" type="EMail Message">C09E8CF301464250AC64C26458F914C1</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Replanning" type="Activity Template">35AB1981A0754AD3A0D3DE89C3FC5E00</source_id>
+        <target>all_assignments</target>
+       </Item>
+       <Item type="Activity Template Task" id="B78A891A794342F1B1E8144106E39E60" action="add">
+        <description xml:lang="en">Please correct the issue for resubmit, or cancel it.</description>
+        <is_required>1</is_required>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Replanning" type="Activity Template">35AB1981A0754AD3A0D3DE89C3FC5E00</source_id>
+        <sequence>1</sequence>
+       </Item>
+       <Item type="Activity Template Transition" id="173E4E7FAF7946AC8BD727325D46C7DE" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="BF872E7AA2E34786B4B1235E83C57EF7" type="Life Cycle Transition">BF872E7AA2E34786B4B1235E83C57EF7</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Replanning" type="Activity Template">35AB1981A0754AD3A0D3DE89C3FC5E00</source_id>
+       </Item>
+       <Item type="Workflow Map Path" id="C0009276D118400ABCBE3F9CC646A2AB" action="add">
+        <authentication>none</authentication>
+        <is_default>0</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Cancel</label>
+        <name>Cancel</name>
+        <related_id>A0D915FC59EB40CA9C43B2FBBC1F9E23</related_id>
+        <segments />
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Replanning" type="Activity Template">35AB1981A0754AD3A0D3DE89C3FC5E00</source_id>
+        <x>20</x>
+        <y>-13</y>
+       </Item>
+       <Item type="Workflow Map Path" id="B1047AE4AD0244FA9194B823282B1F64" action="add">
+        <authentication>none</authentication>
+        <is_default>0</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">Accept to review</label>
+        <name>Accept to review</name>
+        <related_id>F58D8D05F07A43639BA97736EB217771</related_id>
+        <segments />
+        <sort_order>256</sort_order>
+        <source_id keyed_name="Replanning" type="Activity Template">35AB1981A0754AD3A0D3DE89C3FC5E00</source_id>
+        <x>-13</x>
+        <y>-26</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>1152</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>重新规划</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Cancel</act_label>
+    <related_id keyed_name="Cancel" type="Activity Template">
+     <Item type="Activity Template" id="A0D915FC59EB40CA9C43B2FBBC1F9E23" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../Images/Delete.svg</icon>
+      <is_auto>1</is_auto>
+      <is_end>1</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Cancel</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>302</x>
+      <y>166</y>
+      <name>Cancel</name>
+      <Relationships>
+       <Item type="Activity Template Transition" id="47EF2F53220C4304B68CCE2A7005CF52" action="add">
+        <controlled_itemtype keyed_name="PPR" type="ItemType" name="PPR">401341C4A64B4B63915B0E94990AC21F</controlled_itemtype>
+        <event>on_activate</event>
+        <related_id keyed_name="14FDF8CE5A334310AAEDA24E7C81F0E8" type="Life Cycle Transition">14FDF8CE5A334310AAEDA24E7C81F0E8</related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Cancel" type="Activity Template">A0D915FC59EB40CA9C43B2FBBC1F9E23</source_id>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>1280</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>取消</bcs_keyedname>
+   </Item>
+   <Item type="Workflow Map Activity" action="add">
+    <act_label xml:lang="en">Accept</act_label>
+    <related_id keyed_name="Accept" type="Activity Template">
+     <Item type="Activity Template" id="A1A73D5A7EDE47B4966AA24CCB73C9FB" action="add">
+      <bcs_comment_required>0</bcs_comment_required>
+      <bcs_disable>0</bcs_disable>
+      <can_delegate>0</can_delegate>
+      <can_refuse>0</can_refuse>
+      <consolidate_ondelegate>0</consolidate_ondelegate>
+      <expected_duration>0</expected_duration>
+      <icon>../images/WorkflowNode.svg</icon>
+      <is_auto>0</is_auto>
+      <is_end>0</is_end>
+      <is_start>0</is_start>
+      <label xml:lang="en">Accept</label>
+      <message xml:lang="en">Please Review...</message>
+      <priority>0</priority>
+      <reminder_count>0</reminder_count>
+      <reminder_interval>0</reminder_interval>
+      <timeout_duration>0</timeout_duration>
+      <wait_for_all_inputs>0</wait_for_all_inputs>
+      <wait_for_all_votes>0</wait_for_all_votes>
+      <x>55</x>
+      <y>99</y>
+      <name>Accept</name>
+      <Relationships>
+       <Item type="Activity Template Assignment" id="A2E2D2A9B23D4B9295893D3792435AEF" action="add">
+        <escalate_to keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </escalate_to>
+        <related_id keyed_name="Creator" type="Identity">
+         <Item type="Identity" action="get" select="id">
+          <name>Creator</name>
+         </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Accept" type="Activity Template">A1A73D5A7EDE47B4966AA24CCB73C9FB</source_id>
+        <is_required>0</is_required>
+        <for_all_members>0</for_all_members>
+        <voting_weight>100</voting_weight>
+       </Item>
+       <Item type="Activity Template Task" id="4FEF333D3D984A539AC11C5EAAEFD115" action="add">
+        <description xml:lang="en">Form fill completed, attach affected item be corrected.</description>
+        <is_required>1</is_required>
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Accept" type="Activity Template">A1A73D5A7EDE47B4966AA24CCB73C9FB</source_id>
+        <sequence>1</sequence>
+       </Item>
+       <Item type="Workflow Map Path" id="32B5448D426F48839552AC14AB8D78BB" action="add">
+        <authentication>none</authentication>
+        <is_default>1</is_default>
+        <is_override>0</is_override>
+        <is_select_assignment>0</is_select_assignment>
+        <label xml:lang="en">submit</label>
+        <name>Submit</name>
+        <related_id>0A346BFB22B441BF8822C5809B4B8B2E</related_id>
+        <segments />
+        <sort_order>128</sort_order>
+        <source_id keyed_name="Accept" type="Activity Template">A1A73D5A7EDE47B4966AA24CCB73C9FB</source_id>
+        <x>21</x>
+        <y>-10</y>
+       </Item>
+      </Relationships>
+     </Item>
+    </related_id>
+    <sort_order>1408</sort_order>
+    <source_id keyed_name="PPR Workflow" type="Workflow Map">4061666D118647289DF5C23A629D96F9</source_id>
+    <sourceitem_iscurrent>1</sourceitem_iscurrent>
+    <bcs_keyedname>确定送出</bcs_keyedname>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

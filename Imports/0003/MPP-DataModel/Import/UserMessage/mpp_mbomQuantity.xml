@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="AB897BD494144866AFFCF6CE327CFE3C" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">MBOM Quantity</text>
+  <name>mpp_mbomQuantity</name>
+ </Item>
+</AML>

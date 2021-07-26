@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="1E5A0B70C3B1438695D50B89C660AA6D" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Not found Process Plans for Part with id:'{0}'</text>
+  <name>mpp_noProcessPlanError</name>
+ </Item>
+</AML>

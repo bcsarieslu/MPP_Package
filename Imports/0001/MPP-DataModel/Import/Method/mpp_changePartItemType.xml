@@ -1,0 +1,171 @@
+﻿<AML>
+ <Item type="Method" id="760BFA583B1F44C7A854B8D7D44A4D66" action="add">
+  <execution_allowed_to keyed_name="Administrators" type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</execution_allowed_to>
+  <method_code><![CDATA[			Innovator innovator = getInnovator();
+			var result = new List<Item>();
+			var converterBuilder = new ConverterBuilder(innovator);
+			Dictionary<string, string> config = converterBuilder.GetConfig(this);
+			new Migration(innovator).Process(config["part_it_name"]);
+			Converter converter = converterBuilder.Build(config);
+			Item sqlItems = innovator
+			.applyAML(@"
+<AML>
+	<Item action='get' type='SQL' select='name,type,sqlserver_body'>
+		<name condition='like'>mpp_%</name>
+	</Item>
+</AML>");
+			for (var i = 0; i<sqlItems.getItemCount(); i++)
+			{
+				Item sqlItem = sqlItems.getItemByIndex(i);
+				string body = sqlItem.getProperty("sqlserver_body");
+				string fixedBody = converter.Replace(body);
+				if (!string.Equals(body, fixedBody))
+				{
+					Item editItem = innovator.newItem("SQL", "edit");
+					editItem.setID(sqlItem.getID());
+					editItem.setProperty("sqlserver_body", fixedBody);
+					result.Add(editItem);
+				}
+}
+			if (result.Any())
+			{
+				return innovator.applyAML("<AML>\n" + string.Join("\n", result.Select(i => i.node.OuterXml)) + "\n</AML>");
+			}
+			return this;
+
+		}
+
+		public class Migration
+		{
+			private readonly Innovator _innovator;
+
+			public Migration(Innovator innovator)
+			{
+				_innovator = innovator;
+			}
+
+			public void Process(string itemType)
+			{
+				Item itemTypeIdQuery = _innovator.newItem("ItemType", "get");
+				itemTypeIdQuery.setAttribute("select", "id,name");
+				itemTypeIdQuery.setProperty("instance_data", itemType);
+				Item idQueryResult = itemTypeIdQuery.apply();
+				string itemTypeId = idQueryResult.getID();
+				UpdateRelationshipRelatedItem("mpp_ProcessPlanProducedPart", itemTypeId);
+				UpdateRelationshipRelatedItem("mpp_OperationConsumedPart", itemTypeId);
+			}
+
+			private void UpdateRelationshipRelatedItem(string relationshipName, string itemTypeId)
+			{
+				Item getRelationshipQuery = _innovator.newItem("RelationshipType", "get");
+				getRelationshipQuery.setAttribute("select", "related_id");
+				getRelationshipQuery.setProperty("name", relationshipName);
+				Item relationshipInfo = getRelationshipQuery.apply();
+				if (!string.Equals(relationshipInfo.getProperty("related_id"), itemTypeId,
+					StringComparison.OrdinalIgnoreCase))
+				{
+					Item updateRelationshipQuery = _innovator.newItem("RelationshipType", "edit");
+					updateRelationshipQuery.setID(relationshipInfo.getID());
+					updateRelationshipQuery.setProperty("related_id", itemTypeId);
+					Item updateRelationshipQueryResult = updateRelationshipQuery.apply();
+					if (updateRelationshipQueryResult.isError())
+					{
+						throw new Aras.Server.Core.InnovatorServerException(updateRelationshipQueryResult.getErrorString());
+					}
+				}
+			}
+		}
+
+		public class ConverterBuilder
+		{
+			private readonly Innovator _innovator;
+
+			public ConverterBuilder(Innovator innovator)
+			{
+				_innovator = innovator;
+			}
+		    
+			public Converter Build(Dictionary<string, string> config)
+			{
+				return new Converter(config);
+			}
+
+			public Dictionary<string, string> GetConfig(Item config)
+			{
+				var dictionary = new Dictionary<string, string>();
+				//TODO: rename properties 'part_it_name', 'bom_it_name', 'part_alternate_it_name' and 'bom_substitute_it_name' to have instance_data in these properties names
+				//because it's not 'name', it's 'instance_data'.
+				PopulateConfigItemTypeProperty(config, "part_it_name", "default_part_it_name", dictionary);
+				PopulateConfig(config, "name_p_name", "default_name_p_name", dictionary);
+				PopulateConfig(config, "item_number_p_name", "default_item_number_p_name", dictionary);
+				PopulateConfig(config, "make_buy_p_name", "default_make_buy_p_name", dictionary);
+				PopulateConfig(config, "phantom_class_path", "default_phantom_class_path", dictionary);
+				PopulateConfig(config, "mbom_only_class_path", "default_mbom_only_class_path", dictionary);
+				PopulateConfigItemTypeProperty(config, "bom_it_name", "default_bom_it_name", dictionary);
+				PopulateConfig(config, "bom_quantity_p_name", "default_bom_quantity_p_name", dictionary);
+				PopulateConfig(config, "bom_cost_p_name", "default_bom_cost_p_name", dictionary);
+				PopulateConfigItemTypeProperty(config, "part_alternate_it_name", "default_part_alternate_it_name", dictionary);
+				PopulateConfigItemTypeProperty(config, "bom_substitute_it_name", "default_bom_substitute_it_name", dictionary);
+				return dictionary;
+			}
+
+			public static void PopulateConfig(Item item, string propertyName, string defaultPropertyName, Dictionary<string, string> config)
+			{
+				string propertyValue = item.getProperty(propertyName);
+				string defaultPropertyValue = item.getProperty(defaultPropertyName);
+				config[propertyName] = !string.IsNullOrEmpty(propertyValue) ? propertyValue : defaultPropertyValue;
+			}
+			
+		    public  void PopulateConfigItemTypeProperty(Item item, string propertyName, string defaultPropertyName, Dictionary<string, string> config)
+			{
+				string propertyValue = item.getProperty(propertyName);
+				string defaultPropertyValue = item.getProperty(defaultPropertyName);
+				string itemTypeName = !string.IsNullOrEmpty(propertyValue) ? propertyValue : defaultPropertyValue;
+				Item itemTypeQuery = _innovator.newItem("ItemType", "get");
+				itemTypeQuery.setAttribute("select", "instance_data");
+				itemTypeQuery.setProperty("name", itemTypeName);
+				Item itemTypeQueryResult = itemTypeQuery.apply();
+				if (itemTypeQueryResult.isError())
+				{
+					throw new Aras.Server.Core.InnovatorServerException(itemTypeQueryResult.getErrorString());
+				}
+				config[propertyName] = itemTypeQueryResult.getProperty("instance_data");
+			}
+		}
+
+		public class Converter
+		{
+			private readonly IDictionary<string, string> _config;
+
+			public Converter(IDictionary<string, string> config)
+			{
+				if (config == null)
+				{
+					throw new ArgumentNullException("config");
+				}
+				_config = config;
+			}
+
+			public string Replace(string methodCode)
+			{
+				if (string.IsNullOrEmpty(methodCode))
+				{
+					return methodCode;
+				}
+				return _config.Aggregate(methodCode, (s, pair) => System.Text.RegularExpressions.Regex.Replace(s, GetMarkerRegex(pair.Key), GeReplacement(pair.Key, pair.Value)));
+			}
+
+			private static string GetMarkerRegex(string propertyName)
+			{
+				return string.Format(CultureInfo.InvariantCulture, "/\\*mpp_configurable:{0}\\*/.*?/\\*mpp_configurable\\*/", propertyName);
+			}
+
+			private static string GeReplacement(string propertyName, string value)
+			{
+				return string.Format(CultureInfo.InvariantCulture, "/*mpp_configurable:{0}*/{1}/*mpp_configurable*/", propertyName, value);
+			}
+]]></method_code>
+  <method_type>C#</method_type>
+  <name>mpp_changePartItemType</name>
+ </Item>
+</AML>

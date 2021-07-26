@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<!-- (c) Copyright by Aras Corporation, 2004-2013. -->
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../../../styles/common.min.css" />
+	<style type="text/css">
+		@import "../../../public/styles/controls.css";
+		
+		html, body {
+			overflow: hidden;
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+		}
+		#gridTD {
+			vertical-align: top; 
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+		}
+	</style>
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=ScriptSet2"></script>
+	<!-- <script type="text/javascript" src="../../../javascript/include.aspx?classes=ItemProperty"></script> -->
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=XmlDocument"></script>
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=/dojo.js"
+		data-dojo-config="isDebug: false, parseOnLoad: false, baseUrl:'../../../javascript/dojo'"></script>
+</head>
+<body class="claro">
+	<script type="text/javascript">
+		var aras = parent.aras;
+		var toolbarReady = false,
+			gridReady = false,
+			GridXmlLoadedFirstTime = true,
+			topWnd=aras.getMostTopWindowWithAras(window),
+			innovator = aras.IomInnovator,
+			grid,
+			toolbar;
+		
+		var columnObjects=[],
+			propertys,
+			disablePropertys=[],
+			reversItemTypeID="91B674D7C7AF47F99CA1C2FB26C38DBF",//mpp_Operation ItemType ID
+			cellEventsNames=[],
+			cellEventsMethods_code=[];
+		
+		var dataModel=topWnd.viewController.dataModel;
+		
+		window.onresize = fixGridHeight;
+		window.addEventListener("DOMContentLoaded", function () {
+			clientControlsFactory.createControl("Aras.Client.Controls.Public.GridContainer", {connectId: "gridTD",canEdit_Experimental: canEditCell}, function(control) {
+				gridApplet = grid = control;
+				clientControlsFactory.on(grid, {
+					"onInputHelperShow_Experimental": onInputHelperShow,
+					"onApplyEdit_Experimental":onApplyEdit
+				});
+				scriptInit();
+				initGrid();
+				fixGridHeight();
+			});
+			
+			getQuickEditFormPropertys();
+		});
+
+		// ============================= General  Functions ===============================
+		
+		function fixGridHeight() {
+			var el = document.getElementById("gridTD");
+			aras.fixLiquidContainerHeight(document, el);
+			el.style.height = window.innerHeight + "px";
+		}
+
+		function initGrid() {
+			var resDom=innovator.newResult().dom;
+			aras.uiPrepareTableWithColumns(resDom, columnObjects);
+			var tableNd = resDom.selectSingleNode(aras.XPathResult('/table'));
+			tableNd.setAttribute('editable', true);
+			var grid_xml = aras.uiGenerateGridXML(resDom, propertys,undefined, reversItemTypeID,{'only_rows':false},false);
+			grid.InitXML(grid_xml);
+			
+			gridReady=true;
+			
+			//Add by tengz 2021/1/27
+			grid.grid_Experimental.order.splice(0,1);
+		}
+		
+		function reload(){
+			var resDom=getOperations();
+			var grid_xml = aras.uiGenerateGridXML(resDom, propertys,null, reversItemTypeID,{'only_rows':true,'enable_links':false},false);
+			grid.InitXMLRows_Experimental(grid_xml);
+		}
+		
+		function getQuickEditFormPropertys(){
+			var variableItem = aras.getItemByKeyedName("Variable", "bcs_mpp_OperationChangePropertys");
+			if (variableItem) {
+				disablePropertys = aras.getItemProperty(variableItem,"value", "").split(",");
+			}
+			
+			var aml="<AML><Item type='form' action='get' select='id'>"+
+                "<keyed_name>mpp_OperationQuickEdit</keyed_name>"+
+                "<Relationships>"+
+                "<Item type='Body' select='id'>"+
+                    "<Relationships>"+
+                        "<Item type='Field' select='propertytype_id(*)'>"+
+                        "</Item>"+
+                    "</Relationships>"+
+                "</Item>"+
+                "</Relationships>"+
+            "</Item></AML>";
+
+			var formItem=innovator.applyAML(aml);
+			propertys=formItem.dom.selectNodes("//Item[@type='Property']");
+			propertys=aras.sortProperties(propertys);
+			for(var i=0;i<propertys.length;i++)
+			{
+				var property=propertys[i];
+				var columnWidth=aras.getItemProperty(property,"column_width","100");
+				var propNm = aras.getItemProperty(property, 'name');
+				var data_type = aras.getItemProperty(property, 'data_type');
+				var data_source = aras.getItemProperty(property, 'data_source');
+				columnObjects.push({
+					name:propNm+"_D",
+					order:i,
+					width:columnWidth==""?100:columnWidth,
+					pname:propNm,
+					data_type: data_type,
+					data_source: data_source,
+					pattern:aras.getItemProperty(property,"pattern","")
+				});
+			}
+		}
+		
+		function getOperations(){
+			var itemPropertys=[];
+			for(var i=0;i<columnObjects.length;i++){
+				if(columnObjects[i].data_type=="item"){
+					itemPropertys.push(columnObjects[i]);
+				}
+			}
+			
+			var operationModelItems=selectedItem.getChildrenByType('Operation');
+			var itemsAML="<Result>";
+			for(var i=0;i<operationModelItems.length;i++){
+				var operationItem=innovator.newItem();
+				var operationAml=operationModelItems[i].serializeToAml();
+				operationAml=operationAml.replace(/i18n:/g,"");
+				operationAml=operationAml.replace(/xmlns:i18n=\"http:\/\/www.aras.com\/I18N\"/g,"");
+				operationItem.loadAML(operationAml);
+				for(var j=0;j<itemPropertys.length;j++){
+					var proName=itemPropertys[j].pname;
+					var proItemId=operationItem.getProperty(proName,"");
+					if(proItemId==""){
+						continue;
+					}
+					var proItem=innovator.getItemById(aras.getItemTypeName(itemPropertys[j].data_source),proItemId);
+					operationItem.setPropertyAttribute(proName,"keyed_name",proItem.getProperty("keyed_name"));
+				}
+				itemsAML+=operationItem.dom.xml;
+			}
+			itemsAML+="</Result>";
+			var operationItems=innovator.newItem();
+			operationItems.loadAML(itemsAML);
+			return operationItems.dom;
+		}
+		
+		// ============================= Grid Events ===============================
+		
+		function canEditCell(rowId, field) {
+			var itm=dataModel.getItemById(rowId);
+			if (!itm || itm.getAttribute("action") === "delete") {
+				return false;
+			}
+			
+			var currSelColOrder = columnObjects.findIndex(function(column){
+				return column.name==field;
+			});
+			var propDataType = columnObjects[currSelColOrder].data_type;
+			
+			currSelRowId = rowId;
+			currSelCol = currSelColOrder;
+			currSelCell = grid.cells(rowId, currSelColOrder);
+			
+			if(itm.getProperty("bcs_template","")!=""){
+				if(disablePropertys.includes(columnObjects[currSelColOrder].pname)){
+					currSelCell = null;
+					return false;
+				}
+			}
+			
+			if(topWnd.isEditMode){
+				if (!handleCellEvent("oneditstart", rowId, currSelCol)) {
+					currSelCell = null;
+					return false;
+				}
+			}
+			
+			if(propDataType=="text"){
+				showTextarea();
+				return false;
+			}
+			
+			if(!topWnd.isEditMode){
+					return false;
+			}
+			
+			return true;
+		}
+		
+		function onApplyEdit(rowId, field, value){
+			setCellValue(value);
+		}
+		
+		function onAfterSpecialDialog(dialogRes) {
+				if (dialogRes == undefined || dialogRes == null) {
+					currSelCell = null;
+					grid.requestFocus();
+					return;
+				}
+				
+				setCellValue(dialogRes);
+				currSelCell.setValue(dialogRes);
+
+				currSelCell = null;
+				grid.requestFocus();
+		}
+	
+		function setCellValue(newValue){
+			var selectModelItem=dataModel.getItemById(currSelRowId);
+			if(!selectModelItem){
+				aras.AlertWarning("对象不存在,系统将刷新页面!");
+				reload();
+				return;
+			}
+			
+			switch(columnObjects[currSelCol].data_type){
+				case "item":
+					if(newValue==""){
+						selectModelItem.setProperty(columnObjects[currSelCol].pname,newValue);
+					}else{
+						var IT_Name=aras.getItemTypeName(columnObjects[currSelCol].data_source);
+						var inputItem=aras.getItemByKeyedName(IT_Name,newValue);
+						try{
+							selectModelItem.setProperty(columnObjects[currSelCol].pname,inputItem.getAttribute("id"));
+						}catch(ex){
+							aras.AlertError(ex);
+							return;
+						}
+					}
+				break;
+				case "boolean":
+					selectModelItem.setProperty(columnObjects[currSelCol].pname,newValue==true?1:0);
+				break;
+				case "ml_string":
+					selectModelItem.setProperty(columnObjects[currSelCol].pname,newValue,parent.wiModel._currentLanguageCode);
+					break;
+				default:
+					selectModelItem.setProperty(columnObjects[currSelCol].pname,newValue);
+				break;
+			}
+			
+			selectedItem.isModified(true);
+		}
+		
+		
+		// ============================= InputHelperShow Functions ===============================
+	
+		var currSelCell = null; //variables to know what cell is being edited
+		var currSelRowId = ""; //setted in onGridCellEdit
+		var currSelCol = ""; //setted in onGridCellEdit
+			
+		function onInputHelperShow(rowID, column) {
+			var currSelColOrder = grid.grid_Experimental.layout.cells[column].layoutIndex,
+				propDataType = columnObjects[currSelColOrder].data_type,
+				propSource_ITName;
+
+			currSelRowId = rowID;
+			currSelCol = currSelColOrder;
+			
+			currSelCell = grid.cells(rowID, currSelColOrder);
+			switch (propDataType) {
+				case "item":
+					propSource_ITName = aras.getItemTypeName(columnObjects[currSelColOrder].data_source);
+					showDialog(propSource_ITName);
+					break;
+				case "date":
+					var format = aras.getDotNetDatePattern(columnObjects[currSelColOrder].pattern);
+					showDateDialog(currSelCell.getValue(), format);
+					break;
+			}
+		}
+		
+		function showDialog(IT_Name) {
+			var params = { aras: aras, itemtypeName: IT_Name, multiselect: false };
+			params.type = "SearchDialog";
+			
+			topWnd.ArasModules.MaximazableDialog.show("iframe", params).promise.then(function (dlgRes) {
+				if (dlgRes == undefined) {
+					return;
+				}
+				
+				var keyedName = dlgRes.keyed_name;
+				onAfterSpecialDialog(keyedName);
+			});
+		}
+		
+		function showDateDialog(oldDate, format) {
+				if (currSelCell) {
+					var wndRect = aras.uiGetElementCoordinates(currSelCell.cellNod_Experimental);
+					var params = {
+						date: aras.convertFromNeutral(oldDate, "date", format),
+						format: format,
+						aras: aras,
+						type: "Date",
+						top: wndRect.top - wndRect.screenTop, left: wndRect.left - wndRect.screenLeft
+					};
+					
+					var dateDialog = topWnd.ArasModules.Dialog.show("iframe", params);
+
+					//Magic behaviour for IE11 caused by impossibility show modalWindow from resolved promise
+					//Issue causes when calling confirm dialog with modal realization (e.g. in Solutions)
+					//TODO: Remove when ModalDialogHelper will be removed completely from Innovator
+					if (aras.Browser && aras.Browser.isIe() && aras.Browser.getMajorVersionNumber() === 11) {
+						dateDialog.dialogNode.addEventListener('close', function(evt) {
+							var newDate = dateDialog.returnValue;
+							if (newDate !== undefined) {
+								newDate = aras.convertToNeutral(newDate, "date", format);
+							}
+							onAfterSpecialDialog(newDate, true);
+						});
+						return;
+					}
+
+					dateDialog.promise.then(function (newDate) {
+						if (newDate !== undefined) {
+							newDate = aras.convertToNeutral(newDate, "date", format);
+						}
+						onAfterSpecialDialog(newDate);
+					});
+				}
+		}
+		
+		function showTextarea() {
+				var params = {
+					isEditMode: topWnd.isEditMode,
+					aras: aras,
+					content: currSelCell.getValue(),
+					type: "Text"
+				};
+				
+				topWnd.ArasModules.Dialog.show("iframe", params).promise.then(function (res) {
+					onAfterSpecialDialog(res);
+				});
+		}
+		
+		// ============================= Window  Handlers ===============================
+		
+		topWnd.registerCommandEventHandler(window, onBeforeSaveCommand, "before", "save");
+		topWnd.registerCommandEventHandler(window, onBeforeSaveCommand, "before", "unlock");
+		
+		function onBeforeSaveCommand(){
+			window.frameElement.src="";
+		}
+		
+		// ============================= Aras Property Event ===============================
+		
+		function scriptInit(){
+			// ++++++ setup Grid Events (cell events) ++++++
+			var res = aras.getItemTypeNodeForClient("mpp_Operation");
+			var nds = res.selectNodes("Relationships/Item[@type='Property']/Relationships/Item[grid_event != '' and related_id/Item/method_code != '']");
+
+			var	methodCode;
+
+			for (var i = 0; i < nds.length; i++) {
+				var ev = nds[i];
+				var EventName = aras.getItemProperty(ev, "source_id/Item/name") + "_";
+				EventName += "D_" + aras.getItemProperty(ev, "grid_event");
+				cellEventsNames[i] = EventName;
+
+				methodCode = aras.getItemProperty(ev, "related_id/Item/method_code");
+
+				cellEventsMethods_code[i] = methodCode;
+			}
+			
+			// ^^^^^^ setup Grid Events (cell events) ^^^^^^
+		}
+		
+		function handleCellEvent(eventName, rowId, col) {
+			var prop = columnObjects[col];
+			var EventName = prop.name + "_" + eventName;
+			var funcName = prop.name + "_" + eventName + "_func";
+
+			var retValue = handleEvent(cellEventsNames, cellEventsMethods_code, EventName, funcName, rowId, col);
+			return retValue;
+		}
+		
+		function handleEvent(eventsNames, eventsMethods_code, EventName, funcName, rowId, col) {
+			var retValue = true;
+			// if col is defined it means cell event occurs. Else it's row event
+			if (col != undefined) {
+				var prop = columnObjects[col];
+			}
+
+			var HandlersQueue = window[funcName];
+			if (HandlersQueue == undefined) {
+				var HasEvents = false;
+				for (var i = 0; i < eventsNames.length; i++) {
+					if (eventsNames[i] == EventName) {
+						HasEvents = true;
+						var method_code = eventsMethods_code[i];
+						try {
+							if (col != undefined) {
+								handler = new Function("relationshipID", "relatedID", "propertyName", "colNumber", "gridApplet", method_code);
+							} else {
+								handler = new Function("relationshipID", "relatedID", "gridApplet", method_code);
+							}
+
+							if (!window[funcName]) {
+								window[funcName] = new Array();
+							}
+							window[funcName].push(handler);
+						}
+						catch (excep) {
+							aras.AlertError(aras.getResource("", "relationshipsgrid.internal_error_event_failed_initialize"), aras.getResource("", "relationshipsgrid.custom_event_failed", eventName, excep.description), aras.getResource("", "common.client_side_err"), window);
+							return false;
+						}
+					}
+				}
+
+				if (HasEvents) {
+					HandlersQueue = window[funcName];
+				} else {
+					window[funcName] = null;
+				}
+			}
+
+			if (HandlersQueue) {
+				for (var i = 0; i < HandlersQueue.length; i++) {
+					var handler = HandlersQueue[i];
+					var relationshipID = rowId;
+					var relatedID = undefined;
+
+					try {
+						if (col != undefined) {
+							retValue = handler(relationshipID, relatedID, prop.pname, col, grid);
+						} else {
+							retValue = handler(relationshipID, relatedID, grid);
+						}
+					}
+					catch (excep) {
+						aras.AlertError(aras.getResource("", "relationshipsgrid.internal_err_event_failed"), aras.getResource("", "relationshipsgrid.failed_with_msg", EventName, excep.description), aras.getResource("", "common.client_side_err"), window);
+						return false;
+					}
+					if (retValue === false) {
+						break;
+					}
+				}
+			}
+			if (retValue === undefined) {
+				retValue = true;
+			}
+			return retValue;
+		}
+		
+	</script>
+	<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+		<tr>
+			<td valign="top" id="gridTD">
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

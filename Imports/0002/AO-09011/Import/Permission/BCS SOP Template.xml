@@ -1,0 +1,34 @@
+﻿<AML>
+ <Item type="Permission" id="F963A06CE64A475CB1C21B6101CB4F0B" action="add">
+  <is_private>0</is_private>
+  <name>BCS SOP Template</name>
+  <Relationships>
+   <Item type="Access" id="AE332B737BC94B84838653D6C6687511" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Creator" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>Creator</name>
+     </Item>
+    </related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="BCS SOP Template" type="Permission">F963A06CE64A475CB1C21B6101CB4F0B</source_id>
+   </Item>
+   <Item type="Access" id="CBE531FB97A64CB7B8E16B3EF8AFE26B" action="add">
+    <can_change_access>0</can_change_access>
+    <can_delete>1</can_delete>
+    <can_discover>1</can_discover>
+    <can_get>1</can_get>
+    <can_update>1</can_update>
+    <related_id keyed_name="Administrators" type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</related_id>
+    <show_permissions_warning>0</show_permissions_warning>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="BCS SOP Template" type="Permission">F963A06CE64A475CB1C21B6101CB4F0B</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

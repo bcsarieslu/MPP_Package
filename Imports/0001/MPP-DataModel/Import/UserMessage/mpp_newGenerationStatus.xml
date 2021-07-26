@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="54BB1FA6B70C414F954CF263919744D2" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">New Version</text>
+  <name>mpp_newGenerationStatus</name>
+ </Item>
+</AML>

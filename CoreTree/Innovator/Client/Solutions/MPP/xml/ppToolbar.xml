@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<toolbarapplet buttonsize="26,25">
+	<toolbar id="ppToolbar">
+		<choice id="location_list" label="Location:" tooltip="Select Location"/>
+		<button image="../images/PublishWorkInstructions.svg" id="publish" tooltip="Publish Work Instructions"/>
+		<choice id="language_list" label="Language:" tooltip="Select Language"/>
+		<separator/>
+		<button image="../images/EditItem.svg" id="viewedititem" tooltip="Edit Item"/>
+		<separator/>
+		<button image="../images/ProcessPlan.svg" id="importmpp" tooltip="Import MPP"/>
+		<button image="../images/ProcessFunction.svg" id="importoperation" tooltip="Import Operation"/>
+	</toolbar>
+</toolbarapplet>

@@ -1,0 +1,160 @@
+﻿<AML>
+  <Item type="Life Cycle Map" id="9B33C833A4C44B51902E6B273893829D" action="add">
+    <description>MPP簽審流程 生命周期</description>
+    <start_state type="Life Cycle State">3A18791EFAD04E07AF45473830612AB4</start_state>
+    <name>PPR</name>
+    <Relationships>
+      <Item type="Life Cycle State" id="9D4C99B22A4E435AB93BEC4CE42A3A43" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <label xml:lang="zc">已取消</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>896</sort_order>
+        <x>55</x>
+        <y>180</y>
+        <name>Cancelled</name>
+      </Item>
+      <Item type="Life Cycle State" id="BF30FD3705454BCDA1FD8B7819C6B662" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>float</item_behavior>
+        <label xml:lang="zc">规划中</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>768</sort_order>
+        <x>159</x>
+        <y>73</y>
+        <name>In Planning</name>
+      </Item>
+      <Item type="Life Cycle State" id="D650D294F9AF4802B83659C1DA4F6B1F" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>float</item_behavior>
+        <label xml:lang="zc">审核中</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>384</sort_order>
+        <x>392</x>
+        <y>73</y>
+        <name>In Review</name>
+      </Item>
+      <Item type="Life Cycle State" id="0EDFABB51E9645518ADFCE8C9A77B300" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>float</item_behavior>
+        <label xml:lang="zc">编辑中</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>256</sort_order>
+        <state_permission_id type="Permission">4C4647116F04475794F23B0852715FCE</state_permission_id>
+        <x>267</x>
+        <y>73</y>
+        <name>In Work</name>
+      </Item>
+      <Item type="Life Cycle State" id="3A18791EFAD04E07AF45473830612AB4" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>float</item_behavior>
+        <label xml:lang="zc">新建立</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>128</sort_order>
+        <x>55</x>
+        <y>74</y>
+        <name>New</name>
+      </Item>
+      <Item type="Life Cycle State" id="BB0ACF499AC445819A9188378956C179" action="add">
+        <image>../images/LifeCycleState.svg</image>
+        <item_behavior>float</item_behavior>
+        <label xml:lang="zc">已发行</label>
+        <set_is_released>0</set_is_released>
+        <set_not_lockable>0</set_not_lockable>
+        <sort_order>640</sort_order>
+        <state_permission_id type="Permission">5C5D0E56FC35481DA48D32103BDA54F8</state_permission_id>
+        <x>535</x>
+        <y>73</y>
+        <name>Released</name>
+      </Item>
+      <Item type="Life Cycle Transition" id="9E06CE80615C4E2591D96DF150E95F32" action="add">
+        <from_state type="Life Cycle State">0EDFABB51E9645518ADFCE8C9A77B300</from_state>
+        <get_comment>0</get_comment>
+        <pre_action type="Method"><Item type="Method" action="get" id="2F9DC06E2EB74D6CB745C7B0F7397FF4" /></pre_action>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <segments />
+        <sort_order>256</sort_order>
+        <to_state type="Life Cycle State">D650D294F9AF4802B83659C1DA4F6B1F</to_state>
+        <x>32</x>
+        <y>13</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="14FDF8CE5A334310AAEDA24E7C81F0E8" action="add">
+        <from_state type="Life Cycle State">3A18791EFAD04E07AF45473830612AB4</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <segments />
+        <sort_order>1280</sort_order>
+        <to_state type="Life Cycle State">9D4C99B22A4E435AB93BEC4CE42A3A43</to_state>
+        <x>10</x>
+        <y>75</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="5C7EC272E4EB40BA85D95237E572FC7A" action="add">
+        <from_state type="Life Cycle State">3A18791EFAD04E07AF45473830612AB4</from_state>
+        <get_comment>0</get_comment>
+        <pre_action type="Method"><Item type="Method" action="get" id="2F9DC06E2EB74D6CB745C7B0F7397FF4" /></pre_action>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <segments />
+        <sort_order>128</sort_order>
+        <to_state type="Life Cycle State">BF30FD3705454BCDA1FD8B7819C6B662</to_state>
+        <x>29</x>
+        <y>12</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="9E0DB601B9064C84B7ADBB4D0D327A6E" action="add">
+        <from_state type="Life Cycle State">3A18791EFAD04E07AF45473830612AB4</from_state>
+        <get_comment>0</get_comment>
+        <pre_action type="Method"><Item type="Method" action="get" id="2F9DC06E2EB74D6CB745C7B0F7397FF4" /></pre_action>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <segments>228,171</segments>
+        <sort_order>1152</sort_order>
+        <to_state type="Life Cycle State">D650D294F9AF4802B83659C1DA4F6B1F</to_state>
+        <x>137</x>
+        <y>107</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="64ABEFF8966447A388BD30519E983DFB" action="add">
+        <from_state type="Life Cycle State">BF30FD3705454BCDA1FD8B7819C6B662</from_state>
+        <get_comment>0</get_comment>
+        <pre_action type="Method"><Item type="Method" action="get" id="2F9DC06E2EB74D6CB745C7B0F7397FF4" /></pre_action>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <segments />
+        <sort_order>896</sort_order>
+        <to_state type="Life Cycle State">0EDFABB51E9645518ADFCE8C9A77B300</to_state>
+        <x>24</x>
+        <y>14</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="BF872E7AA2E34786B4B1235E83C57EF7" action="add">
+        <from_state type="Life Cycle State">BF30FD3705454BCDA1FD8B7819C6B662</from_state>
+        <get_comment>0</get_comment>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <segments>116,45</segments>
+        <sort_order>1024</sort_order>
+        <to_state type="Life Cycle State">3A18791EFAD04E07AF45473830612AB4</to_state>
+        <x>-57</x>
+        <y>-61</y>
+      </Item>
+      <Item type="Life Cycle Transition" id="A522A43C24A542688EDF6747F37CB43F" action="add">
+        <from_state type="Life Cycle State">D650D294F9AF4802B83659C1DA4F6B1F</from_state>
+        <get_comment>0</get_comment>
+        <post_action type="Method"><Item type="Method" action="get" id="6DDDB31EED1340F990C7FC2AE680C962" /></post_action>
+        <pre_action type="Method"><Item type="Method" action="get" id="2F9DC06E2EB74D6CB745C7B0F7397FF4" /></pre_action>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <sort_order>768</sort_order>
+        <to_state type="Life Cycle State">BB0ACF499AC445819A9188378956C179</to_state>
+      </Item>
+      <Item type="Life Cycle Transition" id="A54647F01D9044E794875F2C8ED706B8" action="add">
+        <from_state type="Life Cycle State">D650D294F9AF4802B83659C1DA4F6B1F</from_state>
+        <get_comment>0</get_comment>
+        <pre_action type="Method"><Item type="Method" action="get" id="2F9DC06E2EB74D6CB745C7B0F7397FF4" /></pre_action>
+        <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
+        <segments>312,42</segments>
+        <sort_order>640</sort_order>
+        <to_state type="Life Cycle State">0EDFABB51E9645518ADFCE8C9A77B300</to_state>
+        <x>-61</x>
+        <y>-36</y>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

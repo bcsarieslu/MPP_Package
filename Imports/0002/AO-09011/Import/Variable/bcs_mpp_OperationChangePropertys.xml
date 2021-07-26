@@ -1,0 +1,6 @@
+﻿<AML>
+  <Item type="Variable" id="DDEEF0222530496297B51DAE8DADA932" action="add">
+    <value>description,bcs_type</value>
+    <name>bcs_mpp_OperationChangePropertys</name>
+  </Item>
+</AML>

@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui_resources>
+  <resource key="functionNotAvailable" value="该功能不可用。" />
+  <resource key="workbench" value="物件总管" />
+  <resource key="action.add" value="新增" />
+  <resource key="action.insert" value="插入" />
+  <resource key="action.remove" value="移除" />
+  <resource key="action.moveUp" value="上移" />
+  <resource key="action.moveDown" value="下移" />
+  <resource key="action.changeQuality" value="变更数量" />
+  <resource key="action.editItem" value="编辑属性" />
+  <resource key="action.createProcessPlan" value="创建工艺流程" />
+  <resource key="action.viewProducedPart" value="查看生产零件" />
+  <resource key="workbenchDropdown.Parts" value="零部件" />
+  <resource key="workbenchDropdown.Tools" value="工具类" />
+  <resource key="workbenchDropdown.Machines" value="机台" />
+  <resource key="workbenchDropdown.Documents" value="文件" />
+  <resource key="workbenchDropdown.Skills" value="技能专长" />
+  <resource key="workbench.sendToWorkbenchButton" value="送出" />
+  <resource key="workbench.sendToWorkbenchWarning" value="删除还是加入至对象总管？" />
+  <!-- Add by tengz  -->
+  <!-- Process Plan的workbench里添加对象类 -->
+  <resource key="workbenchDropdown.CAD" value="工程图" />
+  <resource key="workbenchDropdown.Test" value="检验项" />
+  <resource key="warning.addProducedPart" value="请添加生产零件" />
+  <resource key="warning.saveProcessPlan" value="请保存工艺流程" />
+  <resource key="warning.itemInsufficientPermissions" value="您没有足够的权限使用此项目。" />
+  <resource key="warning.actionOnUnsavedItem" value="目前为止尚未储存的变更将会舍弃。是否确定舍弃 ？" />
+  <resource key="warning.changeUnsavedItemLanguage" value="更改语言(Language)将放弃目前为止尚未储存的变更。你确定吗 ？" />
+  <resource key="warning.changeUnsavedItemLocation" value="更改厂区(Location)将放弃目前为止尚未储存的变更。你确定吗 ？" />
+  <resource key="error.circularReferenceProducedConsumedPart" value="已发生循环参考(自己接到自己)。生产零件和消耗零件不能相同。" />
+  <resource key="error.itemExists" value="项目已添加。" />
+  <resource key="error.ppLockedByAnotherUser" value="工艺流程目前已被其他用户锁定" />
+  <resource key="EBOMTreeGridMenu.viewPart" value="查看零件" />
+  <resource key="MBOMTreeGrid.insertItemInto" value="将项目插入{0}。" />
+  <resource key="MBOMTreeGrid.addItemTo" value="将项目添加到{0}。" />
+  <resource key="MBOMTreeGrid.cantBeAddedToComponent" value="无法插入到组件。" />
+  <resource key="MBOMTreeGridMenu.updateVersion" value="更新版本" />
+  <resource key="MBOMTreeGridMenu.insertPart" value="插入零件" />
+  <resource key="MBOMTreeGridMenu.insertPhantom" value="插入虚拟件" />
+  <resource key="MBOMTreeGridMenu.removePart" value="删除零件" />
+  <resource key="MBOMTreeGridMenu.viewPart" value="查看零件" />
+  <resource key="MBOMTreeGridMenu.viewProcessPlan" value="查看工艺流程" />
+  <!-- Add by tengz  -->
+  <!-- 工时定额&检验项目页面菜单 -->
+  <resource key="MBOMTreeGridMenu.insertTest" value="插入测试项" />
+  <resource key="MBOMTreeGridMenu.removeTest" value="删除测试项" />
+  <resource key="MBOMTreeGridMenu.viewTest" value="查看测试项" />
+  <resource key="elementRendererTree.itemIsBlocked" value="物件被封锁" />
+  <resource key="ConsumedPartElementTree.phantom" value="虚拟件" />
+  <resource key="operationElementRenderer.edit" value="编辑" />
+  <resource key="operationElementRenderer.partWasntFound" value="找不到零件" />
+  <resource key="operationElementRenderer.partNumber" value="零件号" />
+  <resource key="operationElementRenderer.partName" value="零件名称" />
+  <resource key="operationElementRenderer.type" value="类型" />
+  <resource key="operationElementRenderer.quantity" value="数量" />
+  <resource key="operationElementRenderer.editableColumnTooltip" value="可编辑栏" />
+  <resource key="operationElementRenderer.alternates" value="替代品(Alternates)" />
+  <resource key="operationElementRenderer.substitutes" value="取代品(Substitutes)" />
+  <resource key="operationElementRenderer.resourceNotFound" value="找不到资源" />
+  <resource key="operationElementRenderer.resourceNumber" value="资源编号" />
+  <resource key="operationElementRenderer.resourceName" value="名称" />
+  <resource key="operationElementRenderer.resourceType" value="类型" />
+  <resource key="stepElementRenderer.unnamed" value="未命名" />
+  <resource key="resourceElementRenderer.empty" value="空的" />
+  <resource key="resourceElementRenderer.resource" value="资源资源" />
+  <resource key="workInsturctionElementRenderer.addInstructionDetails" value="在此处添加说明详细信息..." />
+  <resource key="editorMenu.goUp" value="往上" />
+  <resource key="treeDradNDrop.insertMultiItemsInto" value="将{0}个项目插入.." />
+  <resource key="treeDradNDrop.insertItemInto" value="将项目插入.." />
+  <resource key="treeDradNDrop.pasteHere" value="拖拉至此" />
+  <resource key="treeDradNDrop.existErrorMulti" value="已经添加的项目之一。" />
+  <resource key="treeDradNDrop.existError" value="项目已添加。" />
+  <resource key="treeDradNDrop.notRootError" value="嵌套PP拒绝删除。" />
+  <resource key="tree.cantResolveSinglePpAll" value="以下子流程计划无法解决– &lt;b&gt;{0}&lt;/b&gt;。解决子流程计划的方法-&lt;br&gt;-在子流程计划中选择正确的位置&lt;br&gt;-验证是否为生产的零件的新版本创建了新的流程计划。" />
+  <resource key="tree.cantResolveSinglePpOnlyMax" value="以下子流程计划无法解决– &lt;b&gt;{0}及更多&lt;/ b&gt;。解决子流程计划的方法-&lt;br&gt;-在子流程计划中选择正确的位置&lt;br&gt;-验证是否为生产的零件的新版本创建了新的流程计划。" />
+  <resource key="publishing.dialogTitle" value="发布MPP" />
+  <!--crf means Conflict Resolving Feature-->
+  <resource key="crf.use_my" value="使用我的编辑" />
+  <resource key="crf.use_other" value="使用其他用户的编辑" />
+  <resource key="crf.qty_changed_tooltip" value="我的修改：数量={0}&#xA;&#xA;其他用户的编辑：数量={1}" />
+  <resource key="crf.cp_not_found_tooltip" value="我的编辑：零件已消耗。 数量={0} &amp; 工序#={1}&#xA;&#xA;其他用户的编辑：零件已删除" />
+  <resource key="crf.error_message" value="所有冲突尚未解决。请解决MBOM视图中的所有冲突，然后保存。" />
+  <resource key="crf.processPlanWasDeleted" value="父阶流程计划已删除。 “使用我的编辑”选项不可用" />
+  <resource key="crf.operationWasDeleted" value="父阶操作已删除。 “使用我的编辑”选项不可用" />
+  <resource key="find.search_placeholder" value="在页面上查找" />
+  <resource key="find.search_placeholder_workbench" value="搜索" />
+  <resource key="find.no_matches_found" value="未找到" />
+  <resource key="find.more_than_100_matches" value="超过100" />
+  <resource key="find.found_of_matches" value="{1}中的{0}" />
+  <!-- Add by tengz  -->
+  <resource key="import.itemIsNotLocked" value="物件未锁定" />
+</ui_resources>

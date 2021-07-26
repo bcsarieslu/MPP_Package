@@ -1,0 +1,10 @@
+﻿<AML>
+ <Item type="mpp_ProcessPlan" id="E4DE834788D1440194F2D078938DBBBE" action="add">
+  <description />
+  <has_change_pending>0</has_change_pending>
+  <is_template>0</is_template>
+  <name>mpp_ProcessPlan system default</name>
+  <item_number>MPP-DEFAULT-001</item_number>
+  <permission_id></permission_id>
+ </Item>
+</AML>

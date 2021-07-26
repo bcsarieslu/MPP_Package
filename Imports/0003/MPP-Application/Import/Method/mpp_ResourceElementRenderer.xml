@@ -1,0 +1,62 @@
+﻿<AML>
+  <Item type="Method" action="add" id="403397D2F99E408F8C07417AE40A9419">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[return {
+		constructor: function() {
+			this.resourceStrings.empty = this.uiUtils.getResource('resourceElementRenderer.empty');
+			this.resourceStrings.resource = this.uiUtils.getResource('resourceElementRenderer.resource');
+		},
+
+		GetTreeName: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			var elementName;
+
+			if (elementState.isBlocked) {
+				elementName = this.resourceStrings.itemIsBlocked;
+			} else if (elementState.isEmpty) {
+				elementName = this.resourceStrings.empty;
+			} else {
+				var modelItem = schemaElement.Item();
+				var relatedItem = modelItem.getRelatedItem();
+
+				if (relatedItem) {
+				    //Modify By tengz 2020/2/4
+                    //调整MPP ProcessPlan Tree 显示对象KeyedName
+					//var itemName = relatedItem.getProperty('item_number');
+					var itemName = relatedItem.getProperty('keyed_name');
+					
+					elementName = itemName || '';
+				} else {
+					elementName = this.resourceStrings.empty;
+				}
+			}
+
+			elementName = elementName || this.resourceStrings.resource;
+			return this.wrapInTag(elementName, 'span', {class: 'ArasXmlSchemaElementTypeNode'});
+		},
+
+		GetTreeStyle: function(/*WrappedObject*/ schemaElement, /*Object*/ elementState) {
+			if (!elementState.isEmpty && !elementState.isBlocked) {
+				var modelItem = schemaElement.Item();
+				var relatedItem = modelItem.getRelatedItem();
+
+				if (relatedItem) {
+					var itemTypeName = relatedItem.getAttribute('type');
+					var itemTypeDescriptor = this.datamodel.getItemTypeDescriptor(itemTypeName);
+					var iconUrl = itemTypeDescriptor.getProperty('open_icon');
+
+					iconUrl = (iconUrl && iconUrl.toLowerCase().indexOf('vault:///?fileid=') === -1) ? this._aras.getScriptsURL() + iconUrl :
+						this.enums.getImagefromType(this.enums.XmlSchemaElementType.Item);
+
+					return {backgroundImage: 'url("' + iconUrl + '")'};
+				}
+			}
+		}
+	};]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>mpp_ResourceElementRenderer</name>
+  </Item>
+</AML>

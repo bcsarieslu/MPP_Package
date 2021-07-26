@@ -1,0 +1,132 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="../../javascript/dojo/../dijit/themes/claro/claro.css">
+	<link rel="stylesheet" href="../../public/styles/controls.css">
+	<link rel="stylesheet" href="Styles/MEBOMs.css">
+	<link rel="stylesheet" href="Styles/EBOMTreeGrid.css">
+	<style type="text/css">
+		@@import 'Styles/FindControl.css';
+	</style>
+	<script type="text/javascript" src="../../javascript/include.aspx?classes=/dojo.js" data-dojo-config="packages: [{ name: 'MPP', location: '../../Modules/aras.innovator.solutions.MPP/Scripts' }], isDebug: false, parseOnLoad: false, baseUrl:'../../javascript/dojo'"></script>
+	<script type="text/javascript" src="../../javascript/include.aspx?classes=XmlDocument"></script>
+	<script>
+	var aras = parent.aras;
+	var topWindow = aras.getMostTopWindowWithAras(window);
+	var viewController = parent.viewController;
+	var isUIControlsCreated = false;
+	var shareData = viewController.shareData;
+	var sharedBomData = viewController.shareData.BOM;
+	var dataModel = viewController.dataModel;
+	var processPlanItem;
+	var ebomGrid = null;
+	var partConfig = null;
+	var listeners = [];
+
+	loadView = function (targetItem) {
+		var refreshFunction = topWindow.onRefresh;
+		topWindow.onRefresh = function () {
+			aras.AlertError(aras.getResource('MPP', 'functionNotAvailable'));
+		}
+		listeners.push({
+			remove: function () {
+				topWindow.onRefresh = refreshFunction;
+			}
+		});
+
+		processPlanItem = targetItem;
+
+		if (!isUIControlsCreated) {
+			createUIControls();
+		}
+
+		setupUIControls();
+	}
+
+	reloadView = function(newItem) {
+		processPlanItem = newItem;
+		setupUIControls();
+	}
+
+	unloadView = function () {
+		for (var i = 0; i < listeners.length; i++) {
+			listeners[i].remove();
+		}
+		listeners = [];
+
+		if (sharedBomData.data !== ebomGrid.data) {
+			sharedBomData.data = ebomGrid.data;
+		}
+
+		ebomGrid.destroy();
+	}
+
+	setupUIControls = function() {
+		if (isUIControlsCreated) {
+			var currentProducedPart = shareData.producedPartItem;
+
+			// grid section
+			if (shareData.oldProducedPartItem && currentProducedPart.Id() !== shareData.oldProducedPartItem.Id()) {
+				ebomGrid.producedPartId = currentProducedPart.Id();
+				ebomGrid.producedPartIsPhantom = currentProducedPart.getProperty('classification') == partConfig.phantom_class_path;
+			}
+
+			ebomGrid.data = sharedBomData.data;
+			ebomGrid.refreshEnumerationIndex();
+
+			ebomGrid.setRequestProperty('processplan_id', aras.getItemProperty(processPlanItem, 'id'));
+			ebomGrid.setRequestProperty('location_id', shareData.locationId || '');
+
+			ebomGrid.initTree();
+
+			if (dataModel.rootProcessPlan && dataModel.rootProcessPlan.isModified()) {
+				ebomGrid.refreshFromModelItem(dataModel.rootProcessPlan);
+			}
+		}
+	}
+
+	createUIControls = function() {
+		require([
+				'MPP/UI/EBOM/EBOMTreeGrid',
+				'MPP/Model/PartConfig'
+				],
+			function (EBOMTreeGrid, PartConfig) {
+				var producedPartItem = viewController.getProducedPartItem();
+				clientControlsFactory.createControl("Aras.Client.Controls.Public.Toolbar", {connectId: 'toolbarContainer'}, function(toolbarControl) {
+					toolbarControl.loadToolbarFromStr('<toolbarapplet buttonsize="26,25" buttonstyle="windows">' +
+						'<toolbar id="ebomToolbar"></toolbar></toolbarapplet>');
+					toolbarControl.show();
+				});
+				sharedBomData.loadStashedData(processPlanItem);
+
+				ebomGrid = new EBOMTreeGrid({
+					aras: aras,
+					datamodel: dataModel,
+					data: sharedBomData.data,
+					controlsFactory: clientControlsFactory
+				});
+				partConfig = PartConfig;
+				ebomGrid.producedPartId = producedPartItem.Id();
+				ebomGrid.producedPartIsPhantom = producedPartItem.getProperty('classification') == PartConfig.phantom_class_path;
+				parent.ebomTreeGrid = ebomGrid;
+
+				isUIControlsCreated = true;
+			}
+		);
+	}
+	</script>
+</head>
+<body class="claro">
+	<table style="width: 100%; height: 100%; position: absolute; top: 0px; left: 0px;" cellspacing="0" cellpadding="0">
+		<tr style="vertical-align: top;">
+			<td id="toolbarContainer"></td>
+		</tr>
+		<tr style="vertical-align: top;">
+			<td id="ebom_grid" style="width: 100%; height: 100%;"></td>
+		</tr>
+	</table>
+</body>
+</html>

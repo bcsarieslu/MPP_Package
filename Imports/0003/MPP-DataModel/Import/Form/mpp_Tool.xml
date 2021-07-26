@@ -1,0 +1,159 @@
+﻿<AML>
+  <Item type="Form" id="867E341329804F9787CC9C595FB5D0BE" action="add">
+    <category_form>0</category_form>
+    <height>234</height>
+    <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+    <width>699</width>
+    <name>mpp_Tool</name>
+    <Relationships>
+      <Item type="Body" id="AF37C41C75724329ADA84498E7EB6804" action="add">
+        <bg_color>#FFFFFF</bg_color>
+        <sort_order>128</sort_order>
+        <Relationships>
+          <Item type="Field" id="91F31966F91745E3B115D1ADFEFFBDA2" action="add">
+            <border_width>0</border_width>
+            <display_length_unit>px</display_length_unit>
+            <field_type>html</field_type>
+            <font_color>#000000</font_color>
+            <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <html_code><![CDATA[<div id="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;opacity:0;">
+    <div id="innerdiv" style="position:absolute;">
+        <img id="bigimg" style="border:5px solid #fff;" src="" />
+    </div>
+</div>]]></html_code>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <sort_order>768</sort_order>
+            <tab_stop>1</tab_stop>
+            <x>695</x>
+            <y>30</y>
+            <name>bcs_floatDiv</name>
+          </Item>
+          <Item type="Field" id="2E13E6CB8D66457083D80B6A58F95D04" action="add">
+            <border_width>0</border_width>
+            <display_length_unit>px</display_length_unit>
+            <field_type>image</field_type>
+            <font_color>#000000</font_color>
+            <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <height>300</height>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">Image</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">1DE3AFF4C60140809B66EDA3908F74C4</propertytype_id>
+            <sort_order>640</sort_order>
+            <tab_index>3072</tab_index>
+            <tab_stop>1</tab_stop>
+            <width>400</width>
+            <x>190</x>
+            <y>108</y>
+            <name>bcs_image</name>
+            <Relationships>
+              <Item type="Field Event" id="62EE3E07FB914716BF307417EC27AC3D" action="add">
+                <field_event>onclick</field_event>
+                <related_id type="Method"><Item type="Method" action="get" id="4CFE7EA7225647F0A50299A9E1C8F562" /></related_id>
+                <sort_order>128</sort_order>
+              </Item>
+            </Relationships>
+          </Item>
+          <Item type="Field" id="0D9B679C533D4542983CA8B4CAF059D7" action="add">
+            <border_width>0</border_width>
+            <display_length_unit>px</display_length_unit>
+            <field_type>dropdown</field_type>
+            <font_color>#000000</font_color>
+            <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">类型</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">7B2052F453ED43CC8D118F988F691CE9</propertytype_id>
+            <sort_order>896</sort_order>
+            <tab_index>3200</tab_index>
+            <tab_stop>1</tab_stop>
+            <x>344</x>
+            <y>8</y>
+            <name>bcs_type</name>
+          </Item>
+          <Item type="Field" id="1DD023E655BB4FB4B1D26B1BFD5CE78C" action="add">
+            <display_length_unit>px</display_length_unit>
+            <field_type>html</field_type>
+            <html_code><![CDATA[<span id="ITEM_INFO_INTERNAL_SPAN"/>
+<script>
+  populate_ITEM_INFO_INTERNAL_SPAN = function()
+  {
+    document.getElementById("ITEM_INFO_INTERNAL_SPAN").innerHTML = top.aras.uiDrawItemInfoTable(document.itemType);
+    top.aras.uiPopulateInfoTableWithItem(document.item, document);
+  }
+
+window.addEventListener("load", populate_ITEM_INFO_INTERNAL_SPAN);
+
+</script>]]></html_code>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <list_no_blank>0</list_no_blank>
+            <sort_order>128</sort_order>
+            <tab_stop>0</tab_stop>
+            <x>0</x>
+            <y>0</y>
+            <name>item_info</name>
+          </Item>
+          <Item type="Field" id="F9081D86360042B0963B5070D2E90561" action="add">
+            <bg_color>beige  </bg_color>
+            <border_width>0</border_width>
+            <display_length>120</display_length>
+            <display_length_unit>px</display_length_unit>
+            <field_type>text</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">Tool Number</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">240153C0B87C49B98C82AA145CEF05D1</propertytype_id>
+            <sort_order>384</sort_order>
+            <tab_index>128</tab_index>
+            <tab_stop>1</tab_stop>
+            <x>191</x>
+            <y>8</y>
+            <name>item_number</name>
+          </Item>
+          <Item type="Field" id="C0FD10351A804F7A8B85D6A77D50327A" action="add">
+            <border_width>0</border_width>
+            <display_length>300</display_length>
+            <display_length_unit>px</display_length_unit>
+            <field_type>text</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="en">Name</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">84D9AC08C439491F9DE496B0FEE963AA</propertytype_id>
+            <sort_order>512</sort_order>
+            <tab_index>3072</tab_index>
+            <tab_stop>1</tab_stop>
+            <x>190</x>
+            <y>58</y>
+            <name>name</name>
+          </Item>
+        </Relationships>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

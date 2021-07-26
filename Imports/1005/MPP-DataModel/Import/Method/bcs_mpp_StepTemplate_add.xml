@@ -1,0 +1,73 @@
+﻿<AML>
+ <Item type="Method" id="E66F2CE09DF04B9A84EB097F8BB81E45" action="add">
+  <comments>AO-09011</comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[//Creator:Kenny
+//Name:bcs_mpp_StepTemplate_add
+//Type: C#
+//Event: onAdd (instead of)
+//Item Type : mpp_StepTemplate
+//Comments:v0.1 Developed By Kenny @Broadway 
+//QI20-799
+//============================================================
+
+Innovator inn = this.getInnovator();
+
+Aras.Server.Security.Identity plmIdentity = Aras.Server.Security.Identity.GetByName("Aras PLM");
+bool PermissionWasSet = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity);
+
+try
+{
+	//System.Diagnostics.Debugger.Break();
+	//mpp_Step (system default) : name = mpp_Step system default ; id=000A5818CF884943B3A2E6F5687CC167 ; source_id = 6D52DB8C18EF46B19D0D7FCB172D5101
+	
+	string strUtcNow = String.Format("{0:O}", DateTime.UtcNow).Split('.')[0];
+	string strUserId = inn.getUserID();
+	Item relatedItem = this.getRelatedItem();
+	
+	
+    Item mpp_req = inn.newItem();
+    mpp_req.loadAML("<Item type='Permission' action='get' select='id'><name>World Can Update</name></Item>");
+    Item response = mpp_req.apply();
+    if (response.isError())
+      throw new Exception("Could not find permission with name 'World Can Update Permission'.");
+    string strPermission_id = response.getID();	
+	
+	if (relatedItem != null){
+        if (relatedItem.getProperty("source_id","")=="" ){
+            relatedItem.setProperty("source_id","6D52DB8C18EF46B19D0D7FCB172D5101");
+            Item newRelatedItem = relatedItem.apply("add");
+            
+            newRelatedItem = inn.getItemById("mpp_Step",newRelatedItem.getID());
+            strPermission_id = newRelatedItem.getProperty("permission_id","");
+            if (strPermission_id == "") strPermission_id = response.getID();	
+            
+            string strSQL = String.Format("INSERT INTO [innovator].[{0}] ([ID], [CONFIG_ID], [IS_CURRENT], [CREATED_ON], [CREATED_BY_ID], [KEYED_NAME], [PERMISSION_ID], [SOURCE_ID], [RELATED_ID], [MODIFIED_ON], [MODIFIED_BY_ID], [MAJOR_REV], [IS_RELEASED], [NEW_VERSION]) VALUES ('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}')","MPP_STEPTEMPLATE",this.getID(),this.getID(),"1",strUtcNow,strUserId,this.getID(),strPermission_id,this.getProperty("source_id",""),newRelatedItem.getID(),strUtcNow,strUserId,"A","0","1");
+            inn.applySQL(strSQL);
+        }
+	}else if (this.getProperty("related_id", "")!=""){
+ 
+        //this.getAttribute("LastModifiedOn")
+        Item sourceItem = inn.getItemById("mpp_OperationTemplate", this.getProperty("source_id", ""));
+        relatedItem = inn.getItemById("mpp_Step", this.getProperty("related_id", ""));
+        //strPermission_id = sourceItem.getProperty("permission_id");
+        string strSQL = String.Format("INSERT INTO [innovator].[{0}] ([ID], [CONFIG_ID], [IS_CURRENT], [CREATED_ON], [CREATED_BY_ID], [KEYED_NAME], [PERMISSION_ID], [SOURCE_ID], [RELATED_ID], [MODIFIED_ON], [MODIFIED_BY_ID], [MAJOR_REV], [IS_RELEASED], [NEW_VERSION]) VALUES ('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}')","MPP_STEPTEMPLATE",this.getID(),this.getID(),"1",strUtcNow,strUserId,this.getID(),strPermission_id,this.getProperty("source_id",""),relatedItem.getID(),strUtcNow,strUserId,"A","0","1");
+
+        inn.applySQL(strSQL);
+	}
+
+
+}
+catch (Exception ex)
+{
+	return inn.newError(ex.Message);
+}
+finally
+{
+	if (PermissionWasSet) Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity);
+}
+return this;]]></method_code>
+  <method_type>C#</method_type>
+  <name>bcs_mpp_StepTemplate_add</name>
+ </Item>
+</AML>

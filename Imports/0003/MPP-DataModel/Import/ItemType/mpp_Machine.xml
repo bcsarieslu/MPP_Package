@@ -1,0 +1,95 @@
+﻿<AML>
+ <Item type="ItemType" id="D554B0C8D479455A87AF07BAE564E2CF" action="add">
+  <allow_private_permission>1</allow_private_permission>
+  <auto_search>1</auto_search>
+  <default_page_size>50</default_page_size>
+  <enforce_discovery>1</enforce_discovery>
+  <hide_where_used>0</hide_where_used>
+  <implementation_type>table</implementation_type>
+  <instance_data>MPP_MACHINE</instance_data>
+  <is_dependent>0</is_dependent>
+  <is_relationship>0</is_relationship>
+  <is_versionable>0</is_versionable>
+  <label xml:lang="en">Machine</label>
+  <label_plural xml:lang="en">Machines</label_plural>
+  <large_icon>../images/Machine.svg</large_icon>
+  <open_icon>../images/Machine.svg</open_icon>
+  <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+  <show_parameters_tab>0</show_parameters_tab>
+  <structure_view>tabs off</structure_view>
+  <unlock_on_logout>0</unlock_on_logout>
+  <use_src_access>0</use_src_access>
+  <name>mpp_Machine</name>
+  <Relationships>
+   <Item type="Property" id="35F9B7EF37B54EE797E0AF447F53622E" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>300</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Name</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_Machine" type="ItemType" name="mpp_Machine">D554B0C8D479455A87AF07BAE564E2CF</source_id>
+    <stored_length>64</stored_length>
+    <track_history>0</track_history>
+    <name>name</name>
+   </Item>
+   <Item type="View" id="C4D3BA436F9840F8967EECF2FB11FE96" action="add">
+    <client>js</client>
+    <related_id keyed_name="mpp_Machine" type="Form">8DD2BA9DC51B481EAF9E6927FF7FC99D</related_id>
+    <role keyed_name="World" type="Identity">
+     <Item type="Identity" action="get" select="id">
+      <name>World</name>
+     </Item>
+    </role>
+    <show_ssvc>0</show_ssvc>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Machine" type="ItemType" name="mpp_Machine">D554B0C8D479455A87AF07BAE564E2CF</source_id>
+    <type>default</type>
+   </Item>
+   <Item type="Can Add" id="425A591DBB6A473B95BAF5EE88D918A5" action="add">
+    <can_add>1</can_add>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Machine" type="ItemType" name="mpp_Machine">D554B0C8D479455A87AF07BAE564E2CF</source_id>
+   </Item>
+   <Item type="Allowed Permission" id="E33E2A8981F7416C85D0F26910A88634" action="add">
+    <is_default>1</is_default>
+    <related_id keyed_name="Machine" type="Permission">B6A692ACA6904CDDB9B14C0C3E1729D1</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Machine" type="ItemType" name="mpp_Machine">D554B0C8D479455A87AF07BAE564E2CF</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="ItemType" id="D554B0C8D479455A87AF07BAE564E2CF" action="edit">
+  <Relationships>
+   <Item type="Property" id="199D3E3CF6E54582AF960C05CD97E694" action="add">
+    <column_alignment>left</column_alignment>
+    <column_width>130</column_width>
+    <data_type>string</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>1</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>1</is_required>
+    <keyed_name_order>1</keyed_name_order>
+    <label xml:lang="en">Machine Number</label>
+    <order_by>1</order_by>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Machine" type="ItemType" name="mpp_Machine">D554B0C8D479455A87AF07BAE564E2CF</source_id>
+    <stored_length>32</stored_length>
+    <track_history>0</track_history>
+    <name>item_number</name>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

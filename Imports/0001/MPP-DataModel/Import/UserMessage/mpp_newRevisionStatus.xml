@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="91B6A772CDB043CCB240DD59E9DC36C3" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">New Revision</text>
+  <name>mpp_newRevisionStatus</name>
+ </Item>
+</AML>

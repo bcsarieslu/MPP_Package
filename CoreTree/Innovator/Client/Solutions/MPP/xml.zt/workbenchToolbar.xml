@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<toolbarapplet buttonsize="26,25">
+	<toolbar id="workbenchToolbar">
+		<button image="../images/New.svg" id="add_items" tooltip="新增物件" text="新增物件"/>
+		<button image="../images/ViewItem.svg" id="view_item" tooltip="檢視物件" text="檢視物件"/>
+		<button image="../images/DeleteFile.svg" id="remove_items" tooltip="刪除物件" text="刪除物件"/>
+		<separator id="separator"/>
+		<choice id="item_types_list"/>
+	</toolbar>
+</toolbarapplet>

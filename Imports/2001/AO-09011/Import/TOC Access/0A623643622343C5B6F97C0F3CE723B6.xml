@@ -1,0 +1,8 @@
+﻿<AML>
+ <Item type="TOC Access" id="0A623643622343C5B6F97C0F3CE723B6" action="add">
+  <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+  <sort_order>256</sort_order>
+  <source_id keyed_name="mpp_Tool" type="ItemType" name="mpp_Tool">E4476490D86D42B0B52F873EC3F68282</source_id>
+  <category>MPP/Standard Resource</category>
+ </Item>
+</AML>

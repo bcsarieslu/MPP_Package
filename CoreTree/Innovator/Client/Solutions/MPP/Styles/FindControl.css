@@ -1,0 +1,96 @@
+﻿#find {
+	display: none;
+	margin-top: 5px;
+	margin-right: 8px;
+}
+
+.found {
+	background-color: #FFFE00;
+}
+
+.currentFound {
+	background-color: greenyellow;
+}
+
+#find .dijitTextBox {
+	border-color: #6b6b6b;
+}
+
+#find .txt_box_find {
+	height: 20px;
+	padding-right: 80px !important;
+	padding-left: 2px !important;
+	padding-top: 0px !important;
+	padding-bottom: 1px !important;
+	font-family: tahoma;
+	font-size: 12px;
+	color: #444444;
+	box-sizing: border-box;
+}
+
+#find .cleanable.x {
+	padding: 3px 18px 3px 4px;
+	border-radius: 3px;
+}
+
+#find .cleanable.onX {
+	cursor: pointer;
+}
+
+#find .txt_box_find::-ms-clear {
+	display: none;
+}
+
+#find .txt_box_find:-ms-input-placeholder {
+	font-family: tahoma;
+	font-size: 12px;
+	color: #828282;
+	font-style: italic;
+}
+
+#find .txt_box_find::-moz-placeholder {
+	font-family: tahoma;
+	font-size: 12px;
+	font-style: italic;
+	color: #828282;
+}
+
+#find .txt_box_find::-webkit-input-placeholder {
+	font-family: tahoma;
+	font-size: 12px;
+	font-style: italic;
+	color: #828282;
+}
+
+#find #lblTotal {
+	font-size: 12px;
+	vertical-align: middle;
+	color: #808080;
+	font-family: tahoma;
+	right: 81px;
+	position: absolute;
+	z-index: 10;
+	padding-top: 3px;
+}
+
+#find .next_prev_btns {
+	display: inline-block;
+	background-size: 20px 20px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	height: 19px;
+	width: 19px;
+	vertical-align: middle;
+}
+
+#find #btnUp {
+	margin-right: 10px !important;
+	margin-left: 9px !important;
+	margin-top: 1px !important;
+}
+
+#find #btnDown {
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	margin-top: 1px !important;
+}

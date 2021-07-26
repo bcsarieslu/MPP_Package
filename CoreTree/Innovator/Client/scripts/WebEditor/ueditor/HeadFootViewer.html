@@ -1,0 +1,449 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>完整demo</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" charset="utf-8" src="ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="editor_api.js"> </script>
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+    <script type="text/javascript" charset="utf-8" src="lang/zc/zc.js"></script>
+	<script type="text/javascript" charset="utf-8" src="lang/en/en.js"></script>
+	<script type="text/javascript" charset="utf-8" src="lang/zt/zt.js"></script>
+	
+	<style type="text/css">
+	@import "../../../public/styles/controls.css";
+	</style>
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=ScriptSet2,ScriptSet6"></script>
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=/dojo.js" data-dojo-config="isDebug: false, parseOnLoad: false, baseUrl:'../../../javascript/dojo'"></script>
+	
+</head>
+<body class="claro">
+<div style="height:100%;width:100%">
+	<div id="toolbarContainer"></div>
+    <script id="editor" type="text/plain" style="height:200px"></script>
+	<script id="editor2" type="text/plain" style="height:200px"></script>
+</div>
+
+<script>
+var firstime=false;
+var isEdit=false;
+var aras = top.aras;
+var uehead;
+var uefooter;
+var languageCode=aras.getSessionContextLanguageCode();
+var scriptsUrl=aras.getScriptsURL();
+
+function importHeadFoot()
+{
+	var params = new Object();
+	params.aras = top.aras;
+	params.type = 'SearchDialog'
+	params.itemtypeName="BCS SOP Template";
+	params.multiselect=false;
+	params.userMethodColumnCfgs=new Object();
+	params.userMethodColumnCfgs["classification"]={filterValue:"页头页尾",isFilterFixed:true};
+	var callback = function(result) {
+		if(result)
+		{
+			var sop_template=aras.getItemById("BCS SOP Template",result.itemID);
+			if(sop_template)
+			{
+				uehead.setContent(top.aras.getItemProperty(sop_template,"bcs_head",""));
+				uefooter.setContent(top.aras.getItemProperty(sop_template,"bcs_footer",""));
+			}
+			
+		}
+	}
+	var topWnd = top.aras.getMostTopWindowWithAras(window);
+	(topWnd.main || topWnd).ArasModules.Dialog.show('iframe', params).promise.then(callback);
+}
+
+function toolbarClick_handler(toolbarItem)
+{
+	var toolbarItemId = toolbarItem.getId();
+	switch(toolbarItemId)
+	{
+		case "importheadfoot":
+			importHeadFoot();
+			break;
+		case "language_list":
+			var selectedValue = toolbarItem.getSelectedItem();
+			if (selectedValue != languageCode) {
+				parent.viewController.performActionWithDirtyCheck(function (wasSaved) {
+					//if(!wasSaved){return;}
+					
+					languageCode=selectedValue;
+					
+					var ppItem=aras.IomInnovator.newItem("mpp_ProcessPlan","get");
+					ppItem.setAttribute("language",languageCode);
+					ppItem.setID(parent.processPlanItem.getAttribute("id"));
+					ppItem.setAttribute("select","bcs_head,bcs_foot");
+					ppItem=ppItem.apply();
+					
+					isEdit=false;
+					uehead.setContent(ppItem.getProperty("bcs_head","",languageCode));
+					isEdit=false;
+					uefooter.setContent(ppItem.getProperty("bcs_foot","",languageCode));
+					
+				}.bind(window),
+				function() {
+					// code, that executed on reject
+					toolbarItem.setSelected(languageCode);
+				},
+				{message: parent.uiUtils.getResource('warning.changeUnsavedItemLanguage')});
+			}
+			break;
+	}
+}
+		
+function toolbarLoad_handler() {
+	var processPlanIOMItem=aras.IomInnovator.getItemInDom(parent.processPlanItem);
+	
+	clientControlsFactory.createControl("Aras.Client.Controls.Public.Toolbar", { id: "cadReverse_toolbar", connectId: "toolbarContainer" }, function(control) {
+		toolbar = control;
+		clientControlsFactory.on(toolbar, {
+			"onClick": toolbarClick_handler,
+			"onChange":toolbarClick_handler
+		});
+
+		document.toolbar = toolbar;
+		toolbar.loadXml(aras.getI18NXMLResource("HeadFootViewer_toolbar.xml", "./"));
+		toolbar.show();
+		
+		//init language list
+		var langToolbarControl = toolbar.getItem('language_list');
+		var languages = aras.getLanguagesResultNd();
+		var languagesNodes = languages.selectNodes('//Item[@type="Language"]');
+
+		for (var i = 0; i < languagesNodes.length; i++) {
+			var langCode=aras.getItemProperty(languagesNodes[i], 'code');
+			langToolbarControl.add(langCode, aras.getItemProperty(languagesNodes[i], 'name'));
+		}
+
+		langToolbarControl.setSelected(languageCode);
+	});
+}
+
+function loadView(processPlanItem)
+{
+	if(firstime){return;}
+	
+	toolbarLoad_handler();
+	
+	var options={
+		lang:languageCode,
+		toolbars: [[
+				'undo', 'redo', '|',
+				'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+				'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+				'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+				'directionalityltr', 'directionalityrtl', 'indent', '|',
+				'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+				'link', 'unlink', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+				'horizontal', 'date', 'time', 'spechars', '|',
+				'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+				'print', 'preview', 'searchreplace', 'help'
+			]]
+		};
+	
+	uehead=UE.getEditor('editor',options);
+	
+	uefooter=UE.getEditor('editor2',options);
+	
+	/**
+	 * 编辑器加载完成后触发事件
+	 */
+	uehead.ready(function() {
+		
+		//编辑器最大化
+		//setTimeout("ue.ui.setFullScreen(true);",1000);
+		
+		//加载内容
+		uehead.setContent(aras.IomInnovator.getItemInDom(parent.processPlanItem).getProperty("bcs_head","",languageCode));
+		
+		if(!parent.isEditMode)
+		{
+			//禁用编辑器
+			uehead.setDisabled();
+		}
+	});
+	
+	uefooter.ready(function() {
+		
+		//编辑器最大化
+		//setTimeout("ue.ui.setFullScreen(true);",1000);
+		
+		//加载内容
+		uefooter.setContent(aras.IomInnovator.getItemInDom(parent.processPlanItem).getProperty("bcs_foot","",languageCode));
+		
+		if(!parent.isEditMode)
+		{
+			//禁用编辑器
+			uefooter.setDisabled();
+		}
+	});
+		
+	/**
+	 * 编辑器内容发生修改时触发事件
+	 */
+	uehead.addListener("contentChange",function(){
+		if(parent.isEditMode&&isEdit)
+		{
+			//将修改的值更新到Operation属性中
+			top.aras.setItemTranslation(parent.processPlanItem,"bcs_head",uehead.getContent(),languageCode);
+			parent.processPlanItem.setAttribute("isDirty", "1");
+			
+			var bcs_head_node=parent.processPlanItem.selectSingleNode("bcs_head");
+			if(bcs_head_node)
+			{
+				parent.processPlanItem.removeChild(bcs_head_node);
+			}
+			
+		}
+		
+		isEdit=true;
+	});
+	
+	uefooter.addListener("contentChange",function(){
+		if(parent.isEditMode&&isEdit)
+		{
+			//将修改的值更新到Operation属性中
+			top.aras.setItemTranslation(parent.processPlanItem,"bcs_foot",uefooter.getContent(),languageCode);
+			parent.processPlanItem.setAttribute("isDirty", "1");
+			
+			var bcs_foot_node=parent.processPlanItem.selectSingleNode("bcs_foot");
+			if(bcs_foot_node)
+			{
+				parent.processPlanItem.removeChild(bcs_foot_node);
+			}
+		}
+		
+		isEdit=true;
+	});
+	
+	/**
+	 * 编辑器加载完内容后触发
+	 * 处理特殊类型属性(Img,Part)
+	 */
+	var ueditors=[uehead,uefooter];
+	for(index in ueditors)
+	{
+		var ue=ueditors[index];
+		ue.addListener("afterSetContent",function(){
+			//加载特殊类型控件
+			var itemElems=this.document.getElementsByName("bcsItem");
+			for(var i=0;i<itemElems.length;i++)
+			{
+				var itemElem=itemElems[i];
+				var itemId=itemElem.id;
+				var itemType=itemElem.attributes["itemtype"].value;
+				
+				if(!itemId||!itemType){continue;}
+				
+				switch(itemElem.tagName)
+				{
+					case "IMG":
+						var imgUrl="";
+						if(itemType=="tp_Image")
+						{
+							var imgItem=top.aras.getItemById(itemType,itemId);
+							var imgSrc=top.aras.getItemProperty(imgItem,"src","");
+							if(!imgSrc){continue;}
+							if (imgSrc.toLowerCase().indexOf("vault:\/\/\/\?fileid=") == 0)
+							{
+								var fileId = imgSrc.replace(/vault:\/\/\/\?fileid=/i, "");
+								imgUrl = top.aras.IomInnovator.getFileUrl(fileId, top.aras.Enums.UrlType.SecurityToken);
+							}
+							else
+							{
+								imgUrl=scriptsUrl+imgSrc;
+							}
+						}
+						if(itemType=="File")
+						{
+							imgUrl = top.aras.IomInnovator.getFileUrl(itemId, top.aras.Enums.UrlType.SecurityToken);
+						}
+						itemElem.src=imgUrl;
+					break;
+					case "TR":
+						
+					break;
+				}
+			}
+		});
+		
+		ue.addListener('mousedown', function (t, evt) {
+			if(parent.isEditMode)
+			{
+				//启用编辑器
+				this.setEnabled();
+			}
+			else
+			{
+				//禁用编辑器
+				this.setDisabled();
+			}
+		});
+	}
+	
+	
+	firstime=true;
+}
+
+	/**
+	 * 自定义上传图片按钮
+	 */
+	UE.registerUI('bcsInsertImage',function(editor,uiName){
+    //注册按钮执行时的command命令，使用命令默认就会带有回退操作
+	//注意这里的名称要是小写的
+    editor.registerCommand("bcsinsertimage",{
+        execCommand:function(){
+            var params = new Object();
+			params.aras = top.aras;
+			params.type = 'ImageBrowser'
+			//params.showOnlyExternalFile=true;
+			var callback = function(result) {
+				if(result)
+				{
+					var graphic=top.aras.newIOMItem("tp_Image","add");
+					graphic.setProperty("src",result);
+					graphic.setProperty("item_number",top.aras.generateNewGUID());
+					graphic.setProperty("name",top.aras.generateNewGUID());
+					graphic=graphic.apply();
+					if(graphic.isError())
+					{
+						top.aras.AlertError("上传图片到图库失败!");
+						return;
+					}
+					
+					var imgUrl;
+					if (result.toLowerCase().indexOf("vault:\/\/\/\?fileid=") == 0)
+					{
+						var fileId = result.replace(/vault:\/\/\/\?fileid=/i, "");
+						imgUrl = top.aras.IomInnovator.getFileUrl(fileId, top.aras.Enums.UrlType.SecurityToken);
+					}
+					else
+					{
+						imgUrl=scriptsUrl+result;
+					}
+					editor.execCommand('insertHtml', '<img src="'+imgUrl+'" id="'+graphic.getID()+'" name="bcsItem" itemtype="tp_Image"/>');
+					//editor.execCommand('insertimage', list);
+				}
+			}
+			var topWnd = top.aras.getMostTopWindowWithAras(window);
+			(topWnd.main || topWnd).ArasModules.Dialog.show('iframe', params).promise.then(callback);
+        }
+    });
+
+    //创建一个button
+    var btn = new UE.ui.Button({
+        //按钮的名字
+        name:uiName,
+        //提示
+        title:UE.I18N[languageCode].labelMap[uiName],
+        //需要添加的额外样式，指定icon图标，这里默认使用一个重复的icon
+        cssRules :'background-position: -380px 0;',
+        //点击时执行的命令
+        onclick:function () {
+            //这里可以不用执行命令,做你自己的操作也可
+           editor.execCommand(uiName);
+        }
+    });
+
+    //当点到编辑内容上时，按钮要做的状态反射
+    editor.addListener('selectionchange', function () {
+        var state = editor.queryCommandState(uiName);
+        if (state == -1) {
+            btn.setDisabled(true);
+            btn.setChecked(false);
+        } else {
+            btn.setDisabled(false);
+            btn.setChecked(state);
+        }
+    });
+	
+    //因为你是添加button,所以需要返回这个button
+    return btn;
+},55/*index 指定添加到工具栏上的那个位置，默认时追加到最后,editorId 指定这个UI是那个编辑器实例上的，默认是页面上所有的编辑器都会添加这个按钮*/);
+
+	/**
+	 * 自定义插入Graphic图片按钮
+	 */
+	UE.registerUI('bcsInsertGraphicImage',function(editor,uiName){
+    //注册按钮执行时的command命令，使用命令默认就会带有回退操作
+	//注意这里的名称要是小写的
+    editor.registerCommand("bcsinsertgraphicimage",{
+        execCommand:function(){
+            var params = new Object();
+			params.aras = top.aras;
+			params.type = 'SearchDialog'
+			params.itemtypeName="tp_Image";
+			params.multiselect=true;
+			var callback = function(result) {
+				if(result)
+				{
+					for(var i=0;i<result.length;i++)
+					{
+						var graphic=top.aras.newIOMItem("tp_Image","get");
+						graphic.setID(result[i]);
+						graphic.setAttribute("select","src");
+						graphic=graphic.apply();
+						
+						var imgUrl;
+						var graphicUrl=graphic.getProperty("src","");
+						if(!graphicUrl){continue;}
+						
+						if (graphicUrl.toLowerCase().indexOf("vault:\/\/\/\?fileid=") == 0)
+						{
+							var fileId = graphicUrl.replace(/vault:\/\/\/\?fileid=/i, "");
+							imgUrl = top.aras.IomInnovator.getFileUrl(fileId, top.aras.Enums.UrlType.SecurityToken);
+						}
+						else
+						{
+							imgUrl=scriptsUrl+graphicUrl;
+						}
+						editor.execCommand('insertHtml', '<img src="'+imgUrl+'" id="'+result[i]+'" name="bcsItem" itemtype="tp_Image"/>');
+					}
+				}
+			}
+			var topWnd = top.aras.getMostTopWindowWithAras(window);
+			(topWnd.main || topWnd).ArasModules.Dialog.show('iframe', params).promise.then(callback);
+        }
+    });
+
+    //创建一个button
+    var btn = new UE.ui.Button({
+        //按钮的名字
+        name:uiName,
+        //提示
+        title:UE.I18N[languageCode].labelMap[uiName],
+        //需要添加的额外样式，指定icon图标，这里默认使用一个重复的icon
+        cssRules :'background: url( ./themes/default/images/Graphic.png ) !important;',
+        //点击时执行的命令
+        onclick:function () {
+            //这里可以不用执行命令,做你自己的操作也可
+           editor.execCommand(uiName);
+        }
+    });
+
+    //当点到编辑内容上时，按钮要做的状态反射
+    editor.addListener('selectionchange', function () {
+        var state = editor.queryCommandState(uiName);
+        if (state == -1) {
+            btn.setDisabled(true);
+            btn.setChecked(false);
+        } else {
+            btn.setDisabled(false);
+            btn.setChecked(state);
+        }
+    });
+	
+    //因为你是添加button,所以需要返回这个button
+    return btn;
+},56/*index 指定添加到工具栏上的那个位置，默认时追加到最后,editorId 指定这个UI是那个编辑器实例上的，默认是页面上所有的编辑器都会添加这个按钮*/);
+	
+</script>
+</body>
+</html>

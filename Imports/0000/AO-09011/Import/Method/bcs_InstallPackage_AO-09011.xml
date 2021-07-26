@@ -1,0 +1,66 @@
+﻿<AML>
+ <Item type="Method" id="02216ABCE5B44F1283C1C7EA258CA5D2" action="add">
+  <comments>AO-09011</comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA['Creator:Kenny
+'Name:bcs_InstallPackage_AO-09011
+'Type: VB
+'Event: Install AML
+'Comments:v0.1 Developed By Kenny @Broadway 
+
+Dim plmIdentity As Aras.Server.Security.Identity = Aras.Server.Security.Identity.GetByName("Aras PLM")
+Dim PermissionWasSet As Boolean = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity)
+Dim LasInnovator As Innovator = Me.getInnovator()
+Dim LstrPackage As String = Me.getProperty("package", "")
+Dim strItemType As String = Me.getProperty("itemtype", "") '"Part"
+Dim strClassifications As String = Me.getProperty("classifications", "") '"Phantom,MBOM only Part"
+Dim LbwGeneric As bwInnovatorCore.CInnovator.bwGeneric = Nothing
+Dim LoCommon As bwInnovatorCore.CGeneric.Common = Nothing
+Dim LoPartItem As Aras.IOM.Item
+Dim arryClassification() As String
+Dim LoXML As XmlDocument = Nothing
+Dim LoConfigNode As XmlNode 
+Dim LoNode As XmlNode
+Dim i As Integer
+
+'System.Diagnostics.Debugger.Break()
+Try
+    If "tw.com.broadway.AO-09011" <> Me.getProperty("package", "") Or strClassifications = "" Or strItemType <> "Part" Then return Me
+    
+    LbwGeneric =New bwInnovatorCore.CInnovator.bwGeneric
+    LbwGeneric.bwIOMInnovator=LasInnovator
+    LoCommon =New bwInnovatorCore.CGeneric.Common
+    LoConfigNode = LbwGeneric.GetClassStructureByItemType(strItemType)
+    If LoConfigNode Is Nothing Then return Me
+    LoConfigNode = LoCommon.RetrieveXmlNodeByXmlFile(LoXML, LoConfigNode.OuterXml)
+    
+    arryClassification = strClassifications.Split(CType(",", Char))
+    For i = 0 To arryClassification.Length - 1
+        If arryClassification(i) <> "" Then
+            LoNode = LoConfigNode.SelectSingleNode("class[@name='" & arryClassification(i) & "']")
+            If LoNode Is Nothing Then
+                 LoNode = LoCommon.AddElement(LoXML, LoConfigNode, "class", "")
+                 LoCommon.SetXMLAttribute(LoNode, "name", arryClassification(i))
+                 LoCommon.SetXMLAttribute(LoNode, "id", LoCommon.GetGUID.ToUpper.Replace("-", ""))
+            End If
+        End If
+    Next
+    
+    LoPartItem = LasInnovator.getItemByKeyedName("ItemType", strItemType)
+    LbwGeneric.UpdateObjectAttribute(LoPartItem.getType, LoPartItem.getID, "class_structure", LoConfigNode.OuterXml, True, True)
+    Return LoPartItem
+
+Catch ex As Exception
+	'Throw New Exception(ex.Message)
+Finally
+ 	If Not LbwGeneric Is NOthing Then LbwGeneric.Dispose()
+	If (PermissionWasSet=True) Then
+		Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity)
+	End If
+End Try
+Return LoPartItem
+]]></method_code>
+  <method_type>VB</method_type>
+  <name>bcs_InstallPackage_AO-09011</name>
+ </Item>
+</AML>

@@ -1,0 +1,46 @@
+﻿<AML>
+ <Item type="Method" id="E6775F00F56746D28C04B44719961A04" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[var tooltipContainer = window.tooltipDialog;
+
+if (tooltipContainer) {
+	var activeElement = document.activeElement;
+
+	switch (event.keyCode) {
+		case 13://keys.ENTER
+			if (!event.shiftKey) {
+				//it's not multiline string
+				var fieldValIsInvalidStr = 'fieldValIsInvalid$' + activeElement.id;
+
+				//it's to apply value of edited field to xml dom of item
+				activeElement.blur();
+
+				if (!window[fieldValIsInvalidStr]) {
+					tooltipContainer.acceptAndClose();
+				}
+			}
+			break;
+		case 27://keys.ESCAPE
+			tooltipContainer.cancel();
+			break;
+		case 9://keys.TAB
+			//window.maxTabIndexId and minTabIndexInput are set in mpp_TooltipDialog_onFormPopulat;
+			if (!event.shiftKey && document.activeElement.id === window.maxTabIndexId) {
+				window.minTabIndexInput.focus();
+				event.preventDefault();
+				event.stopPropagation();
+			}
+
+			if (event.shiftKey && activeElement.id === window.minTabIndexInput.id) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
+			break;
+		default:
+			break;
+	}
+}]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>mpp_TooltipDialog_onKeyDown</name>
+ </Item>
+</AML>

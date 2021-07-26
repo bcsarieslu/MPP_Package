@@ -1,0 +1,8 @@
+﻿<AML>
+ <Item type="PreferenceTabTypes" id="E67A1866508E4638A9645CBF2998ABD5" action="add">
+  <preference_tab>mpp_PartConfig</preference_tab>
+  <preference_tab_type>1</preference_tab_type>
+  <sort_order>1024</sort_order>
+  <source_id keyed_name="D08AE88A079B412EAD568D82CA37B6FD" type="PreferenceTypes">D08AE88A079B412EAD568D82CA37B6FD</source_id>
+ </Item>
+</AML>

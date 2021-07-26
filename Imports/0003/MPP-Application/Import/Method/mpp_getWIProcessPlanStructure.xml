@@ -1,0 +1,306 @@
+﻿<AML>
+  <Item type="Method" action="add" id="AB5EA369AADC4CE8A29EFB00631F06E0">
+    <comments>AO-09011:MPP-Application</comments>
+	<execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[	Innovator innovatorInstance = this.getInnovator();
+	List<String> planIdList = this.getProperty("plan_ids").Split(',').ToList();
+	Dictionary<String, String> processPlanXmls = new Dictionary<String, String>();
+	String defaultLangCode = this.getInnovator().getI18NSessionContext().GetDefaultLanguageCode();
+	String langCode = this.getAttribute("language", defaultLangCode);
+	String planWithDetailIds = this.getProperty("include_wi_details", "");
+	List<String> planWithDetailsList = planWithDetailIds.Split(',').ToList();
+	Item processPlans = innovatorInstance.newItem();
+	StringBuilder processPlanContent = new StringBuilder();
+	System.Web.Script.Serialization.JavaScriptSerializer jsSerializer = new System.Web.Script.Serialization.JavaScriptSerializer() { MaxJsonLength = int.MaxValue };
+
+	// load AMLs, that passed for requested plan items
+	String clientAMLsJson = this.getProperty("plan_amls");
+	Dictionary<String,String> clientPlanAMLs = !String.IsNullOrEmpty(clientAMLsJson) ? jsSerializer.Deserialize<Dictionary<String, String>>(clientAMLsJson) : null;
+
+	if (clientPlanAMLs != null) {
+		foreach (String processPlanId in clientPlanAMLs.Keys)
+		{
+			planIdList.Remove(processPlanId);
+
+			Item processPlanItem = innovatorInstance.newItem();
+			processPlanItem.loadAML(clientPlanAMLs[processPlanId]);
+			processPlans.appendItem(processPlanItem);
+		}
+	}
+    
+    //Modify by tengz 2019/6/5
+    //读取mpp_OperationCAD数据
+	// if AMLs weren't passed for some requested plans, then request them from database
+	if (planIdList.Count > 0)
+	{
+		String processPlanAml = String.Format(CultureInfo.CurrentCulture, @"
+			<Item type='mpp_ProcessPlan' select='id' action='get' language='{0}'>
+				<id condition='in'>" + String.Join(",", planIdList) + @"</id>
+				<Relationships>
+					<Item type='mpp_Operation' select='wi_details' language='{0}'>
+						<Relationships>
+							<Item type='mpp_Step' select='wi_details' language='{0}'>
+								<Relationships>
+									<Item type='mpp_StepImageReference' select='reference_id,related_id(src)'/>
+								</Relationships>
+							</Item>
+							<Item type='mpp_OperationConsumedPart' select='id,related_id'/>
+							<Item type='mpp_OperationResource' select='id,related_id'/>
+							<Item type='mpp_OperationSkill' select='id,related_id'/>
+							<Item type='mpp_OperationDocument' select='id,related_id'/>
+							<Item type='mpp_OperationCAD' select='id,related_id'/>
+							<Item type='mpp_OperationTest' select='id,related_id'/>
+							<Item type='mpp_OperationImageReference' select='reference_id,related_id(src)'/>
+						</Relationships>
+					</Item>
+				</Relationships>
+			</Item>", langCode);
+
+		Item requestItem = innovatorInstance.newItem();
+		requestItem.loadAML(processPlanAml);
+		requestItem = requestItem.apply();
+
+		if(!requestItem.isError())// something's wrong. There is no element with such processPlanId or the user does not have permissions to get it
+		{
+			// cut off all item nodes with related items, which hove no 'get' access
+			XmlNodeList restrictedItemNodes = requestItem.dom.SelectNodes("//Item[@type!='mpp_OperationImageReference' and @type!='mpp_StepImageReference'][related_id[@is_null='0' or @discover_only='1']]");
+			foreach (XmlNode itemNode in restrictedItemNodes)
+			{
+				if (itemNode.ParentNode != null)
+				{
+					itemNode.ParentNode.RemoveChild(itemNode);
+				}
+			}
+
+			processPlans.appendItem(requestItem);
+		}
+	}
+
+	// cleaning up item, that created during variable declaration
+	processPlans.removeItem(processPlans.getItemByIndex(0));
+
+	XmlWriterSettings settings = new XmlWriterSettings();
+	settings.Indent = false;
+	settings.OmitXmlDeclaration = true;
+	settings.ConformanceLevel = ConformanceLevel.Auto;
+
+	using (XmlWriter xw = XmlWriter.Create(processPlanContent, settings))
+	{
+		int processPlanCount = processPlans.getItemCount();
+		int imageCount, i, j, k, p;
+
+		for (p = 0; p < processPlanCount; p++)
+		{
+			Item processPlanItem = processPlans.getItemByIndex(p);
+			String processPlanId = processPlanItem.getID();
+			Boolean isDetailsRequired = planWithDetailsList.Contains(processPlanId);
+
+			xw.WriteStartElement("aras", "document", "http://aras.com/ArasTechDoc");
+			{
+				Item operationReferences = processPlanItem.getRelationships("mpp_Operation");
+
+				xw.WriteStartAttribute("xmlns");
+				xw.WriteValue("http://www.aras.com/MPP");
+				xw.WriteEndAttribute();
+
+				xw.WriteStartElement("aras", "content", "http://aras.com/ArasTechDoc");
+				{
+					xw.WriteStartElement("ProcessPlan");
+					xw.WriteAttributeString("aras", "id", null, processPlanId);
+
+					for (i = 0; i < operationReferences.getItemCount(); i++)
+					{
+						Item operationRelationship = operationReferences.getItemByIndex(i);
+
+						xw.WriteStartElement("Operation");
+						xw.WriteAttributeString("aras", "id", null, operationRelationship.getID());
+
+						xw.WriteStartElement("WorkInstructionDetails");
+						if (isDetailsRequired)
+						{
+							xw.WriteRaw(operationRelationship.getProperty("wi_details", "", langCode));
+						}
+						xw.WriteEndElement();
+
+						Item operationSteps = operationRelationship.getRelationships("mpp_Step");
+						int stepsCount = operationSteps.getItemCount();
+						for (j = 0; j < stepsCount; j++)
+						{
+							Item stepRelationship = operationSteps.getItemByIndex(j);
+
+							xw.WriteStartElement("Step");
+							xw.WriteAttributeString("aras", "id", null, stepRelationship.getID());
+
+							xw.WriteStartElement("WorkInstructionDetails");
+							if (isDetailsRequired)
+							{
+								xw.WriteRaw(stepRelationship.getProperty("wi_details", "", langCode));
+							}
+							xw.WriteEndElement();
+
+							xw.WriteEndElement();
+						}
+
+						Item consumedParts = operationRelationship.getRelationships("mpp_OperationConsumedPart");
+						int partsCount = consumedParts.getItemCount();
+						for (j = 0; j < partsCount; j++)
+						{
+							Item consumedPartRelationship = consumedParts.getItemByIndex(j);
+
+							xw.WriteStartElement("Part");
+							xw.WriteAttributeString("aras", "id", null, consumedPartRelationship.getID());
+							xw.WriteEndElement();
+						}
+
+						Item operationResources = operationRelationship.getRelationships("mpp_OperationResource");
+						int resourcesCount = operationResources.getItemCount();
+						for (j = 0; j < resourcesCount; j++)
+						{
+							Item resourceRelationship = operationResources.getItemByIndex(j);
+
+							xw.WriteStartElement("Resource");
+							xw.WriteAttributeString("aras", "id", null, resourceRelationship.getID());
+							xw.WriteEndElement();
+						}
+
+						Item operationSkills = operationRelationship.getRelationships("mpp_OperationSkill");
+						int skillsCount = operationSkills.getItemCount();
+						for (j = 0; j < skillsCount; j++)
+						{
+							Item skillRelationship = operationSkills.getItemByIndex(j);
+
+							xw.WriteStartElement("Skill");
+							xw.WriteAttributeString("aras", "id", null, skillRelationship.getID());
+							xw.WriteEndElement();
+						}
+
+						Item operationDocuments = operationRelationship.getRelationships("mpp_OperationDocument");
+						int documentsCount = operationDocuments.getItemCount();
+						for (j = 0; j < documentsCount; j++)
+						{
+							Item documentRelationship = operationDocuments.getItemByIndex(j);
+
+							xw.WriteStartElement("Document");
+							xw.WriteAttributeString("aras", "id", null, documentRelationship.getID());
+							xw.WriteEndElement();
+						}
+                        
+                        //Modify by tengz 2019/6/5
+                        //读取mpp_OperationCAD数据
+                        Item operationCADs = operationRelationship.getRelationships("mpp_OperationCAD");
+						int cadsCount = operationCADs.getItemCount();
+						for (j = 0; j < cadsCount; j++)
+						{
+							Item cadRelationship = operationCADs.getItemByIndex(j);
+
+							xw.WriteStartElement("CAD");
+							xw.WriteAttributeString("aras", "id", null, cadRelationship.getID());
+							xw.WriteEndElement();
+						}
+						//读取mpp_OperationTest数据
+                        Item operationTests = operationRelationship.getRelationships("mpp_OperationTest");
+						int testsCount = operationTests.getItemCount();
+						for (j = 0; j < testsCount; j++)
+						{
+							Item testRelationship = operationTests.getItemByIndex(j);
+
+							xw.WriteStartElement("Test");
+							xw.WriteAttributeString("aras", "id", null, testRelationship.getID());
+							xw.WriteEndElement();
+						}
+                        //End Modify
+                        
+						xw.WriteEndElement();
+					}
+
+					xw.WriteEndElement();
+				}
+				xw.WriteEndElement();
+
+				xw.WriteStartElement("aras", "references", "http://aras.com/ArasTechDoc");
+				{
+					// append operation items references
+					for (i = 0; i < operationReferences.getItemCount(); i++)
+					{
+						Item operationRelationship = operationReferences.getItemByIndex(i);
+						Item imageReferences = operationRelationship.getRelationships("mpp_OperationImageReference");
+
+						for (k = 0, imageCount = imageReferences.getItemCount(); k < imageCount; k++)
+						{
+							Item imageReference = imageReferences.getItemByIndex(k);
+							AppendImage(xw, imageReference);
+						}
+
+						// append step items references
+						Item operationSteps = operationRelationship.getRelationships("mpp_Step");
+						int stepsCount = operationSteps.getItemCount();
+						for (j = 0; j < stepsCount; j++)
+						{
+							Item stepRelationship = operationSteps.getItemByIndex(j);
+							imageReferences = stepRelationship.getRelationships("mpp_StepImageReference");
+
+							for (k = 0, imageCount = imageReferences.getItemCount(); k < imageCount; k++)
+							{
+								Item imageReference = imageReferences.getItemByIndex(k);
+								AppendImage(xw, imageReference);
+							}
+						}
+					}
+				}
+				xw.WriteEndElement();
+			}
+			xw.WriteEndElement();
+			xw.Flush();
+
+			processPlanXmls.Add(processPlanId, processPlanContent.ToString());
+			processPlanContent.Clear();
+		}
+	}
+
+	return innovatorInstance.newResult(jsSerializer.Serialize(processPlanXmls));
+}
+
+		static void AppendImage(XmlWriter xw, Item imageReference)
+		{
+			Item imageItem = imageReference.getRelatedItem();
+			Boolean hasReferenceItem = imageItem != null;
+
+			xw.WriteStartElement("image", "http://aras.com/ArasTechDoc");
+			{
+				if (hasReferenceItem)
+				{
+					if (imageItem.getAttribute("discover_only") == "1")
+					{
+						xw.WriteAttributeString("isBlocked", "true");
+					}
+					else
+					{
+						xw.WriteAttributeString("src", imageItem.getProperty("src"));
+					}
+
+					xw.WriteAttributeString("imageId", imageItem.getID());
+				}
+				else
+				{
+					if (imageReference.getPropertyAttribute("related_id", "is_null") == "0"){
+						xw.WriteAttributeString("isBlocked", "true");
+						String blockUid = Guid.NewGuid().ToString().Replace("-", "").ToUpper(CultureInfo.CurrentCulture);
+						xw.WriteAttributeString("imageId", blockUid);
+					}
+				}
+
+				// add required attributes
+				xw.WriteAttributeString("ref-id", imageReference.getProperty("reference_id"));
+			}
+
+			xw.WriteEndElement();
+
+			]]></method_code>
+    <method_type>C#</method_type>
+    <name>mpp_getWIProcessPlanStructure</name>
+  </Item>
+</AML>

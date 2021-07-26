@@ -1,0 +1,14 @@
+﻿.dojoxGrid  .dojoxGridRow .dragSourceNode {
+	opacity: 0.6;
+	padding-left: 8px;
+	background-color: #FFFFFF;
+	border-width: 1px 1px 1px 4px !important;
+	border-style: dashed dashed dashed solid !important;
+	border-color: #3768B1 !important;
+}
+
+.aras_tree .dojoxGridRowSelected .dojoxGridRowTable.dragSourceNode .dojoxGridCell, .aras_tree .dojoxGridRowOver .dojoxGridRowTable.dragSourceNode .dojoxGridCell {
+	background-color: #F0F6FF !important;
+	border-top: 0px !important;
+	border-bottom: 0px !important;
+}

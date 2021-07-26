@@ -1,0 +1,20 @@
+﻿<AML>
+  <Item type="Property" id="D0CCD008DA414F5199DF870FC552BCD6" action="add">
+    <column_alignment>left</column_alignment>
+    <data_type>float</data_type>
+    <is_hidden>0</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="zc">工时定额</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <scale>2</scale>
+    <sort_order>4096</sort_order>
+    <source_id type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+    <track_history>0</track_history>
+    <name>bcs_hours</name>
+  </Item>
+</AML>

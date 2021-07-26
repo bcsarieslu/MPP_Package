@@ -1,0 +1,201 @@
+﻿<AML>
+ <Item type="RelationshipType" id="58ED15777F814C3F84A48A5AF9FEFA8A" action="add" dependencyLevel="0">
+  <auto_search>1</auto_search>
+  <behavior>float</behavior>
+  <copy_permissions>0</copy_permissions>
+  <create_related>0</create_related>
+  <description>Grouping of Manufacturing Steps</description>
+  <hide_in_all>1</hide_in_all>
+  <inc_rel_key_name>1</inc_rel_key_name>
+  <inc_related_key_name>1</inc_related_key_name>
+  <is_list_type>0</is_list_type>
+  <label xml:lang="en">Operations</label>
+  <new_show_related>0</new_show_related>
+  <related_notnull>0</related_notnull>
+  <related_option>2</related_option>
+  <relationship_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">
+   <Item type="ItemType" id="91B674D7C7AF47F99CA1C2FB26C38DBF" action="add">
+    <allow_private_permission>0</allow_private_permission>
+    <auto_search>1</auto_search>
+    <enforce_discovery>0</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <history_template keyed_name="Default" type="History Template">3BC16EF9E52B4F9792AB76BCE0492F29</history_template>
+    <implementation_type>table</implementation_type>
+    <instance_data>MPP_OPERATION</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>1</is_relationship>
+    <is_versionable>0</is_versionable>
+    <label xml:lang="en">Operation</label>
+    <label_plural xml:lang="en">Operations</label_plural>
+    <large_icon>../images/ProcessOperation.svg</large_icon>
+    <open_icon>../images/ProcessOperation.svg</open_icon>
+    <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>0</show_parameters_tab>
+    <structure_view>tabs on</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>1</use_src_access>
+    <name>mpp_Operation</name>
+    <Relationships>
+     <Item type="Property" id="35C3C8E0DD184501B25F57844655A1C3" action="add">
+      <column_alignment>left</column_alignment>
+      <column_width>130</column_width>
+      <data_type>decimal</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Cycle Time</label>
+      <pattern />
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>640</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <track_history>0</track_history>
+      <name>cycle_time</name>
+     </Item>
+     <Item type="Property" id="C2DAA1D1C07647B1BAD0740211A582E6" action="add">
+      <column_alignment>left</column_alignment>
+      <column_width>300</column_width>
+      <data_type>ml_string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Description</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>384</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <stored_length>4000</stored_length>
+      <track_history>0</track_history>
+      <name>description</name>
+     </Item>
+     <Item type="Property" id="7313E38EA8264602AB98CB30D626CB22" action="add">
+      <column_alignment>left</column_alignment>
+      <column_width>250</column_width>
+      <data_type>ml_string</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Name</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>256</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <stored_length>64</stored_length>
+      <track_history>0</track_history>
+      <name>name</name>
+     </Item>
+     <Item type="Property" id="ECD2580B8D2243BB8B5CEE211175921F" action="add">
+      <column_alignment>left</column_alignment>
+      <column_width>130</column_width>
+      <data_type>decimal</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Setup Time</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>512</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <track_history>0</track_history>
+      <name>setup_time</name>
+     </Item>
+     <Item type="Property" id="EFF6A62A97A7455DA569A89CFEA367C6" action="add">
+      <column_alignment>left</column_alignment>
+      <data_type>ml_string</data_type>
+      <is_hidden>1</is_hidden>
+      <is_hidden2>1</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Work Instruction Details</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>3584</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <stored_length>4000</stored_length>
+      <track_history>0</track_history>
+      <name>wi_details</name>
+     </Item>
+     <Item type="View" id="F2B9AE96024F44698018E4210EEF3550" action="add">
+      <client>js</client>
+      <related_id keyed_name="mpp_Operation" type="Form">B04A1D77899D4521928E09B8565155F2</related_id>
+      <role keyed_name="World" type="Identity">
+       <Item type="Identity" action="get" select="id">
+        <name>World</name>
+       </Item>
+      </role>
+      <show_ssvc>0</show_ssvc>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <type>default</type>
+     </Item>
+     <Item type="Server Event" id="787FA212CBB54D999E9B0FAECCE67D3D" action="add">
+      <event_version>version_1</event_version>
+      <is_required>0</is_required>
+      <related_id keyed_name="mpp_CreateReferenceImages" type="Method">
+       <Item type="Method" action="get" select="id">
+        <name>mpp_CreateReferenceImages</name>
+       </Item>
+      </related_id>
+      <server_event>onBeforeAdd</server_event>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+     </Item>
+     <Item type="Server Event" id="AA6ADB3C035943BCB0B896826AB52914" action="add">
+      <event_version>version_1</event_version>
+      <is_required>0</is_required>
+      <related_id keyed_name="mpp_CreateReferenceImages" type="Method">
+       <Item type="Method" action="get" select="id">
+        <name>mpp_CreateReferenceImages</name>
+       </Item>
+      </related_id>
+      <server_event>onBeforeUpdate</server_event>
+      <sort_order>256</sort_order>
+      <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+     </Item>
+    </Relationships>
+   </Item>
+  </relationship_id>
+  <sort_order>128</sort_order>
+  <source_id keyed_name="mpp_ProcessPlan" type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>
+  <name>mpp_Operation</name>
+ </Item>
+ <Item type="ItemType" id="91B674D7C7AF47F99CA1C2FB26C38DBF" action="edit">
+  <Relationships>
+   <Item type="Property" action="edit" where="source_id='91B674D7C7AF47F99CA1C2FB26C38DBF' and name='sort_order'">
+    <column_alignment>left</column_alignment>
+    <column_width>130</column_width>
+    <data_type>integer</data_type>
+    <default_search />
+    <is_hidden>1</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <keyed_name_order>1</keyed_name_order>
+    <label xml:lang="en">Operation Number</label>
+    <order_by>1</order_by>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+    <track_history>0</track_history>
+    <name>sort_order</name>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

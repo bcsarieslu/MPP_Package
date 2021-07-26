@@ -1,0 +1,31 @@
+﻿<AML>
+ <Item type="List" id="2DCBC4222FC849BF9397A8AE5056BAD6" action="add">
+  <name>mpp_PublishingConversionFormat</name>
+  <Relationships>
+   <Item type="Value" id="701C3E117529481F8C04FBF4C40FE0AA" action="add">
+    <label xml:lang="en">PDF</label>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_PublishingConversionFormat" type="List">2DCBC4222FC849BF9397A8AE5056BAD6</source_id>
+    <value>pdf</value>
+   </Item>
+   <Item type="Value" id="B4A2A47DC74B48EEA0BE57B116F2DCF1" action="add">
+    <label xml:lang="en">HTML</label>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="mpp_PublishingConversionFormat" type="List">2DCBC4222FC849BF9397A8AE5056BAD6</source_id>
+    <value>html</value>
+   </Item>
+   <Item type="Value" id="A407E47B304A4AC18115B1891E93BF71" action="add">
+    <label xml:lang="en">Word</label>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="mpp_PublishingConversionFormat" type="List">2DCBC4222FC849BF9397A8AE5056BAD6</source_id>
+    <value>word</value>
+   </Item>
+   <Item type="Value" id="C5C3956DF43B48668B5AEB093A30F3FB" action="add">
+    <label xml:lang="en">Excel</label>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="mpp_PublishingConversionFormat" type="List">2DCBC4222FC849BF9397A8AE5056BAD6</source_id>
+    <value>excel</value>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

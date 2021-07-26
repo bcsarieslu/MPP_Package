@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="7929775898A345D9A875A308C110DBCF" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Split Quantity</text>
+  <name>mpp_splitQuantityStatus</name>
+ </Item>
+</AML>

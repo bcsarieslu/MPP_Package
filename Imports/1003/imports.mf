@@ -1,0 +1,6 @@
+<imports>
+  <package name="com.aras.innovator.solution.PLM" path="PLM\Import"/>
+  <package name="tw.com.broadway.AO-09011" path="AO-09011\Import" />
+  <package name="com.aras.innovator.solution.MPP-DataModel" path="MPP-DataModel\Import" />
+  <package name="com.aras.innovator.solution.MPP-Application" path="MPP-Application\import" />
+</imports>

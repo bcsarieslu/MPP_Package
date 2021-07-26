@@ -1,0 +1,9 @@
+﻿<AML>
+ <Item type="UserMessage" id="6B43E682DD1B4148B31BBC3377DD44A7" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">The following Produced Parts cannot be resolved – &lt;b&gt;{0}&lt;/b&gt;. To resolve the MBOM - 
+- Select the right location(s) in the sub process plan
+- Verify that a new Process Plan is created for a new version of a Produced Part</text>
+  <name>mpp_cantResolveErrorAll</name>
+ </Item>
+</AML>

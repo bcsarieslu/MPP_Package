@@ -1,0 +1,10 @@
+﻿<AML>
+  <Item type="Field" id="AC7CF2540CD14C2D94D4997F5AA99212" action="edit">
+    <propertytype_id>
+      <Item type="Property" action="get" select="id">
+        <name>sort_order</name>
+        <source_id>91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      </Item>
+    </propertytype_id>
+  </Item>
+</AML>
