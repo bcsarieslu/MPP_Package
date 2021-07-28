@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui_resources>
+	<resource key="PBOM2MBOM.success" value="Success!"/>
+	<resource key="PBOM2MBOM.has_open_mpart" value="Do you want to open the MPart:"/>
+
+	<resource key="PBOM2MBOM.createnewmpart" value="Create MPart"/>
+	<resource key="PBOM2MBOM.pickmbom" value="Pick MBOM"/>
+	<resource key="PBOM2MBOM.select_all" value="Select All Sons"/>
+
+	<resource key="PBOM2MBOM.errorstring" value="An error is detected, please perform the check again!"/>
+</ui_resources>

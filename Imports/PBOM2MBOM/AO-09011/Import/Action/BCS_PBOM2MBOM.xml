@@ -1,0 +1,15 @@
+﻿<AML>
+ <Item type="Action" id="C08366484B1243C38A44D1BE32A09F9A" action="add">
+  <item_query>&lt;Item type="{@type}" id="{@id}" levels= "1" action="get" /&gt;</item_query>
+  <label xml:lang="en">PBOM同步MBOM</label>
+  <location>client</location>
+  <method keyed_name="BCS_showPBOM2MBOM" type="Method">
+   <Item type="Method" action="get" select="id">
+    <name>BCS_showPBOM2MBOM</name>
+   </Item>
+  </method>
+  <target>none</target>
+  <type>item</type>
+  <name>BCS_PBOM2MBOM</name>
+ </Item>
+</AML>

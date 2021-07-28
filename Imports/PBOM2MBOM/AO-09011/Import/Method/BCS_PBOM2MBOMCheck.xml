@@ -1,0 +1,399 @@
+﻿<AML>
+ <Item type="Method" id="8C4AA1C9C91748B5B55978E2A4FEAE35" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// System.Diagnostics.Debugger.Break();
+
+inn = this.getInnovator();
+bcsCCO=CCO;
+
+ItemTypeID=inn.getItemByKeyedName("ItemType","MPart").getID();
+string mpp_id=this.getID();
+location_id=this.getProperty("location");
+oldRowItem=this.getPropertyItem("rowitem");
+
+//getConfigPropertys();
+
+getGridHeader();
+
+Item mpp_part=inn.newItem("mpp_ProcessPlanProducedPart","get");
+mpp_part.setProperty("source_id",mpp_id);
+mpp_part.setAttribute("select","related_id(keyed_name,state,major_rev,config_id)");
+mpp_part=mpp_part.apply();
+if(mpp_part.getItemCount()<1)
+{
+    return inn.newError("当前MPP未选取物料!");
+}
+Item rowItem=CheckBomStatus(mpp_part.getRelatedItem(),null,0,null,0);
+
+gridStyle.Append("</table>");
+
+Item result=inn.newItem("any");
+result.setProperty("gridxml",gridStyle.ToString());
+result.setProperty("checkstatus",allright.ToString());
+result.setPropertyItem("rowitem",rowItem);
+return result;
+}
+
+Aras.Server.Core.CallContext bcsCCO;
+Innovator inn;
+Item oldRowItem;
+string ItemTypeID;
+bool allright=true;
+string location_id;
+List<P2MProperty> P2MPropertys=new List<P2MProperty>();
+StringBuilder gridStyle = new StringBuilder();
+
+public void getGridHeader() {
+    gridStyle.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+    gridStyle.Append("<table");
+    gridStyle.Append(" font=\"Microsoft Sans Serif-8\"");
+    gridStyle.Append(" sel_bgColor=\"steelbue\"");
+    gridStyle.Append(" sel_TextColor=\"white\"");
+    gridStyle.Append(" header_BgColor=\"buttonface\"");
+    gridStyle.Append(" expandroot=\"true\"");
+    gridStyle.Append(" expandall=\"false\"");
+    gridStyle.Append(" treelines=\"1\"");
+    gridStyle.Append(" editable=\"true\"");
+    gridStyle.Append(" draw_grid=\"true\"");
+    gridStyle.Append(" multiselect=\"false\"");
+    gridStyle.Append(" column_draggable=\"true\"");
+    gridStyle.Append(" enableHtml=\"false\"");
+    gridStyle.Append(" enterAsTab=\"false\"");
+    gridStyle.Append(" bgInvert=\"true\"");
+    gridStyle.Append(" xmlns:msxsl=\"urn:schemas-microsoft-com:xslt\"");
+    gridStyle.Append(" xmlns:aras=\"http://www.aras.com\"");
+    gridStyle.Append(" xmlns:usr=\"urn:the-xml-files:xslt\">");
+
+    //处理网格列
+    gridStyle.Append("<thead>");
+    gridStyle.Append("<th align=\"c\">物料信息</th>");
+    gridStyle.Append("<th align=\"c\">检查结果</th>");
+    gridStyle.Append("<th align=\"c\">物料版本</th>");
+    gridStyle.Append("<th align=\"c\">物料状态</th>");
+    gridStyle.Append("<th align=\"c\">数量</th>");
+    gridStyle.Append("<th align=\"c\">BOM序号</th>");
+    gridStyle.Append("<th align=\"c\">MPart</th>");
+    gridStyle.Append("<th align=\"c\">错误信息</th>");
+    gridStyle.Append("<th align=\"c\">执行动作</th>");
+    gridStyle.Append("<th align=\"c\">同步</th>");
+    gridStyle.Append("</thead>");
+    
+    gridStyle.Append("<columns>");
+    gridStyle.Append("<column width=\"400\" edit=\"NOEDIT\" align=\"l\" order=\"1\" />");
+    gridStyle.Append("<column width=\"60\" edit=\"NOEDIT\" align=\"c\" order=\"0\" />");
+    gridStyle.Append("<column width=\"60\" edit=\"NOEDIT\" align=\"c\" order=\"2\" />");
+    gridStyle.Append("<column width=\"70\" edit=\"NOEDIT\" align=\"c\" order=\"3\" />");
+    gridStyle.Append("<column width=\"60\" edit=\"NOEDIT\" align=\"l\" order=\"4\" />");
+    gridStyle.Append("<column width=\"60\" edit=\"NOEDIT\" align=\"c\" order=\"5\" />");
+    gridStyle.Append("<column width=\"100\" edit=\"NOEDIT\" align=\"l\" order=\"6\" />");
+    gridStyle.Append("<column width=\"200\" edit=\"NOEDIT\" align=\"l\" order=\"7\" />");
+    gridStyle.Append("<column width=\"70\" edit=\"NOEDIT\" align=\"c\" order=\"8\" />");
+    gridStyle.Append("<column width=\"40\" edit=\"FIELD\" align=\"c\" order=\"9\" />");
+    gridStyle.Append("</columns>");
+}
+
+public Item CheckBomStatus(Item part,Item parentMPart,int level,Item parentOperation_rel,int parentMbomCount)
+{
+    string action="";
+    string rowId=inn.getNewID();
+    string mbomOrder="";
+    int mbomCount=0;
+    
+    Item rowItem=inn.newItem("any");
+    rowItem.setAttribute("rowid",rowId);
+    rowItem.setAttribute("part_id",part.getID());
+    
+    int error_code=0;
+    Item mpart=getMPart(part);
+    if(mpart.getItemCount()<1)
+    {
+        error_code=1;
+    }
+    else if(mpart.getItemCount()>1)
+    {
+        error_code=2;
+    }
+    else
+    {
+        Item mboms=inn.newItem("MPart BOM","get");
+        mboms.setAttribute("select","id,sort_order,related_id");
+        mboms.setProperty("source_id",mpart.getID());
+        mboms=mboms.apply();
+        mbomCount=mboms.getItemCount();
+        
+        if(parentMPart!=null)
+        {
+            if(parentMPart.getItemCount()==1)
+            {
+                mboms=inn.newItem("MPart BOM","get");
+                mboms.setAttribute("select","id,sort_order,related_id");
+                mboms.setProperty("source_id",parentMPart.getID());
+                mboms.setProperty("related_id",mpart.getID());
+                if(oldRowItem!=null)
+                {
+                    Item oldMbom=oldRowItem.getItemsByXPath("//Item[@op_part_id='"+parentOperation_rel.getID()+"']");
+                    if(oldMbom.getItemCount()>0)
+                    {
+                        string mbom_id=oldMbom.getItemByIndex(0).getAttribute("mbom_id","");
+                        if(mbom_id!="")
+                        {
+                            mboms.setProperty("id",mbom_id);
+                        }
+                    }
+                }
+                mboms=mboms.apply();
+                int count=mboms.getItemCount();
+                if(count==1)
+                {
+                    mbomOrder=mboms.getProperty("sort_order","");
+                    rowItem.setAttribute("mbom_id",mboms.getID());
+                    action="更新";
+                }
+                else if(count>1)
+                {
+                    string mbom_ids=mboms.getItemByIndex(0).getID();
+                    for(int m=1;m<count;m++)
+                    {
+                        mbom_ids+=","+mboms.getItemByIndex(m).getID();
+                    }
+                    rowItem.setAttribute("mbom_ids",mbom_ids);
+                    
+                    error_code=3;
+                    action="更新";
+                }
+                else
+                {
+                    action="新增";
+                }
+            }
+        }
+        rowItem.setAttribute("mpart_id",mpart.getID());
+    }
+    
+    AddTr(part,rowId,level);
+    
+    string aml="<AML><Item type='mpp_ProcessPlan' action='get' select='id'>"+
+        "<Relationships>"+
+        "<Item type='mpp_ProcessPlanProducedPart' select='id' action='get'>"+
+        "<related_id>"+part.getID()+"</related_id>"+
+        "</Item>"+
+        "<Item type='mpp_ProcessPlanLocation' select='id' action='get'>"+
+        "<related_id>"+location_id+"</related_id>"+
+        "</Item>"+
+        "</Relationships>"+
+        "</Item>"+
+        "</AML>";
+    Item mpp=inn.applyAML(aml);
+    if(mpp.getItemCount()<1)
+    {
+        AddTds(part,mpart,parentOperation_rel,mbomOrder,error_code,action,rowItem,parentMbomCount);
+        gridStyle.Append("</tr>");
+        rowItem.setAttribute("error_code",error_code.ToString());
+        return rowItem;
+    }
+    else if(mpp.getItemCount()>1)
+    {
+        error_code=4;
+        AddTds(part,mpart,parentOperation_rel,mbomOrder,error_code,action,rowItem,parentMbomCount);
+        gridStyle.Append("</tr>");
+        rowItem.setAttribute("error_code",error_code.ToString());
+        return rowItem;
+    }
+    
+    aml="<AML><Item type='mpp_Operation' action='get' select='id'>"+
+        "<source_id>"+mpp.getID()+"</source_id>"+
+        "<bcs_location>"+location_id+"</bcs_location>"+
+        "<Relationships>"+
+        "<Item type='mpp_OperationConsumedPart' select='quantity,related_id(keyed_name,state,major_rev,config_id)'>"+
+        "<bcs_location>"+location_id+"</bcs_location>"+
+        "</Item>"+
+        "</Relationships>"+
+        "</Item>"+
+        "</AML>";
+    Item mpp_operations=inn.applyAML(aml);
+    if(mpp_operations.getItemsByXPath("//Item[@type='Part']").getItemCount()>0)
+    {
+        if(mpart.getItemCount()==1)
+        {
+            if(!canUpdate(mpart.getID()))
+            {
+                error_code=5;
+            }
+        }
+    }
+    
+    AddTds(part,mpart,parentOperation_rel,mbomOrder,error_code,action,rowItem,parentMbomCount);
+    
+    for(int i=0;i<mpp_operations.getItemCount();i++)
+    {
+        Item mpp_operation=mpp_operations.getItemByIndex(i);
+        Item operation_parts=mpp_operation.getRelationships();
+        for(int j=0;j<operation_parts.getItemCount();j++)
+        {
+            Item operation_rel=operation_parts.getItemByIndex(j);
+            Item operation_part=operation_rel.getRelatedItem();
+            Item subRowItem=CheckBomStatus(operation_part,mpart,level+1,operation_rel,mbomCount);
+            subRowItem.setAttribute("op_part_id",operation_rel.getID());
+            rowItem.addRelationship(subRowItem);
+        }
+    }
+    gridStyle.Append("</tr>");
+    
+    rowItem.setAttribute("error_code",error_code.ToString());
+    return rowItem;
+}
+
+public void AddTr(Item part,string rowId,int level)
+{
+    gridStyle.Append("<tr level=\"");
+    gridStyle.Append(Escape(level.ToString()));
+    gridStyle.Append("\" icon0=\"../images/Part.svg\" icon1=\"../images/Part.svg\" id=\"" + rowId + "\"><userdata key=\"gridData_rowItemID\" value=\"");
+    gridStyle.Append(part.getID());
+    gridStyle.Append("\" />");
+}
+
+public void AddTds(Item part,Item mpart,Item operation_rel,string mbomOrder,int error_code,string action,Item rowItem,int parentMbomCount)
+{
+    string error_string="";
+    string qty="";
+    string color="";
+    string image="";
+    string mpart_id="";
+    string mpart_keyedName="";
+    string is_checked="false";
+    
+    if(oldRowItem!=null&&operation_rel!=null)
+    {
+        Item oldMbom=oldRowItem.getItemsByXPath("//Item[@op_part_id='"+operation_rel.getID()+"']");
+        if(oldMbom.getItemCount()>0)
+        {
+            is_checked=oldMbom.getItemByIndex(0).getAttribute("checked","false");
+            if(is_checked=="false")
+            {
+                error_code=0;
+            }
+        }
+    }
+    else
+    {
+        if(parentMbomCount<1)
+        {
+            is_checked="true";
+        }
+        else
+        {
+            is_checked="false";
+        }
+    }
+    
+    if(error_code!=0)
+    {
+        allright=false;
+        color="#ffedf0";
+        image=Escape("<img src=\"../images/Blocked.svg\" />");
+    }
+    
+    switch(error_code)
+    {
+        case 1:
+            error_string="无对应MPart!";
+            break;
+        case 2:
+            error_string="同一物料同一地区对应了多个MPart!";
+            break;
+        case 3:
+            error_string="MBOM中有重复子阶!";
+            break;
+        case 4:
+            error_string="物料同一地区有多个MPP!";
+            break;
+        case 5:
+            error_string="无编辑权限!";
+            break;
+    }
+    if(mpart.getItemCount()==1)
+    {
+        mpart_id=mpart.getID();
+        mpart_keyedName=mpart.getProperty("keyed_name");
+    }
+    if(operation_rel!=null)
+    {
+        qty=operation_rel.getProperty("quantity","0");
+    }
+    
+    gridStyle.Append("<td bgColor=\""+color+"\">"+part.getProperty("keyed_name")+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">"+image+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">"+part.getProperty("major_rev")+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">"+part.getProperty("state")+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">"+qty+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">"+mbomOrder+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\" fdt=\"item\" link=\"'MPart','"+mpart_id+"'\">"+mpart_keyedName+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">"+error_string+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">"+action+"</td>");
+    gridStyle.Append("<td bgColor=\""+color+"\">&lt;checkbox state=&apos;"+(is_checked=="true"?"1":"0")+"&apos;/&gt;</td>");
+    
+    rowItem.setAttribute("checked",is_checked);
+}
+
+public class P2MProperty
+{
+    public string PProperty;
+    public string MProperty;
+}
+
+public void getConfigPropertys()
+{
+    string aml="<AML><Item type='Core_PBOM2MBOMPropertyConfig' action='get' select='bcs_mpartproperty(name),bcs_mppproperty(name)'>"+
+        "<source_id>"+
+        "<Item type='Preference' action='get' select='id'>" +
+		"<identity_id>" +
+		"<Item type='Identity' action='get' select='id'>" +
+		"<name>World</name>" +
+		"</Item>" +
+		"</identity_id>" +
+		"</Item>" +
+        "</source_id>"+
+        "</Item>"+
+        "</AML>";
+    Item propertyConfigs=inn.applyAML(aml);
+    for(int i=0;i<propertyConfigs.getItemCount();i++)
+    {
+        Item property=propertyConfigs.getItemByIndex(i);
+        Item pp=property.getPropertyItem("bcs_mppproperty");
+        Item mp=property.getPropertyItem("bcs_mpartproperty");
+        
+        P2MProperty P2Mp=new P2MProperty();
+        P2Mp.PProperty=pp.getProperty("name");
+        P2Mp.MProperty=mp.getProperty("name");
+        
+        P2MPropertys.Add(P2Mp);
+    }
+}
+
+public Item getMPart(Item part)
+{
+    Item mpart=inn.newItem("MPart","get");
+    mpart.setAttribute("select","id,keyed_name");
+    mpart.setProperty("bcs_location",location_id);
+    // mpart.setProperty("bcs_part",part.getID());
+    Item searchPart=inn.newItem("Part");
+    searchPart.setProperty("config_id",part.getProperty("config_id"));
+    mpart.setPropertyItem("bcs_part",searchPart);
+    // foreach(P2MProperty property in P2MPropertys)
+    // {
+    //     mpart.setProperty(property.MProperty,MPP.getProperty(property.PProperty,""));
+    // }
+    return mpart.apply();
+}
+
+public bool canUpdate(string itemID)
+{
+    return bcsCCO.Permissions.GetPermissions(itemID,ItemTypeID ,"can_update" , null);
+}
+
+private string Escape(string data) {
+        return System.Security.SecurityElement.Escape(data);]]></method_code>
+  <method_type>C#</method_type>
+  <name>BCS_PBOM2MBOMCheck</name>
+ </Item>
+</AML>

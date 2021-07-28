@@ -1,0 +1,213 @@
+﻿<AML>
+ <Item type="Method" id="FFEB8EA7FEBC499FB0AA799ED4BD5CBD" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// System.Diagnostics.Debugger.Break();
+
+inn = this.getInnovator();
+string mpp_id=this.getID();
+location_id=this.getProperty("location");
+rowItems=this.getPropertyItem("rowitem");
+
+//getConfigPropertys();
+
+Item mpp_part=inn.newItem("mpp_ProcessPlanProducedPart","get");
+mpp_part.setProperty("source_id",mpp_id);
+mpp_part.setAttribute("select","related_id(keyed_name,state,major_rev,config_id)");
+mpp_part=mpp_part.apply();
+if(mpp_part.getItemCount()<1)
+{
+    return inn.newError(errorString);
+}
+Item part=mpp_part.getRelatedItem();
+Item mpart=getMPart(part);
+if(mpart.getItemCount()!=1)
+{
+    return inn.newError(errorString);
+}
+
+try
+{
+    Item updateMParts=CheckBomStatus(part,mpart);
+    updateMParts=updateMParts.apply();
+    return updateMParts;
+}
+catch(Exception ex)
+{
+    return inn.newError(ex.Message);
+}
+
+
+return this;
+}
+
+Innovator inn;
+Item rowItems;
+string errorString="检查到有错误,请重新执行检查!";
+string ItemTypeID;
+string location_id;
+List<string> editMParts=new List<string>();
+
+// List<P2MProperty> P2MPropertys=new List<P2MProperty>();
+
+public Item CheckBomStatus(Item part,Item parentMPart)
+{
+    string aml="<AML><Item type='mpp_ProcessPlan' action='get' select='id'>"+
+        "<Relationships>"+
+        "<Item type='mpp_ProcessPlanProducedPart' select='id' action='get'>"+
+        "<related_id>"+part.getID()+"</related_id>"+
+        "</Item>"+
+        "<Item type='mpp_ProcessPlanLocation' select='id' action='get'>"+
+        "<related_id>"+location_id+"</related_id>"+
+        "</Item>"+
+        "</Relationships>"+
+        "</Item>"+
+        "</AML>";
+    Item mpp=inn.applyAML(aml);
+    if(mpp.getItemCount()>1)
+    {
+        throw new Exception(errorString);
+    }
+    else if(mpp.getItemCount()<1)
+    {
+        return parentMPart;
+    }
+    aml="<AML><Item type='mpp_Operation' action='get' select='id'>"+
+        "<source_id>"+mpp.getID()+"</source_id>"+
+        "<bcs_location>"+location_id+"</bcs_location>"+
+        "<Relationships>"+
+        "<Item type='mpp_OperationConsumedPart' select='quantity,related_id(keyed_name,state,major_rev,config_id)'>"+
+        "<bcs_location>"+location_id+"</bcs_location>"+
+        "</Item>"+
+        "</Relationships>"+
+        "</Item>"+
+        "</AML>";
+    Item mpp_operations=inn.applyAML(aml);
+    if(mpp_operations.getItemsByXPath("//Item[@type='Part']").getItemCount()>0)
+    {
+        parentMPart.setAction("edit");
+    }
+    for(int i=0;i<mpp_operations.getItemCount();i++)
+    {
+        Item mpp_operation=mpp_operations.getItemByIndex(i);
+        Item operation_parts=mpp_operation.getRelationships();
+        for(int j=0;j<operation_parts.getItemCount();j++)
+        {
+            Item operation_rel=operation_parts.getItemByIndex(j);
+            Item operation_part=operation_rel.getRelatedItem();
+            
+            Item mpart=getMPart(operation_part);
+            if(mpart.getItemCount()!=1)
+            {
+                throw new Exception(errorString);
+            }
+            
+            Item mbom=inn.newItem("MPart bom","get");
+            mbom.setProperty("source_id",parentMPart.getID());
+            mbom.setProperty("related_id",mpart.getID());
+            
+            Item findRowItem=rowItems.getItemsByXPath("//Item[@op_part_id='"+operation_rel.getID()+"']");
+            if(findRowItem.getItemCount()>0)
+            {
+                if(findRowItem.getItemByIndex(0).getAttribute("checked","false")=="false")
+                {
+                    continue;
+                }
+                string mbom_id=findRowItem.getItemByIndex(0).getAttribute("mbom_id","");
+                if(mbom_id!="")
+                {
+                    mbom.setProperty("id",mbom_id);
+                }
+            }
+            else
+            {
+                continue;
+            }
+            
+            mbom=mbom.apply();
+            Item newmbom;
+            if(mbom.getItemCount()<1)
+            {
+                newmbom=inn.newItem("MPart bom","add");
+            }
+            else if(mbom.getItemCount()>1)
+            {
+                throw new Exception(errorString);
+            }
+            else
+            {
+                newmbom=mbom;
+                newmbom.setAction("edit");
+            }
+            newmbom.setProperty("quantity",operation_rel.getProperty("quantity","0"));
+            
+            if(!editMParts.Contains(mpart.getID()))
+            {
+                Item updateMPart=CheckBomStatus(operation_part,mpart);
+                newmbom.setRelatedItem(updateMPart);
+                editMParts.Add(updateMPart.getID());
+            }
+            else
+            {
+                newmbom.setProperty("related_id",mpart.getID());
+            }
+            
+            parentMPart.addRelationship(newmbom);
+        }
+    }
+    return parentMPart;
+}
+
+public class P2MProperty
+{
+    public string PProperty;
+    public string MProperty;
+}
+
+// public void getConfigPropertys()
+// {
+//     string aml="<AML><Item type='Core_PBOM2MBOMPropertyConfig' action='get' select='bcs_mpartproperty(name),bcs_mppproperty(name)'>"+
+//         "<source_id>"+
+//         "<Item type='Preference' action='get' select='id'>" +
+// 		"<identity_id>" +
+// 		"<Item type='Identity' action='get' select='id'>" +
+// 		"<name>World</name>" +
+// 		"</Item>" +
+// 		"</identity_id>" +
+// 		"</Item>" +
+//         "</source_id>"+
+//         "</Item>"+
+//         "</AML>";
+//     Item propertyConfigs=inn.applyAML(aml);
+//     for(int i=0;i<propertyConfigs.getItemCount();i++)
+//     {
+//         Item property=propertyConfigs.getItemByIndex(i);
+//         Item pp=property.getPropertyItem("bcs_mppproperty");
+//         Item mp=property.getPropertyItem("bcs_mpartproperty");
+        
+//         P2MProperty P2Mp=new P2MProperty();
+//         P2Mp.PProperty=pp.getProperty("name");
+//         P2Mp.MProperty=mp.getProperty("name");
+        
+//         P2MPropertys.Add(P2Mp);
+//     }
+// }
+
+public Item getMPart(Item part)
+{
+    Item mpart=inn.newItem("MPart","get");
+    mpart.setAttribute("select","id");
+    mpart.setProperty("bcs_location",location_id);
+    // mpart.setProperty("bcs_part",part.getID());
+    Item searchPart=inn.newItem("Part");
+    searchPart.setProperty("config_id",part.getProperty("config_id"));
+    mpart.setPropertyItem("bcs_part",searchPart);
+    // foreach(P2MProperty property in P2MPropertys)
+    // {
+    //     mpart.setProperty(property.MProperty,MPP.getProperty(property.PProperty,""));
+    // }
+    return mpart.apply();
+]]></method_code>
+  <method_type>C#</method_type>
+  <name>BCS_PBOM2MBOM</name>
+ </Item>
+</AML>

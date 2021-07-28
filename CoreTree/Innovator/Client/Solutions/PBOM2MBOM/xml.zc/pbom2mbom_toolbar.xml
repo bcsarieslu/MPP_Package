@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<toolbarapplet
+	on_click = "onToolbarButtonClick"
+	on_load = "onToolbarLoad"
+	buttonstyle = "windows"
+	buttonsize = "26,25"
+	font = "Arial-8">
+	<toolbar id="tb1">
+		<button text="全部展开" id="expand_all" image="../images/ExpandAll.svg" tooltip="全部展开" />
+		<button text="全部折叠" id="collapse_all" image="../images/CollapseAll.svg" tooltip="全部折叠" />
+		<button text="全选子阶" id="select_all" image="../images/SelectAll.svg" tooltip="全选子阶" />
+		<separator/>
+		<choice id="location_list" label="厂区:" tooltip="选择厂区"/>
+		<!-- <button image="../images/ProcessPlan.svg" id="loadpbom" tooltip="Load PBOM" statusmsg="Load PBOM" />  -->
+		<button image="../images/Compare.svg" id="checkpbom" tooltip="检查结构" statusmsg="检查结构"/>
+		<button image="../images/Checkmark.svg" id="pbom2mbom" tooltip="执行同步" statusmsg="执行同步"/>
+	</toolbar>
+</toolbarapplet>

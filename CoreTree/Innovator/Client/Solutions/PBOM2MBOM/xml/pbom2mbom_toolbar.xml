@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<toolbarapplet
+	on_click = "onToolbarButtonClick"
+	on_load = "onToolbarLoad"
+	buttonstyle = "windows"
+	buttonsize = "26,25"
+	font = "Arial-8">
+	<toolbar id="tb1">
+		<button text="Expand All" id="expand_all" image="../images/ExpandAll.svg" tooltip="Expand All" />
+		<button text="Collapse All" id="collapse_all" image="../images/CollapseAll.svg" tooltip="Collapse All" />
+		<button text="Select All" id="select_all" image="../images/SelectAll.svg" tooltip="Select All" />
+		<separator/>
+		<choice id="location_list" label="Location:" tooltip="Select Location"/>
+		<!-- <button image="../images/ProcessPlan.svg" id="loadpbom" tooltip="Load PBOM" statusmsg="Load PBOM" />  -->
+		<button image="../images/Compare.svg" id="checkpbom" tooltip="Check Structure" statusmsg="Check Structure"/>
+		<button image="../images/Checkmark.svg" id="pbom2mbom" tooltip="PBOM2MBOM" statusmsg="PBOM2MBOM"/>
+	</toolbar>
+</toolbarapplet>
