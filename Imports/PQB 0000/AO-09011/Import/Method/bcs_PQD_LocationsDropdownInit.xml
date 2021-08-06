@@ -9,16 +9,14 @@
 window.isUsedMPP=undefined;
 window.locationFilterItems=[];
 
-let items=[];
 if(window.isPQD){
     const ppId = getProcessPlanId();
-    if(!ppId){
+    window.isUsedMPP=!aras.IomInnovator.applyMethod("bcs_MPP_CheckMPPRelationPQD","").isError();
+    if(!ppId||!window.isUsedMPP){
         return {
-        	'cui_visible': isPQD
+        	'cui_visible': false
         };
     }
-    
-    window.isUsedMPP=!aras.IomInnovator.applyMethod("bcs_MPP_CheckMPPRelationPQD","").isError();
     
     const ppItem = parent.aras.getItemById("mpp_ProcessPlan", ppId);
     const locations=getProcessPlanLocations(ppItem);
@@ -30,12 +28,12 @@ if(window.isPQD){
     
     return {
         'cui_items': locations,
-    	'cui_visible': isPQD
+    	'cui_visible': true
     };
 }
 
 return {
-	'cui_visible': isPQD
+	'cui_visible': false
 };
 
 function getProcessPlanId(){
