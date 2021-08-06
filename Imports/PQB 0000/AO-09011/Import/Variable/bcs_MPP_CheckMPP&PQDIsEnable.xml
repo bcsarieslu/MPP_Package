@@ -1,0 +1,7 @@
+﻿<AML>
+  <Item type="Variable" id="2049E0D9021B42D190727C43B0F3F348" action="add">
+    <default_value>true</default_value>
+    <value>true</value>
+    <name>bcs_MPP_CheckMPP&amp;PQDIsEnable</name>
+  </Item>
+</AML>

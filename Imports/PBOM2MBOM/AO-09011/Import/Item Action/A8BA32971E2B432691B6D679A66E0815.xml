@@ -1,20 +1,6 @@
 ﻿<AML>
  <Item type="Item Action" id="A8BA32971E2B432691B6D679A66E0815" action="add">
-  <related_id keyed_name="BCS_PBOM2MBOM" type="Action">
-   <Item type="Action" id="C08366484B1243C38A44D1BE32A09F9A" action="add">
-    <item_query>&lt;Item type="{@type}" id="{@id}" levels= "1" action="get" /&gt;</item_query>
-    <label xml:lang="en">PBOM同步MBOM</label>
-    <location>client</location>
-    <method keyed_name="BCS_showPBOM2MBOM" type="Method">
-     <Item type="Method" action="get" select="id">
-      <name>BCS_showPBOM2MBOM</name>
-     </Item>
-    </method>
-    <target>none</target>
-    <type>item</type>
-    <name>BCS_PBOM2MBOM</name>
-   </Item>
-  </related_id>
+  <related_id keyed_name="BCS_PBOM2MBOM" type="Action">C08366484B1243C38A44D1BE32A09F9A</related_id>
   <sort_order>256</sort_order>
   <source_id keyed_name="mpp_ProcessPlan" type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>
  </Item>

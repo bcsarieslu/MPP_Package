@@ -1,0 +1,133 @@
+﻿<AML>
+  <Item type="Method" action="add" id="9807A4E971AE4113A4E4AC3683D44799">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[function getViews() {
+	var views = aras.evalMethod('cmf_GetviewsForCommandBars', '', {itemTypeId: window.params.itemTypeID, itemId: window.params.itemID});
+	return views;
+}
+
+function fillContainers() {
+	require([
+		'CMF/Scripts/ActionStore',
+		'CMF/Scripts/DataLoader',
+		'CMF/Scripts/Utils',
+		'CMF/Scripts/DataStore'
+	]);
+
+	var cmfContainer = window.parent.cmfContainer;
+	cmfContainer.loadQPDocument = function(qpWindow, viewId) {
+		qpWindow.loadQPDocument(globalTree, viewId, actionStore, actionStore.getDataStore(), cmfContainer.findControl);
+	};
+
+	var views = getViews();
+	var dataStore = new DataStore();
+	var actionStore = new ActionStore(parent.item, aras, dataStore);
+	var dataLoader = new DataLoader(parent.item);
+	var globalTree = dataLoader.loadMetaData(views, dataStore);
+
+	var itemAction = parent.item.getAttributeNode('action');
+	if (itemAction) {
+		itemAction = itemAction.value;
+	}
+
+	var tabContainer = cmfContainer.tabContainer;
+	window.onLockCommandCMF = function() {
+		var currentTabId = tabContainer.getCurrentTabId();
+		if (currentTabId) {
+			var currentTab = tabContainer.getTabById(currentTabId);
+			globalTree = dataLoader.loadMetaData(views, dataStore);
+			//Modify By BCS Tengz 2021/7/12 MPP与PQD联动
+			parent.locationFilterItems=[];
+			//End Modify
+			currentTab.domNode.firstChild.contentWindow.onLockCommand(globalTree, parent.item);
+		}
+	};
+
+	window.onUnlockCommandCMF = function() {
+		var currentTabId = tabContainer.getCurrentTabId();
+		if (currentTabId) {
+			var currentTab = tabContainer.getTabById(currentTabId);
+			globalTree = dataLoader.loadMetaData(views, dataStore);
+			//Modify By BCS Tengz 2021/7/12 MPP与PQD联动
+			parent.locationFilterItems=[];
+			//End Modify
+			currentTab.domNode.firstChild.contentWindow.onUnlockCommand(globalTree, parent.item);
+		}
+	};
+
+	window.onRefreshCommandCMF = function() {
+		var currentTabId = tabContainer.getCurrentTabId();
+		dataLoader = new DataLoader(parent.item);
+		if (currentTabId) {
+			globalTree = dataLoader.loadMetaData(views, dataStore);
+			var currentTab = tabContainer.getTabById(currentTabId);
+			//Modify By BCS Tengz 2021/7/12 MPP与PQD联动
+			parent.locationFilterItems=[];
+			//End Modify
+			currentTab.domNode.firstChild.contentWindow.onRefreshCommand(globalTree, parent.item);
+		}
+	};
+
+	window.onSaveCommandCMF = function() {
+		var currentTabId = tabContainer.getCurrentTabId();
+		dataLoader = new DataLoader(parent.item);
+		if (currentTabId) {
+			globalTree = dataLoader.loadMetaData(views, dataStore);
+			var currentTab = tabContainer.getTabById(currentTabId);
+			//Modify By BCS Tengz 2021/7/12 MPP与PQD联动
+			parent.locationFilterItems=[];
+			//End Modify
+			currentTab.domNode.firstChild.contentWindow.onSaveCommand(globalTree, parent.item);
+		}
+	};
+
+	var topWnd = window.parent;
+	var indx;
+	var cmd;
+	var commandsToOverride = ['onSaveUnlockAndExitCommand', 'onSaveCommand', 'onUnlockCommand'];
+
+	cmd = topWnd.onLockCommand.toString();
+	indx = cmd.indexOf('return true');
+	cmd = cmd.substr(0, indx) + ' window.document.getElementById(\'instance\').contentWindow.onLockCommandCMF(); ' + cmd.substr(indx);
+	topWnd.eval('onLockCommand' + '=' + cmd);
+
+	// update ui after success unlock command
+	cmd = topWnd.onUnlockCommand.toString();
+	indx = cmd.indexOf('return true');
+	cmd = cmd.substr(0, indx) + ' window.document.getElementById(\'instance\').contentWindow.onUnlockCommandCMF(); ' + cmd.substr(indx);
+	topWnd.eval('onUnlockCommand' + '=' + cmd);
+
+	// update ui after success refresh command
+	cmd = topWnd.onRefresh.toString();
+	indx = cmd.indexOf('onAfterCommandRun');
+	cmd = cmd.substr(0, indx) + ' window.document.getElementById(\'instance\').contentWindow.onRefreshCommandCMF(); ' + cmd.substr(indx);
+	topWnd.eval('onRefresh' + '=' + cmd);
+
+	// update ui after success save command
+	cmd = topWnd.onSaveCommand.toString();
+	indx = cmd.lastIndexOf('return true');
+	cmd = cmd.substr(0, indx) + ' window.document.getElementById(\'instance\').contentWindow.onSaveCommandCMF(); ' + cmd.substr(indx);
+	topWnd.eval('onSaveCommand' + '=' + cmd);
+
+	// update ui after success promote command
+	cmd = topWnd.onPromoteCommand.toString();
+	indx = cmd.lastIndexOf('isEditMode = false;');
+	cmd = cmd.substr(0, indx) + ' window.document.getElementById(\'instance\').contentWindow.onRefreshCommandCMF(); ' + cmd.substr(indx);
+	topWnd.eval('onPromoteCommand' + '=' + cmd);
+
+	cmfContainer.formPopulated = true;
+}
+
+if (!window.containersFilled) {
+	fillContainers();
+	window.containersFilled = true;
+}
+]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>cmf_ShowContentType</name>
+  </Item>
+</AML>

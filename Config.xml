@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<sections type="Install Mode">
+		<section type="InstallClass" exec="2" choosetype="radio">
+			<InstallType default = "1" English="MPP For Aras 12.0 SP9" Simplified="MPP For Aras 12.0 SP9" Traditional="MPP For Aras 12.0 SP9">MPP</InstallType>
+			<InstallType default = "0" English="MPP + PQB For Aras 12.0 SP9" Simplified="MPP + PQB For Aras 12.0 SP9" Traditional="MPP + PQB For Aras 12.0 SP9">MPP+PQB</InstallType>
+			<InstallType default = "0" English="PQB For Aras 12.0 SP9" Simplified="PQB For Aras 12.0 SP9" Traditional="PQB For Aras 12.0 SP9">PQB</InstallType>
+		</section>
+	</sections>
+	
+	<sections type="Install">	
+		<section type="CoreTree" exec="1" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+			<Path>MPP</Path>
+			<MethodConfig>
+				<name>System.Drawing.dll</name>
+				<name>$(binpath)/SgmlReaderDll.dll</name>
+				<name>$(binpath)/bcsMPP.Core.dll</name>
+			</MethodConfig>
+		</section>	
+
+		<section type="Import" exec="2" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
+			<Package chek_item_type="" >0000</Package>		
+		</section>		
+
+		<section type="AML" exec="3" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="0">
+			<File>UpdatPartClassification.txt</File>
+		</section>				
+		
+		<section type="Import" exec="4" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
+			<Package chek_item_type="" >0001</Package>
+			<Package chek_item_type="" >0002</Package>
+			<Package chek_item_type="" >0003</Package>			
+		</section>	
+		
+		<section type="Import" exec="5" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
+			<Package chek_item_type="" >1003</Package>
+			<Package chek_item_type="" >1004</Package>
+			<Package chek_item_type="" >1005</Package>
+			<Package chek_item_type="" >1006</Package>
+			<Package chek_item_type="" >PBOM2MBOM</Package>
+		</section>	
+
+		<section type="Import" exec="5" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
+			<Package chek_item_type="" >PQB 0000</Package>	
+			<Package chek_item_type="" >PQB 0001</Package>	
+		</section>			
+		
+		<section type="SQL" exec="6" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+			<File>mpp_itemtype.sql</File>
+			<File>mpp_relationshiptype.sql</File>						
+			<File>mpp_property.sql</File>		
+			<File>mpp_field.sql</File>
+			<File>mpp_list_value.sql</File>
+			<File>mpp_action.sql</File>
+			<File>mpp_categories_list_value.sql</File>
+			<File>toc-access.sql</File>
+			<File>mpp_form_field.sql</File>
+			<File>mpp_Step_field.sql</File>
+			<File>mpp_Step_property.sql</File>
+			<File>commandbarmenu_label.sql</File>
+		</section>	
+		
+		<section type="Import" exec="7" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
+			<Package chek_item_type="" >2001</Package>	
+			<Package chek_item_type="" >2002</Package>	
+			<Package chek_item_type="" >2003</Package>
+			<Package chek_item_type="" >2004</Package>
+			<Package chek_item_type="" >2005</Package>
+			<Package chek_item_type="" >2006</Package>
+		</section>	
+		
+		<section type="SQL" exec="8" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+			<File>update_permission_id.sql</File>
+		</section>
+
+		<section type="SQL" exec="10" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+			<File>mpp_grid_column.sql</File>
+			<File>commandbardropdown_label.sql</File>
+		</section>
+	</sections>
+</config>

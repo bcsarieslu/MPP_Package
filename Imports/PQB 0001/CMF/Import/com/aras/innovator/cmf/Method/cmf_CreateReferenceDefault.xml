@@ -1,0 +1,37 @@
+﻿<AML>
+  <Item type="Method" action="add" id="9428EBF79A4642179FF83FF8A6B39DB2">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[//Modify by BCS Tengz 2021/6/9
+//修复兼容PolyItemType
+
+const itemType = aras.getItemTypeForClient(inArgs.referencedTypeName).node;
+if (aras.isPolymorphic(itemType)) {
+    var itemTypesList = aras.getMorphaeList(itemType);
+    var selectionDialog = aras.uiItemTypeSelectionDialog(itemTypesList);
+    if (selectionDialog && selectionDialog.then) {
+        return selectionDialog.then(handleNewItemType);
+    } else {
+        return handleNewItemType(selectionDialog);
+    }
+}
+
+return handleNewItemType(inArgs.referencedTypeName);
+
+function handleNewItemType(referencedTypeName) {
+    const boundItem = aras.newIOMItem(referencedTypeName, 'add');
+    const uiUtils = new CMF.UI.Utils();
+
+    return new Promise(function(resolve) {
+        uiUtils.showEditorTearOff(boundItem, function() {
+            resolve(boundItem.getID());
+        });
+    });
+}]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>cmf_CreateReferenceDefault</name>
+  </Item>
+</AML>

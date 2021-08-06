@@ -369,6 +369,12 @@ SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N'''' where i
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N'''' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_ProcessPlanProducedPart'' and a.is_current=1 and a.name=''team_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''樣本頻率'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Test'' and a.is_current=1 and a.name=''bcs_samplefrequency'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''樣本容量'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Test'' and a.is_current=1 and a.name=''bcs_samplesize'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''製造流程規劃'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='PROPERTY') 
@@ -739,6 +745,12 @@ SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N'''' where i
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N'''' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_ProcessPlanProducedPart'' and a.is_current=1 and a.name=''team_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''样本频率'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Test'' and a.is_current=1 and a.name=''bcs_samplefrequency'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''样本容量'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Test'' and a.is_current=1 and a.name=''bcs_samplesize'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''工艺流程规划'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='PROPERTY') 
@@ -1108,5 +1120,11 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Released'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_ProcessPlanProducedPart'' and a.is_current=1 and a.name=''is_released'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Team'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_ProcessPlanProducedPart'' and a.is_current=1 and a.name=''team_id'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Sample Frequency'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Test'' and a.is_current=1 and a.name=''bcs_samplefrequency'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Sample Size'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Test'' and a.is_current=1 and a.name=''bcs_samplesize'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Process Plan'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
 END

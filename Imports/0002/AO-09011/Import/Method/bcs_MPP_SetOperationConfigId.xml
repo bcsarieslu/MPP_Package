@@ -1,0 +1,15 @@
+﻿<AML>
+  <Item type="Method" action="add" id="65206D215744435680812F957E8A6048">
+    <comments />
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[Innovator inn=this.getInnovator();
+this.setProperty("bcs_config_id",inn.getNewID());
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_MPP_SetOperationConfigId</name>
+  </Item>
+</AML>

@@ -1,0 +1,4 @@
+<imports>
+  <package name="com.aras.innovator.solution.QMS" path="QMS\Import" />
+  <package name="com.aras.innovator.cmf" path="CMF\Import" />
+</imports>

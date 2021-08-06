@@ -1,0 +1,36 @@
+﻿<AML>
+  <Item type="Method" action="add" id="4C6ED52F3DBB49BFB3E2C3219BDEE888">
+    <execution_allowed_to type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</execution_allowed_to>
+    <method_code><![CDATA[/*
+ * 設定方式
+ * Lifecycle Map : Process Plan
+ * Transition : In Review -> Released
+ * Server Events : Pre
+ * Add by tengz 2021/7/15
+ * 变更升版MPP后更新关联的PQD里的工序
+ */
+
+const string ERR_PREFIX = "Error[bcs_MPP_UpdateRelationPQD]:";
+
+Aras.Server.Security.Identity plmIdentity = Aras.Server.Security.Identity.GetByName("Aras PLM");
+bool PermissionWasSet = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity);
+
+try {
+    Innovator inn = this.getInnovator();
+
+    bcsMPP.Core.MPP bcsMPP = new bcsMPP.Core.MPP(inn);
+
+    Item result = bcsMPP.updateRelationPQD(this);
+
+    return result;
+
+} catch (Exception ex) {
+    return this.getInnovator().newError(ERR_PREFIX + ex.Message);
+} finally {
+    if (PermissionWasSet) Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity);
+}
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_MPP_UpdateRelationPQD</name>
+  </Item>
+</AML>

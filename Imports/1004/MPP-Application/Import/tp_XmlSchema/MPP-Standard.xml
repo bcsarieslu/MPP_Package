@@ -1,5 +1,6 @@
 ﻿<AML>
   <Item type="tp_XmlSchema" id="A8137FCA2D7C4E22833E6BD2359A891C" action="add">
+    <application>tp_Block</application>
     <content>&lt;xs:schema xmlns="http://www.aras.com/MPP" targetNamespace="http://www.aras.com/MPP" xmlns:aras="http://aras.com/ArasTechDoc" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"&gt;
 	&lt;xs:import namespace="http://www.w3.org/XML/1998/namespace"/&gt;
 	&lt;xs:import namespace="http://aras.com/ArasTechDoc"/&gt;

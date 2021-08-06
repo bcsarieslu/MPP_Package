@@ -1,0 +1,16 @@
+﻿<AML>
+  <Item type="Method" action="add" id="FE29CC305BFA4C7380FD5BE229D8DD23">
+    <execution_allowed_to type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</execution_allowed_to>
+    <method_code><![CDATA[Innovator inn=this.getInnovator();
+Item variable=inn.newItem("Variable","get");
+variable.setProperty("name","bcs_MPP_CheckMPP&PQDIsEnable");
+variable.setAttribute("select","value");
+variable=variable.apply();
+if(variable.isError()||variable.getItemCount()<1||variable.getProperty("value")!="true"){
+    return inn.newError("false");
+}
+return inn.newResult("ok");]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_MPP_CheckMPPRelationPQD</name>
+  </Item>
+</AML>

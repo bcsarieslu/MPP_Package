@@ -1,0 +1,107 @@
+﻿<AML>
+  <Item type="cmf_ContentType" id="86389405682E454B9E733111E2D344F4" action="add" doGetItem="0">
+    <Relationships>
+      <Item type="cmf_ElementType" id="5298AA86782E4F2DAB3826C55BB3A11B" action="add">
+        <default_permission type="Permission">FAC64B6CE47348458D6DEB1C68DC4724</default_permission>
+        <parent type="cmf_ElementType">C6F3C576ED374CB88533230F2A71BD9B</parent>
+        <sort_order>640</sort_order>
+        <name>PQD EMT</name>
+        <Relationships>
+          <Item type="cmf_ElementBinding" id="352FD7D9E4864F11AF6B91A2291CCA18" action="add">
+            <item_delete_behavior>NonCheckConstraint</item_delete_behavior>
+            <new_row_mode>PickOrCreate</new_row_mode>
+            <reference_required>1</reference_required>
+            <reference_type type="ItemType" name="mpp_Test">8E3DC86FEB3E4847BAA10DF978C01FF8</reference_type>
+            <resolution_mode>Current</resolution_mode>
+            <sort_order>128</sort_order>
+            <synchronization_direction>FromItem</synchronization_direction>
+            <tracking_mode>NonTracking</tracking_mode>
+            <Relationships>
+              <Item type="cmf_PropertyBinding" id="0097E76EF5D547AAA0104BFD0E5CC88F" action="add">
+                <property type="cmf_PropertyType">44A7ABA44ED94D768C4FD8D5C0F32C30</property>
+                <read_only>0</read_only>
+                <reference_type_property_id type="Property">35702AADDA3D4DD6A35DA8C73006468C</reference_type_property_id>
+                <sort_order>128</sort_order>
+              </Item>
+              <Item type="cmf_PropertyBinding" id="A36EEF62BE564860A7CED8D8409CEF76" action="add">
+                <property type="cmf_PropertyType">0D8CCC3D88744142B94A2C0F965A7F01</property>
+                <read_only>0</read_only>
+                <reference_type_property_id type="Property">0D819E61DB9E405690CCE3AFD5366B79</reference_type_property_id>
+                <sort_order>384</sort_order>
+              </Item>
+              <Item type="cmf_PropertyBinding" id="EEA9DE50EB51481DA2FBDBBC90244B73" action="add">
+                <property type="cmf_PropertyType">4D0BFFD7CD4A48E2A9DF127C75A2309D</property>
+                <read_only>0</read_only>
+                <reference_type_property_id type="Property">F0D8AA60F523494EB3F29C7F5EB24A1B</reference_type_property_id>
+                <sort_order>256</sort_order>
+              </Item>
+            </Relationships>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="cmf_ElementType" id="C6F3C576ED374CB88533230F2A71BD9B" action="add">
+        <default_permission type="Permission">FAC64B6CE47348458D6DEB1C68DC4724</default_permission>
+        <sort_order>128</sort_order>
+        <name>PQD Operation</name>
+        <Relationships>
+          <Item type="cmf_ElementBinding" id="1F520C659561439AB7C7959ACD3F3C46" action="add">
+            <item_delete_behavior>NonCheckConstraint</item_delete_behavior>
+            <new_row_mode>CreateOnly</new_row_mode>
+            <reference_required>1</reference_required>
+            <reference_type type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</reference_type>
+            <resolution_mode>Current</resolution_mode>
+            <sort_order>128</sort_order>
+            <structure_mapping_method type="Method"><Item type="Method" action="get" id="FE3763D52DC047DC9527041DFCD66D67" /></structure_mapping_method>
+            <synchronization_direction>FromItem</synchronization_direction>
+            <tracking_mode>NonTracking</tracking_mode>
+            <Relationships>
+              <Item type="cmf_PropertyBinding" id="59B01B396E294F65958694A02374434C" action="add">
+                <property type="cmf_PropertyType">43465CDD5A3A45A2A6ED2591A9816286</property>
+                <read_only>0</read_only>
+                <reference_type_property_id type="Property">7313E38EA8264602AB98CB30D626CB22</reference_type_property_id>
+                <sort_order>256</sort_order>
+              </Item>
+              <Item type="cmf_PropertyBinding" id="73C70386E5CC4E89A1D731CF3AF49E46" action="add">
+                <property type="cmf_PropertyType">2540A2783C6F4267B77C6F980F2E6657</property>
+                <read_only>0</read_only>
+                <reference_type_property_id type="Property">
+                  <Item type="Property" action="get" select="id">
+                    <name>sort_order</name>
+                    <source_id>91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+                  </Item>
+                </reference_type_property_id>
+                <sort_order>128</sort_order>
+              </Item>
+            </Relationships>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="cmf_ElementType" id="FEE16AB02CBB468D81FC1A257990D692" action="add">
+        <default_permission type="Permission">FAC64B6CE47348458D6DEB1C68DC4724</default_permission>
+        <parent type="cmf_ElementType">C6F3C576ED374CB88533230F2A71BD9B</parent>
+        <sort_order>256</sort_order>
+        <name>PQD Tool</name>
+        <Relationships>
+          <Item type="cmf_ElementBinding" id="D4E4410CA39C4AD8891C7BEA2E1C0E5E" action="add">
+            <item_delete_behavior>NonCheckConstraint</item_delete_behavior>
+            <new_row_mode>PickOrCreate</new_row_mode>
+            <reference_required>1</reference_required>
+            <reference_type type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</reference_type>
+            <resolution_mode>Current</resolution_mode>
+            <sort_order>128</sort_order>
+            <synchronization_direction>FromItem</synchronization_direction>
+            <tracking_mode>NonTracking</tracking_mode>
+            <Relationships>
+              <Item type="cmf_PropertyBinding" id="343354F2063A4E6991139AD31AD35DB4" action="add">
+                <property type="cmf_PropertyType">8A43F8FCA185448BB2AD484E721DD346</property>
+                <read_only>0</read_only>
+                <reference_type_property_id type="Property">D167FA682412452A8B8C8E4B0BD95983</reference_type_property_id>
+                <sort_order>128</sort_order>
+              </Item>
+            </Relationships>
+          </Item>
+        </Relationships>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

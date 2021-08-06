@@ -49,6 +49,40 @@
         <track_history>0</track_history>
         <name>name</name>
       </Item>
+      <Item type="Property" id="0D819E61DB9E405690CCE3AFD5366B79" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">样本频率</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3200</sort_order>
+        <stored_length>128</stored_length>
+        <track_history>0</track_history>
+        <name>bcs_samplefrequency</name>
+      </Item>
+      <Item type="Property" id="F0D8AA60F523494EB3F29C7F5EB24A1B" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">样本容量</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>3072</sort_order>
+        <stored_length>128</stored_length>
+        <track_history>0</track_history>
+        <name>bcs_samplesize</name>
+      </Item>
       <Item type="View" id="96EC68CA3AD94B2BAA1F6F4B5BE892ED" action="add">
         <client>js</client>
         <related_id type="Form">

@@ -1,0 +1,71 @@
+﻿<AML>
+  <Item type="Method" action="add" id="5F91A0295AF14EBCB5EE627940BEC00E">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[window.isPQD=itemTypeName=="Process Quality Document";
+window.isUsedMPP=undefined;
+window.locationFilterItems=[];
+
+if(window.isPQD){
+    const ppId = getProcessPlanId();
+    window.isUsedMPP=!aras.IomInnovator.applyMethod("bcs_MPP_CheckMPPRelationPQD","").isError();
+    if(!ppId||!window.isUsedMPP){
+        return {
+        	'cui_visible': false
+        };
+    }
+    
+    const ppItem = parent.aras.getItemById("mpp_ProcessPlan", ppId);
+    const locations=getProcessPlanLocations(ppItem);
+    
+    window[inArgs.currentItem.name+"_change"]=function(){
+        cmfContainer.qpWindow.destroySpreadsheet();
+        cmfContainer.loadQPDocument(cmfContainer.qpWindow,cmfContainer.tabContainer._currentTabId);
+    }
+    
+    return {
+        'cui_items': locations,
+    	'cui_visible': true
+    };
+}
+
+return {
+	'cui_visible': false
+};
+
+function getProcessPlanId(){
+    var ppNode = item.selectSingleNode("process_plan_id");
+    if(!ppNode){
+        return null;
+    }
+    
+    var ppId;
+    var justLinkedPp = ppNode.selectSingleNode("Item");
+    if(justLinkedPp){
+        ppId = justLinkedPp.getAttribute("id");
+    }
+    else{
+        ppId = ppNode.text;
+    }
+    return ppId;
+}
+
+//Add by BCS Tengz 2021/6/10
+//读取MPP厂区
+function getProcessPlanLocations(ppItem){
+    let locationObjects=[];
+    const mppLocations = ppItem.selectNodes("Relationships/Item[@type=\"mpp_ProcessPlanLocation\"]/related_id/Item");
+    for(var i = 0; i < mppLocations.length; i++){
+        const locationId = mppLocations[i].getAttribute("id");
+        const locationName = aras.getItemProperty(mppLocations[i],"name","");
+        locationObjects.push({id:locationId, name :locationName,label:locationName });
+    }
+    return locationObjects;
+}]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>bcs_PQD_LocationsDropdownInit</name>
+  </Item>
+</AML>

@@ -59,6 +59,12 @@
     <track_history>0</track_history>
     <name>name</name>
    </Item>
+   <Item type="Can Add" id="29A8412292DB47B8A2A38103932CA224" action="add">
+    <can_add>1</can_add>
+    <related_id keyed_name="Manufacturing Engineering" type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="mpp_Resource" type="ItemType" name="mpp_Resource">FE85C82A8B734A338EBC136F6CE71576</source_id>
+   </Item>
    <Item type="View" id="3FFC64699EB340EEACAFB7A91BF02FF7" action="add">
     <client>js</client>
     <related_id keyed_name="mpp_Resource" type="Form">AAB157987CB5470E93E01AC940D98288</related_id>

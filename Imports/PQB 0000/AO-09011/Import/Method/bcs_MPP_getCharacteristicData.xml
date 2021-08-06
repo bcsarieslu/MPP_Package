@@ -1,0 +1,90 @@
+﻿<AML>
+  <Item type="Method" action="add" id="53FABF9497E24FFD87D39FC4CE336425">
+    <execution_allowed_to type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</execution_allowed_to>
+    <method_code><![CDATA[let inn=aras.IomInnovator;
+let mppId=parent.parent.par.ppId;
+let operationId=parent.parent.par.operationId;
+
+if(!bulidData.bind(this)()){
+    this.loadAML("<AML></AML>");
+}
+
+
+
+function bulidData(){
+    let dataAml="<AML></AML>";
+    let aml=`<AML>
+                <Item type="Process Quality Document" action="get" select="id" >
+                    <process_plan_id>${mppId}</process_plan_id>
+                    <Relationships>
+                        <Item type="PQD Operation" action="get" select="reference_id" >
+                            <bound_item_id>${operationId}</bound_item_id>
+                        </Item>
+                    </Relationships>
+                </Item>
+            </AML>`;
+    let pqdItem=inn.applyAML(aml);
+    if(pqdItem.isError()){
+        return;
+    }
+    
+    let pqdId=pqdItem.getID();
+    let operationItem=pqdItem.getRelationships();
+    if(operationItem.getItemCount()!=1){
+        return;
+    }
+    
+    let referenceId=operationItem.getItemByIndex(0).getProperty("reference_id");
+    aml=`<AML>
+            <Item type="PQD Sp Characteristic" action="get" select="reference_id" >
+                <parent_reference_id>${referenceId}</parent_reference_id>
+            </Item>
+        </AML>`;
+    let spItems=inn.applyAML(aml);
+    if(spItems.isError()||spItems.getItemCount()<1){
+        return;
+    }
+    const spCount=spItems.getItemCount();
+    for(let i=0;i<spCount;i++){
+        let resultItem=inn.newItem("Part Characteristic");
+        resultItem.setNewID();
+        referenceId=spItems.getItemByIndex(i).getProperty("reference_id");
+        aml=`<AML>
+                <Item type="PQD SpChar Class" action="get" select="value" where="element_reference_id='${referenceId}'" />
+                <Item type="PQD SpChar Description" action="get" select="value" where="element_reference_id='${referenceId}'" />
+                <Item type="PQD SpChar Image" action="get" select="value" where="element_reference_id='${referenceId}'" />
+                <Item type="PQD SpChar Number" action="get" select="value" where="element_reference_id='${referenceId}'" />
+                <Item type="PQD SpChar Specification" action="get" select="value" where="element_reference_id='${referenceId}'" />
+                <Item type="PQD SpChar Target" action="get" select="value" where="element_reference_id='${referenceId}'" />
+                <Item type="PQD SpChar Tolerance" action="get" select="value" where="element_reference_id='${referenceId}'" />
+            </AML>`;
+        const spcharItems=inn.applyAML(aml);
+        if(!spcharItems.isError()){
+            resultItem.setProperty("characteristic_class",spcharItems.getItemByIndex(0).getProperty("value"));
+            resultItem.setProperty("characteristic_desc",spcharItems.getItemByIndex(1).getProperty("value"));
+            let imageValue=spcharItems.getItemByIndex(2).getProperty("value");
+            if(imageValue){
+                imageValue="vault:///?fileId="+imageValue;
+            }
+            resultItem.setProperty("characteristic_image",imageValue);
+            resultItem.setProperty("characteristic_id",spcharItems.getItemByIndex(3).getProperty("value"));
+            resultItem.setProperty("characteristic_flag",spcharItems.getItemByIndex(4).getProperty("value"));
+            resultItem.setProperty("target",spcharItems.getItemByIndex(5).getProperty("value"));
+            resultItem.setProperty("tolerance",spcharItems.getItemByIndex(6).getProperty("value"));
+            this.appendItem(resultItem);
+        }
+    }
+    
+    if(this.getItemCount()>1){
+        this.removeItem(this.getItemByIndex(0));
+    }else{
+        return;
+    }
+    return true;
+}
+
+]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>bcs_MPP_getCharacteristicData</name>
+  </Item>
+</AML>

@@ -1,0 +1,8 @@
+﻿<AML>
+  <Item type="CommandBarDropDown" id="29E700EDF7D649838671B90E2D1D498D" action="add">
+    <label xml:lang="zc">厂区</label>
+    <on_init_handler type="Method"><Item type="Method" action="get" id="5F91A0295AF14EBCB5EE627940BEC00E" /></on_init_handler>
+    <tooltip_template xml:lang="zc">厂区</tooltip_template>
+    <name>bcs_pqd_locations_dropdown</name>
+  </Item>
+</AML>

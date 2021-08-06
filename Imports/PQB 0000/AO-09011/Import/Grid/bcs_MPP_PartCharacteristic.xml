@@ -1,0 +1,87 @@
+﻿<AML>
+  <Item type="Grid" id="21317CBD57744EAABB0DD36B7D779259" action="add">
+    <method type="Method"><Item type="Method" action="get" id="53FABF9497E24FFD87D39FC4CE336425" /></method>
+    <query><![CDATA[<Item type="mpp_Test" action="get" id="{id}" select="id">
+</Item>]]></query>
+    <name>bcs_MPP_PartCharacteristic</name>
+    <Relationships>
+      <Item type="Grid Column" id="A663AB5042E44836A5C816ACF3204162" action="add">
+        <align>left</align>
+        <datatype>default</datatype>
+        <label xml:lang="zc">特性描述</label>
+        <property>characteristic_desc</property>
+        <sort_order>128</sort_order>
+        <starts_nested_row>0</starts_nested_row>
+        <visible>1</visible>
+        <width>100</width>
+        <xpath>self::Item[@type="Part Characteristic"]</xpath>
+      </Item>
+      <Item type="Grid Column" id="EE5A1A9ADA5B4CC6AE5B2EA3B8ED8C5C" action="add">
+        <align>left</align>
+        <datatype>default</datatype>
+        <label xml:lang="zc">产品或过程特性</label>
+        <property>characteristic_flag</property>
+        <sort_order>256</sort_order>
+        <starts_nested_row>0</starts_nested_row>
+        <visible>1</visible>
+        <width>100</width>
+        <xpath>self::Item[@type="Part Characteristic"]</xpath>
+      </Item>
+      <Item type="Grid Column" id="01CC5F676860434F937A2358A7FA0E9D" action="add">
+        <align>left</align>
+        <datatype>default</datatype>
+        <label xml:lang="zc">特性分类</label>
+        <property>characteristic_class</property>
+        <sort_order>384</sort_order>
+        <starts_nested_row>0</starts_nested_row>
+        <visible>1</visible>
+        <width>100</width>
+        <xpath>self::Item[@type="Part Characteristic"]</xpath>
+      </Item>
+      <Item type="Grid Column" id="D6EBCD98B397420F98DBD758B5399BE6" action="add">
+        <align>left</align>
+        <datatype>default</datatype>
+        <label xml:lang="zc">特殊特性编号</label>
+        <property>characteristic_id</property>
+        <sort_order>512</sort_order>
+        <starts_nested_row>0</starts_nested_row>
+        <visible>1</visible>
+        <width>100</width>
+        <xpath>self::Item[@type="Part Characteristic"]</xpath>
+      </Item>
+      <Item type="Grid Column" id="A414B460FDDB45008C3D7C04A4156CFB" action="add">
+        <align>left</align>
+        <datatype>default</datatype>
+        <label xml:lang="zc">特殊特性图示</label>
+        <property>characteristic_image</property>
+        <sort_order>640</sort_order>
+        <starts_nested_row>0</starts_nested_row>
+        <visible>1</visible>
+        <width>100</width>
+        <xpath>self::Item[@type="Part Characteristic"]</xpath>
+      </Item>
+      <Item type="Grid Column" id="648C98A6846B4CD8894FE0172396F5FE" action="add">
+        <align>left</align>
+        <datatype>default</datatype>
+        <label xml:lang="zc">目标</label>
+        <property>target</property>
+        <sort_order>768</sort_order>
+        <starts_nested_row>0</starts_nested_row>
+        <visible>1</visible>
+        <width>100</width>
+        <xpath>self::Item[@type="Part Characteristic"]</xpath>
+      </Item>
+      <Item type="Grid Column" id="A88209ED599147578C511F29FC019C23" action="add">
+        <align>left</align>
+        <datatype>default</datatype>
+        <label xml:lang="zc">公差</label>
+        <property>tolerance</property>
+        <sort_order>896</sort_order>
+        <starts_nested_row>0</starts_nested_row>
+        <visible>1</visible>
+        <width>100</width>
+        <xpath>self::Item[@type="Part Characteristic"]</xpath>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>
