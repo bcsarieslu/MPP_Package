@@ -69,7 +69,7 @@ SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''變更中'' w
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''是否為模板'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_ProcessPlan'' and a.name=''is_template'')';
 EXEC SP_EXECUTESQL @UpdateString;
-SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''製造流程規劃'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''Process Quality Document'' and a.name=''process_plan_id'')';
+SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''製造流程規劃'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''BCS AQM PFMEA V2'' and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
@@ -141,7 +141,7 @@ SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''变更中'' w
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''是否为模板'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_ProcessPlan'' and a.name=''is_template'')';
 EXEC SP_EXECUTESQL @UpdateString;
-SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''工艺流程规划'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''Process Quality Document'' and a.name=''process_plan_id'')';
+SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''工艺流程规划'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''BCS AQM PFMEA V2'' and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
@@ -213,6 +213,6 @@ SET @UpdateString = N'update [Innovator].[FIELD] set label = N''In Change'' wher
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[FIELD] set label = N''Is Template'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_ProcessPlan'' and a.name=''is_template'')';
 EXEC SP_EXECUTESQL @UpdateString;
-SET @UpdateString = N'update [Innovator].[FIELD] set label = N''Process Plan'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''Process Quality Document'' and a.name=''process_plan_id'')';
+SET @UpdateString = N'update [Innovator].[FIELD] set label = N''Process Plan'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''BCS AQM PFMEA V2'' and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
 END

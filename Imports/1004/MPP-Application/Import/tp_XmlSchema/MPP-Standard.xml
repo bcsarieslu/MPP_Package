@@ -124,7 +124,6 @@
 			&lt;xs:complexContent&gt;
 				&lt;xs:extension base="aras:itemType"&gt;
 					&lt;xs:attribute name="internalitem" type="xs:anySimpleType"/&gt;
-					&lt;xs:attribute name="noedit" type="xs:anySimpleType"/&gt;
 				&lt;/xs:extension&gt;
 			&lt;/xs:complexContent&gt;
 		&lt;/xs:complexType&gt;
