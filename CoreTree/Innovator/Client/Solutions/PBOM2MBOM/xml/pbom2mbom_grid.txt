@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table font="Microsoft Sans Serif-8" sel_bgColor="steelbue" sel_TextColor="white" header_BgColor="buttonface" expandroot="true" expandall="false" treelines="1" editable="true" draw_grid="true" multiselect="false" column_draggable="true" enableHtml="false" enterAsTab="false" bgInvert="true"
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+    xmlns:aras="http://www.aras.com"
+    xmlns:usr="urn:the-xml-files:xslt">
+    <thead>
+        <th align="c">Part KeyName</th>
+        <th align="c">Test Result</th>
+        <th align="c">Version</th>
+        <th align="c">State</th>
+        <th align="c">QTY</th>
+        <th align="c">Sequence</th>
+        <th align="c">MPart</th>
+        <th align="c">Error Message</th>
+        <th align="c">Action</th>
+        <th align="c">Synchronize</th>
+    </thead>
+    <columns>
+        <column width="400" edit="NOEDIT" align="l" order="1" />
+        <column width="60" edit="NOEDIT" align="c" order="0" />
+        <column width="60" edit="NOEDIT" align="c" order="2" />
+        <column width="70" edit="NOEDIT" align="c" order="3" />
+        <column width="60" edit="NOEDIT" align="l" order="4" />
+        <column width="60" edit="NOEDIT" align="c" order="5" />
+        <column width="100" edit="NOEDIT" align="l" order="6" />
+        <column width="200" edit="NOEDIT" align="l" order="7" />
+        <column width="70" edit="NOEDIT" align="c" order="8" />
+        <column width="40" edit="FIELD" align="c" order="9" />
+    </columns>

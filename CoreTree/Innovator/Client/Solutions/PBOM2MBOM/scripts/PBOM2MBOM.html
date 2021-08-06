@@ -1,0 +1,423 @@
+﻿<!DOCTYPE html>
+<!-- (c) Copyright by Aras Corporation, 2004-2013. -->
+<html>
+<head>
+	<style type="text/css">
+		@import "../../../public/styles/controls.css";	
+	</style>
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=ScriptSet2"></script>
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=XmlDocument,QueryString"></script>
+	<script type="text/javascript" src="../../../javascript/include.aspx?classes=/dojo.js"
+		data-dojo-config="isDebug: false, parseOnLoad: false, baseUrl:'../../../javascript/dojo'"></script>
+</head>
+<body class="claro">
+	<script type="text/javascript">
+		var aras = parent.aras;
+		
+		var win=aras.getMostTopWindowWithAras(window);
+		var arasTabsObj = aras.getMainWindow().arasTabs;
+		var gridHeaderXml;
+		
+		var toolbarReady = false,
+			gridReady = false,
+			isEditMode = false,
+			GridXmlLoadedFirstTime = true,
+			innovator = aras.IomInnovator,
+			grid,
+			toolbar,
+			rowItems;
+			
+		var mpp_id = QueryString("id").toString();
+		var all_right=false;
+		var location_id="";
+		var checkpbomBar;
+		var pbom2mbomBar;
+		
+		document.title = "PBOM to MBOM";
+		
+		window.onresize = fixGridHeight;
+		window.addEventListener("DOMContentLoaded", function () {
+			clientControlsFactory.createControl("Aras.Client.Controls.Public.Toolbar", {id: "toolbar", connectId: "toolbar_slot"}, function(control) {
+				toolbarApplet = toolbar = control;
+				clientControlsFactory.on(toolbar, {
+					"onClick": onToolbarButtonClick,
+					"onChange": onToolbarButtonClick
+				});
+				loadToolbar();
+			});
+
+			clientControlsFactory.createControl("Aras.Client.Controls.Public.TreeGridContainer", {connectId: "gridTD"}, function(control) {
+				gridApplet = grid = control;
+				
+				//禁用网格列点击排序功能
+				control.grid_Experimental.doheaderclick = function() { };
+				grid.setMultiselect(false);
+				
+				clientControlsFactory.on(grid, {
+					"gridLinkClick": function(linkVal) {
+						if (linkVal.length) {
+							showItemForm(linkVal);
+						}
+					},
+					"gridMenuInit": onGridMenuInit,
+					"gridMenuClick": onGridMenuClick,
+					"onApplyEdit_Experimental":onApplyEdit
+				});
+
+				loadGridXml();
+				//initGrid();
+				fixGridHeight();
+			});
+			
+			if(arasTabsObj && window.frameElement) {
+				arasTabsObj.updateTitleTab(window.name, {label: document.title, image: '../../images/TabDefault.svg'});
+			}
+		});
+
+		function fixGridHeight() {
+			var el = document.getElementById("gridTD");
+			aras.fixLiquidContainerHeight(document, el);
+			el.style.height = window.innerHeight - toolbar_slot.offsetHeight + "px";
+		}
+
+		function initGrid() {
+			if(!mpp_id||!gridHeaderXml){
+				return;
+			}
+			
+			location_id=toolbar.getItem("location_list").getSelectedItem();
+			var resItem = innovator.newItem("mpp_ProcessPlan", "BCS_PBOM2MBOMCheck");
+			resItem.setID(mpp_id);
+			resItem.setProperty("location",location_id);
+			resItem.setProperty("gridheaderxml",gridHeaderXml);
+			if(rowItems){
+				resItem.setPropertyItem("rowitem",rowItems);
+			}
+			resItem = resItem.apply();
+			if(resItem.isError()){
+				aras.AlertError(resItem);
+				return;
+			}
+			
+			grid.InitXML(resItem.getProperty("gridxml"));
+			
+			rowItems=resItem.getPropertyItem("rowitem");
+			all_right=resItem.getProperty("checkstatus","false")=="True";
+			if(all_right)
+			{
+				pbom2mbomBar.setEnabled(true);
+			}
+		}
+
+		function loadToolbar() {
+			toolbarReady = true;
+			toolbar.loadXml(aras.getI18NXMLResource("pbom2mbom_toolbar.xml","../Solutions/PBOM2MBOM").replace("/Solutions/PBOM2MBOM",""));
+			toolbar.ShowToolbar("tb1");
+			toolbar.showLabels(true);
+			
+			// init location list
+			var locationsToolbarItem = toolbar.getItem('location_list');
+			locationsToolbarItem.add('', '');
+			
+			var processPlanLocations = innovator.newItem("mpp_ProcessPlanLocation","get");
+			processPlanLocations.setProperty("source_id",mpp_id);
+			processPlanLocations.setAttribute("select","related_id");
+			processPlanLocations=processPlanLocations.apply();
+			if (processPlanLocations.getItemCount()>0) {
+				var locationItem, locationId, i;
+
+				for (i = 0; i < processPlanLocations.getItemCount(); i++) {
+					locationItem = processPlanLocations.getItemByIndex(i).getRelatedItem();
+					locationId = locationItem.getID();
+
+					locationsToolbarItem.add(locationId, locationItem.getProperty('name') || locationItem.getProperty('item_number'));
+				}
+			}
+			
+			checkpbomBar = toolbar.getItem('checkpbom');
+			checkpbomBar.setEnabled(false);
+			
+			pbom2mbomBar = toolbar.getItem('pbom2mbom');
+			pbom2mbomBar.setEnabled(false);
+		}
+
+		function onToolbarButtonClick(item) {
+			switch(item.getId())
+			{
+				case "location_list":
+					var selectValue = item.getSelectedItem();
+					
+					if(selectValue)
+					{
+						checkpbomBar.setEnabled(true);
+					}
+					else
+					{
+						checkpbomBar.setEnabled(false);
+					}
+					break;
+				case "checkpbom":
+					initGrid();
+					break;
+				case "expand_all":
+					grid.expandAll();
+					break;
+				case "collapse_all":
+					grid.collapseAll();
+					break;
+				case "select_all":
+					selectAllSon();
+					break;
+				case "pbom2mbom":
+					pbom2MBOM();
+					break;
+			}
+		}
+
+		function pbom2MBOM(){
+			var resItem = innovator.newItem("mpp_ProcessPlan", "BCS_PBOM2MBOM");
+			resItem.setID(mpp_id);
+			resItem.setProperty("location",location_id);
+			resItem.setPropertyItem("rowitem",rowItems);
+			resItem.setProperty("errorstring",getResource("PBOM2MBOM.errorstring"));
+			resItem = resItem.apply();
+			if(resItem.isError()){
+				aras.AlertError(resItem);
+				return;
+			}
+
+			if(confirm(getResource("PBOM2MBOM.success")+"\n"+getResource("has_open_mpart")+resItem.getProperty("keyed_name",""))){
+				aras.uiShowItemEx(resItem.node);
+				exitWindow();
+			}
+		}
+		
+		function showItemForm(linkVal){
+			linkVal = linkVal.replace(/'/g, "");
+			var typeName = linkVal.split(",")[0];
+			var id = linkVal.split(",")[1];
+			aras.uiShowItem(typeName, id, "tab view");
+		}
+		
+		function onGridMenuInit(rowId, col, p) {
+		var mnu = grid.getMenu();
+		mnu.removeAll();
+		
+		var selectRowItem=rowItems.getItemsByXPath("//Item[@rowid='"+rowId+"']");
+		switch(selectRowItem.getAttribute("error_code")){
+			case "1":
+				mnu.add("createnewmpart", getResource("PBOM2MBOM.createnewmpart"));
+				break;
+			case "3":
+				mnu.add("pickmbom", getResource("PBOM2MBOM.pickmbom"));
+				break; 
+		}
+		
+		mnu.add("select_all", getResource("PBOM2MBOM.select_all"));
+		
+		mnu.menu.startup();
+	}
+	
+		function onGridMenuClick(menuChoice, rowId, col) {
+			switch(menuChoice)
+			{
+				case "pickmbom":
+					pickMBOM(rowId);
+					break;
+				case "createnewmpart":
+					createNewMPart(rowId);
+					break;
+				case "select_all":
+					selectAllSon();
+					break;
+			}
+		}
+		
+		function pickMBOM(rowId){
+			var selectRowItem=rowItems.getItemsByXPath("//Item[@rowid='"+rowId+"']");
+			var mbom_ids=selectRowItem.getAttribute("mbom_ids");
+			var op_part_id=selectRowItem.getAttribute("op_part_id");
+			
+			var params = new Object();
+			params.aras = aras;
+			params.type = 'SearchDialog'
+			params.itemtypeName="MPart BOM";
+			params.multiselect=false;
+			
+			params.userMethodColumnCfgs=new Object();
+			params.userMethodColumnCfgs["idlist"]=mbom_ids;
+			win.ArasModules.Dialog.show('iframe', params).promise.then(callback);
+			
+			function callback(result){
+				if(result){
+					var sameOpPartRowItems=rowItems.getItemsByXPath("//Item[@op_part_id='"+op_part_id+"']");
+					for(var i=0;i<sameOpPartRowItems.getItemCount();i++){
+						var sameOpPartRowItem=sameOpPartRowItems.getItemByIndex(i);
+						var sameRowId=sameOpPartRowItem.getAttribute("rowid");
+						
+						sameOpPartRowItem.setAttribute("mbom_id",result.itemID);
+						grid.cells(sameRowId,5).setValue(aras.getItemProperty(result.item,"sort_order",""));
+						clearRowStyle(sameRowId);
+					}
+				}
+			}
+			
+		}
+		
+		function selectAllSon(){
+			var selectRowItem;
+			
+			var rowId = grid.getSelectedId();
+			var value=grid.cells(rowId,9).getValue();
+			var itemIdsString=grid.getChildItemsId(rowId,true,"|");
+			var sonRowIds = itemIdsString ? itemIdsString.split("|") : [];
+			for(i=0;i<sonRowIds.length;i++){
+				grid.cells(sonRowIds[i],9).setValue(!value);
+				selectRowItem=rowItems.getItemsByXPath("//Item[@rowid='"+sonRowIds[i]+"']");
+				selectRowItem.setAttribute("checked",!value);
+			}
+			
+			grid.cells(rowId,9).setValue(!value);
+			selectRowItem=rowItems.getItemsByXPath("//Item[@rowid='"+rowId+"']");
+			selectRowItem.setAttribute("checked",!value);
+		}
+		
+		function createNewMPart(rowId){
+			var selectRowItem=rowItems.getItemsByXPath("//Item[@rowid='"+rowId+"']");
+			var partId=selectRowItem.getAttribute("part_id");
+			
+			var newPart=aras.uiNewItemEx("MPart");
+			aras.setItemProperty(newPart,"bcs_part",partId);
+			aras.setItemProperty(newPart,"bcs_location",location_id);
+			
+			var newMPartId=newPart.getAttribute("id");
+
+			var newWin = aras.uiFindWindowEx(newMPartId);
+			if (newWin) {
+				new Synchronizer(rowId,partId,newMPartId, newWin);
+			}
+			
+		}
+		
+		function clearRowStyle(rowId){
+			var columnCount=grid.getColumnCount();
+			for(var i=0;i<columnCount;i++){
+				var cell=grid.cells(rowId,i);
+				cell.setBgColor("");
+			}
+			
+			grid.cells(rowId,1).setValue("");
+			grid.cells(rowId,7).setValue("");
+		}
+		
+		function onApplyEdit(rowId,field,value){
+			var selectRowItem=rowItems.getItemsByXPath("//Item[@rowid='"+rowId+"']");
+			var op_part_id=selectRowItem.getAttribute("op_part_id");
+			
+			var sameOpPartRowItems=rowItems.getItemsByXPath("//Item[@op_part_id='"+op_part_id+"']");
+			for(var i=0;i<sameOpPartRowItems.getItemCount();i++){
+				var sameOpPartRowItem=sameOpPartRowItems.getItemByIndex(i);
+				var sameRowId=sameOpPartRowItem.getAttribute("rowid");
+				
+				grid.cells(sameRowId,9).setValue(value);
+				sameOpPartRowItem.setAttribute("checked",value);
+			}
+		}
+		
+		// ============================= New Item  ListenEvents ===============================
+		
+		var Synchronizers = new Object();
+
+		function Synchronizer(rowId,partId,newMPartId, newWin, tmout) {
+			this.rowId=rowId;
+			this.mpartId = newMPartId;
+			this.partId=partId;
+			this.win = newWin;
+			this.part_LastModifiedOn = -1;
+
+			if (tmout == undefined) {
+				tmout = 1000;
+			}
+
+			Synchronizers[newMPartId] = this;
+
+			this.interval = setInterval('if (Synchronizers["' + newMPartId + '"] && Synchronizers["' + newMPartId + '"].updateData) Synchronizers["' + newMPartId + '"].updateData();', tmout);
+		}
+
+		Synchronizer.prototype.getLastModified = function Synchronizer_getLastModified(itemNd) {
+			var res = -1;
+
+			var attrNm = "LastModifiedOn";
+			if (itemNd && itemNd.getAttribute(attrNm)) {
+				res = parseInt(itemNd.getAttribute(attrNm));
+			}
+			if (isNaN(res)) res = -1;
+
+			return res;
+		}
+
+		Synchronizer.prototype.stop = function Synchronizer_stop() {
+			clearInterval(this.interval);
+			delete Synchronizers[this.mpartId];
+		}
+
+		Synchronizer.prototype.updateData = function Synchronizer_updateData() {
+			if (aras.isWindowClosed(this.win)) {
+				this.stop();
+				if(!aras.isNew(this.win.item)){
+					var samePartRowItems=rowItems.getItemsByXPath("//Item[@part_id='"+this.partId+"']");
+					for(var i=0;i<samePartRowItems.getItemCount();i++){
+						var samePartRowItem=samePartRowItems.getItemByIndex(i);
+						var sameRowId=samePartRowItem.getAttribute("rowid");
+						
+						samePartRowItem.setAttribute("mpart_id",this.win.itemID);
+						var cell=grid.cells(sameRowId,6);
+						cell.setLink("'MPart','"+this.win.itemID+"'");
+						cell.setValue(aras.getItemProperty(this.win.item,"keyed_name"));
+						clearRowStyle(sameRowId);
+					}
+					
+				}
+			}
+		}
+		
+		// ============================= Function ==============================================
+
+		function exitWindow(){
+			if(arasTabsObj){
+				arasTabsObj.removeTab(window.name);
+			}else{
+				window.close();
+			}
+		}
+
+		function getResource(key){
+			return aras.getResource("PBOM2MBOM",key);
+		}
+
+		function loadGridXml() {
+			const xhr = new XMLHttpRequest();
+			const url =aras.getI18NXMLResource("pbom2mbom_grid.txt","../Solutions/PBOM2MBOM").replace("/Solutions/PBOM2MBOM","");
+			xhr.open('GET', url);
+			xhr.onload = function() {
+				gridHeaderXml=xhr.responseText;
+			};
+			xhr.onerror = function() {
+				//reject(xhr.statusText);
+			};
+			xhr.send();
+		}
+
+	</script>
+	<table width="100%" height="100%" cellspacing="0" cellpadding="0">
+		<tr>
+			<td valign="top" id="toolbar_slot">
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" id="gridTD">
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

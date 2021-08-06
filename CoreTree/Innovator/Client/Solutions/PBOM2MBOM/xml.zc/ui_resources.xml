@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui_resources>
+	<resource key="PBOM2MBOM.success" value="同步成功!"/>
+	<resource key="PBOM2MBOM.has_open_mpart" value="是否打开MPart:"/>
+
+	<resource key="PBOM2MBOM.createnewmpart" value="创建MPart"/>
+	<resource key="PBOM2MBOM.pickmbom" value="选择MBOM"/>
+	<resource key="PBOM2MBOM.select_all" value="全选子阶"/>
+
+	<resource key="PBOM2MBOM.errorstring" value="检测到有错误,请重新执行检查!"/>
+</ui_resources>
