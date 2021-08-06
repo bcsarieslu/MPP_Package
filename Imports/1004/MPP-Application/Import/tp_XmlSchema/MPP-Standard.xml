@@ -228,6 +228,579 @@
 
 &lt;/xs:schema&gt;</content>
     <name>MPP-Standard</name>
+    <Relationships>
+      <Item type="tp_Stylesheet" id="CBB17CC5DFBC4BB5BB33B6E1AB54060A" action="add">
+        <sort_order>128</sort_order>
+        <style_content>body {
+	font: 12px/1.4 Tahoma, Arial, Helvetica, sans-serif;
+	background-color: #FFFFFF;
+	color: #444444;
+}
+
+#dijitEditorBody {
+	height: 100%;
+	position: relative;
+	box-sizing: border-box;
+	padding: 5px;
+	overflow: auto;
+}
+
+.TechDocElementSelection {
+	background-color: rgb(248, 238, 192) !important;
+}
+
+.XmlSchemaElement {
+	position: relative;
+	border: none;
+}
+
+.XmlSchemaText {
+	display: block;
+	position: relative;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.ArasTextXmlSchemaElement {
+	overflow: hidden;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: justify;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.ArasTextXmlSchemaElement:empty:before,
+.XmlSchemaText:empty:before {
+	content: attr(data-placeholder);
+	color: rgba(0,0,0,0.5);
+}
+
+.ArasImageXmlSchemaElement {
+	margin: 2px 0px;
+}
+
+.ArasImageXmlSchemaElement img{
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.ArasXmlSchemaElementEmpty {
+	cursor: pointer;
+	box-sizing: border-box;
+	padding-left: 50px;
+	line-height: 30px;
+	font-size: 14px;
+	color: #808080;
+}
+
+.ArasImageXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder, 
+.ArasItemXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder  {
+	border: 1px dashed #CCCCCC;
+	background-color: #F0F0F0;
+	margin-left: -50px;
+	padding-left: 50px;
+}
+
+.ArasImageXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder:hover,
+.ArasItemXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder:hover {
+	background-color: #FAFAFA;
+}
+
+.ArasImageXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder:before,
+.ArasItemXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder:before {
+	content: ' ';
+	position: absolute;
+	height: 30px;
+	width: 30px;
+	left: 5px;
+	z-index: 10;
+	opacity: 0.5;
+	background-size: 30px 30px;
+	background-repeat: no-repeat;
+}
+
+.ArasImageXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder:before {
+	background-image: url("../../images/Image_2.svg");
+}
+
+.ArasItemXmlSchemaElement.ArasXmlSchemaElementEmpty .ArasElementPlaceholder:before {
+	background-image: url("../../images/ItemType.svg");
+}
+
+.InactiveContainer {
+	position: relative;
+}
+
+.ArasXmlSchemaElementInactive {
+	padding-bottom: 10px;
+}
+
+.ArasXmlSchemaElementInactive.ContentCollapsed, .ArasXmlSchemaElementInactive .ArasXmlSchemaElementInactive {
+	padding-bottom: 0px;
+}
+
+.InactiveContainer .InactiveContent {
+	overflow: hidden;
+	opacity: 0.4;
+	height: 20px;
+	margin: 2px 28px 0px 24px;
+	border: 1px solid #A0A0A0;
+}
+
+.InactiveContainer .InactiveContent.OpenedContent {
+	height: auto;
+	border: none;
+	overflow: visible;
+}
+
+.ExpandoButton {
+	position: absolute;
+	z-index: 20;
+	top: 4px;
+	left: 4px;
+	width: 14px;
+	height: 14px;
+	background-image: url("../../images/plus.svg");
+	background-repeat: no-repeat;
+}
+
+.ExpandoButton.Opened {
+	background-image: url("../../images/minus.svg");
+}
+
+.ConditionButton {
+	position: absolute;
+	z-index: 20;
+	right: 2px;
+	width: 20px;
+	height: 20px;
+	background-size: 20px 20px;
+	background-image: url("../../images/ConditionsApplied.svg");
+	background-repeat: no-repeat;
+}
+
+.ConditionButton:hover {
+	border: 1px dotted #C0C0C0;
+}
+
+.ExpandoArea {
+	position: absolute;
+	z-index: 15;
+	top: 20px;
+	left: 10px;
+	bottom: 2px;
+	width: 4px;
+	border-width: 0px 0px 1px 1px;
+	border-style: dotted;
+	border-color: #A0A0A0;
+}
+
+.ArasXmlSchemaElementUpdatable {
+	border: 2px dashed #b83b1d !important;
+	margin: 1px;
+}
+
+/*--- List Styles -------*/
+.ArasListXmlSchemaElement {
+	counter-reset: listCounter;
+	position: relative;
+	list-style: none;
+	padding-left: 15px;
+}
+
+.ArasListItemXmlSchemaElement div {
+	padding-top: 2px !important;
+	padding-bottom: 0px !important
+}
+
+.ArasListItemXmlSchemaElement {
+	counter-increment: listCounter;
+	display: list-item;
+	position: relative;
+	padding-left: 25px;
+	min-height: 20px;
+}
+
+.ArasListItemXmlSchemaElement.bulletListItem:before {
+	content: counter(listCounter, disc);
+	position: absolute;
+	left: 5px;
+	top: 2px;
+}
+
+.ArasListItemXmlSchemaElement.numericListItem:before {
+	content: counter(listCounter, decimal);
+	position: absolute;
+	left: 5px;
+	top: 2px;
+}
+
+.ArasListItemXmlSchemaElement.alphaListItem:before {
+	content: counter(listCounter, lower-alpha);
+	position: absolute;
+	left: 5px;
+	top: 2px;
+}
+
+
+/*--- Table Styles -------*/
+.ArasTableXmlSchemaElement {
+	padding-top: 12px;
+}
+
+.ArasTableXmlSchemaElement table {
+	border: 1px solid #505050;
+	border-spacing: 0;
+	width: 100%;
+	table-layout: fixed;
+}
+
+.ArasFakeTableXmlSchemaElement {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+.ArasFakeTableXmlSchemaElement tr.ArasRowXmlSchemaElement {
+	outline: 1px solid grey;
+	width: 100%;
+}
+
+.ArasFakeTableXmlSchemaElement td.ArasCellXmlSchemaElement {
+	border:  1px dotted grey;
+}
+
+.ArasXmlSchemaElementBlocked {
+	padding: 5px;
+	border: 1px dashed #b83a1d;
+	color: #b83a1d;
+	font-style: italic;
+}
+
+.ArasRowXmlSchemaElement {
+	width: 100%;
+	border: 0;
+	min-height: 30px;
+}
+
+.ArasBrokenCellXmlSchemaElement {
+	border: 1px dotted red;
+	color: red;
+	text-align: center;
+}
+
+.ArasCellXmlSchemaElement {
+	border: 1px solid #505050;
+	overflow: hidden;
+}
+
+.ArasCellXmlSchemaElement &gt; div {
+	display: block;
+}
+
+.ArasCellXmlSchemaElement &gt; div.ArasListXmlSchemaElement {
+	display: block;
+}
+
+.valign_top {
+	vertical-align: top;
+}
+
+.valign_middle {
+	vertical-align: middle;
+}
+
+.valign_bottom {
+	vertical-align: bottom;
+}
+
+.align_center {
+	text-align: center;
+}
+
+.align_justify {
+	text-align: justify;
+}
+
+.align_left {
+	text-align: left;
+}
+
+.align_right {
+	text-align: right;
+}
+
+.ProcessPlan {
+	position: relative;
+}
+
+.ProcessPlan .ProcessPlanCaption {
+	font-size: 18px;
+	color: #3768B1;
+	padding: 5px 5px 5px 0px;
+}
+
+.ExpandDetailsButton {
+	position: relative;
+	transition: opacity 0.3s;
+	opacity: 0;
+	display: inline-block;
+	cursor: pointer;
+	margin-left: 5px;
+	top: 5px;
+	width: 20px;
+	height: 20px;
+	border: 1px solid transparent;
+	/*(div + background-image) was replaced by (img + src attribute), due to problems with display in Chrome*/
+}
+
+.OperationCaption:hover&gt;.ExpandDetailsButton, .StepCaption:hover&gt;.ExpandDetailsButton {
+	opacity: 1;
+	transition: opacity 0.5s;
+}
+
+.ExpandDetailsButton:hover {
+	border: 1px dotted #C0C0C0;
+}
+
+.Step .ExpandDetailsButton {
+	left: 0px;
+}
+
+.CollapsedDetails {
+	position: relative;
+}
+
+.Operation {
+	position: relative;
+	padding: 5px 5px 5px 20px;
+	margin-top: 20px;
+}
+
+.ProcessPlanCaption + .Operation {
+	margin-top: 0px;
+	padding-top: 0px;
+}
+
+.OperationCaption {
+	position: relative;
+	left: -20px;
+	padding: 0px 0px 5px 5px;
+	font-size: 15px;
+	font-weight: 500;
+	text-decoration: underline;
+	line-height: 34px;
+	color: #404040;
+}
+
+.Step {
+	position: relative;
+}
+
+.StepCaption {
+	font-size: 12px;
+	line-height: 34px;
+}
+
+.WorkInstructionDetails {
+	min-height: 25px;
+	padding: 3px;
+	margin-bottom: 10px;
+	border: 1px dotted #3768B1;
+	background-color: #F0F6FF;
+}
+
+table.ConsumedPartTable, table.ResourcesTable {
+	width: 80%;
+	margin-top: 15px;
+	background-color:#FAFAFA;
+	border-spacing: 0;
+	border-collapse: collapse;
+	color: #404040;
+	table-layout: fixed;
+}
+
+.ConsumedPartTable .ArasXmlSchemaElementBlocked, .ResourcesTable .ArasXmlSchemaElementBlocked {
+	background-color: #FFEDF0 !important;
+}
+
+.ConsumedPartTable .ArasXmlSchemaElementBlocked td, .ResourcesTable .ArasXmlSchemaElementBlocked td {
+	border: 1px dashed #b83a1d;
+	padding-left: 10px;
+	text-align: left;
+}
+
+.ConsumedPartTable tr:nth-of-type(1), .ResourcesTable tr:nth-of-type(1) {
+	height: 20px;
+	background-color:#CCCCCC;
+	font-weight: bold;
+}
+
+.ConsumedPartTable tr, .ResourcesTable tr {
+	height: 34px;
+}
+
+.ConsumedPartTable td, .ResourcesTable td {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid #404040;
+	text-align: center;
+	background-clip: padding-box;
+}
+
+.EditableMarker {
+	position: absolute;
+	display: none;
+	height: 14px;
+	width: 14px;
+	right: -2px;
+	top: 1px;
+}
+
+.ConsumedPartTable:hover .EditableMarker {
+	display: block;
+}
+
+.ConsumedPartTable td.EditableCell {
+	background-color: #FFFFFF;
+}
+
+.ConsumedPartTable td.EditableCell:hover {
+	background-color: #F0F6FF;
+}
+
+.workInstructionDetailsPlaceholder {
+	padding-left: 5px;
+	line-height: 30px;
+	color: #C0C0C0;
+}
+
+.elementAnchorArea {
+	position: absolute;
+	opacity: 0;
+	top: 2px;
+	width: 5px;
+	left: 0px;
+	bottom: 3px;
+	border: 1px dotted #808080;
+	border-width: 0px 0px 1px 1px;
+	transition: opacity 0.3s;
+}
+
+.elementAnchorLabel {
+	cursor: default;
+	position: absolute;
+	top: -6px;
+	left: 0px;
+	opacity: 0;
+	width: 40px;
+	height: 11px;
+	line-height: 11px;
+	font-size: 10px;
+	color: #606060;
+	border: 1px dotted #606060;
+	background-color: #F5F5F5;
+	text-align: center;
+	transition: opacity 0.3s;
+	z-index: 10;
+}
+
+.XmlSchemaElement:hover &gt;.elementAnchorLabel, .XmlSchemaElement:hover &gt;.elementAnchorArea {
+	opacity: 1;
+}
+
+.ArasTableXmlSchemaElement .elementAnchorLabel {
+	top: -1px;
+	left: 0px;
+	width: 40px;
+	border-bottom-width: 0px;
+}</style_content>
+        <name>Standard MPP Style Settings</name>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="062D0E21E8644859886BBFF71DAC9490" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>WorkInstructionDetails</name>
+        <renderer type="Method"><Item type="Method" action="get" id="E892970A42C74BBB9F226C89FEEA542C" /></renderer>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="06F59EEDE20F458796CE10081E533E69" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>List</name>
+        <renderer type="Method"><Item type="Method" action="get" id="D67F195E27B444F2AE1B824A71B03100" /></renderer>
+        <sort_order>1152</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="0D6D90C87C9E456686448829502A6804" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Step</name>
+        <renderer type="Method"><Item type="Method" action="get" id="2663919A50BF44E59B1B9BE460E77475" /></renderer>
+        <sort_order>640</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="4BA3B161DE7E4264BBBA2BFFF98AFFE8" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Document</name>
+        <renderer type="Method"><Item type="Method" action="get" id="403397D2F99E408F8C07417AE40A9419" /></renderer>
+        <sort_order>256</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="5BF621043FF443BE9B42EFF9F577DC06" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Test</name>
+        <renderer type="Method"><Item type="Method" action="get" id="403397D2F99E408F8C07417AE40A9419" /></renderer>
+        <sort_order>1536</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="64CF229AD6B841D184291A6C19D97AE0" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Part</name>
+        <renderer type="Method"><Item type="Method" action="get" id="B0AF46F533D245FF9EE372FA3AD4F70E" /></renderer>
+        <sort_order>768</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="959F6077A58541A981E713EB23391761" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>ProcessPlan</name>
+        <renderer type="Method"><Item type="Method" action="get" id="22525EFE193C43BE93D81C5F74C07AB0" /></renderer>
+        <sort_order>1024</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="B08976853BE54B5095450D4006814392" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>CAD</name>
+        <renderer type="Method"><Item type="Method" action="get" id="403397D2F99E408F8C07417AE40A9419" /></renderer>
+        <sort_order>1408</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="BA9C9EB64CC74111B120AB11FE64B844" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Table</name>
+        <renderer type="Method"><Item type="Method" action="get" id="9B0B19CC510C4409B1DA81251A48F193" /></renderer>
+        <sort_order>1280</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="C46366F3368141AAA1D444A3050BCBF7" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Operation</name>
+        <renderer type="Method"><Item type="Method" action="get" id="984B8F12213347139C3EEF0C5EE43D64" /></renderer>
+        <sort_order>896</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="DCB2793303094AB0818E5C21B528E999" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Skill</name>
+        <renderer type="Method"><Item type="Method" action="get" id="403397D2F99E408F8C07417AE40A9419" /></renderer>
+        <sort_order>384</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaElement" id="E27C5C5FB760455FBAE9F8C65F00FD88" action="add">
+        <is_content_dynamic>0</is_content_dynamic>
+        <name>Resource</name>
+        <renderer type="Method"><Item type="Method" action="get" id="403397D2F99E408F8C07417AE40A9419" /></renderer>
+        <sort_order>512</sort_order>
+      </Item>
+      <Item type="tp_XmlSchemaOutputSetting" id="CE7610E5266D47E0A64AEE95772050BA" action="add">
+        <classification>Editor</classification>
+        <indentation>0</indentation>
+        <name>Editor Settings</name>
+        <omit_xml_declaration>0</omit_xml_declaration>
+        <sort_order>256</sort_order>
+        <stylesheet_id type="tp_Stylesheet">CBB17CC5DFBC4BB5BB33B6E1AB54060A</stylesheet_id>
+        <target_classification />
+      </Item>
+    </Relationships>
     <target_namespace>http://www.aras.com/MPP</target_namespace>
   </Item>
 </AML>

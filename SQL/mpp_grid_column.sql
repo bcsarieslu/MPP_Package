@@ -21,7 +21,7 @@ END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='Grid_Column') 
 BEGIN
-SET @UpdateString = N'update [Innovator].[Grid_Column] set label_zc = N''特性描述'' where name = ''A663AB5042E44836A5C816ACF3204162''';
+SET @UpdateString = N'update [Innovator].[Grid_Column] set label_zc = N''特性描述'' where id = ''A663AB5042E44836A5C816ACF3204162''';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[Grid_Column] set label_zc = N''产品或过程特性'' where id = ''EE5A1A9ADA5B4CC6AE5B2EA3B8ED8C5C''';
 EXEC SP_EXECUTESQL @UpdateString;
@@ -39,7 +39,7 @@ END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='Grid_Column') 
 BEGIN
-SET @UpdateString = N'update [Innovator].[Grid_Column] set label = N''SpChar Description'' where name = ''A663AB5042E44836A5C816ACF3204162''';
+SET @UpdateString = N'update [Innovator].[Grid_Column] set label = N''SpChar Description'' where id = ''A663AB5042E44836A5C816ACF3204162''';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[Grid_Column] set label = N''Product or Process SpChar'' where id = ''EE5A1A9ADA5B4CC6AE5B2EA3B8ED8C5C''';
 EXEC SP_EXECUTESQL @UpdateString;
