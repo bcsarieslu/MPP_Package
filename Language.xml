@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--<:&lt; >:&gt; &:&amp; ':&apos; ":&quot;-->
+<Language>
+  <!-- 語系對應 -->
+  <LanguageTypes>
+    <LanguageType lang="zh-TW,zh-HK,zh-MO,zh-CHT" type="Traditional" />
+    <LanguageType lang="zh-CN,zh-CHS,zh-SG" type="Simplified" />
+    <LanguageType lang="en-US" type="English" />
+	<LanguageType lang="ko-KR" type="Korean" />
+	<LanguageType lang="ru,ru-RU" type="Russian" />
+  </LanguageTypes>
+  
+  <!-- 安裝程式Title -->
+  <FormText English="MPP" Simplified="MPP" Traditional="MPP" Korean="MPP" Russian="MPP" />
+  <!-- 安裝選項分頁文字顯示設定 -->
+  <gobInnPath>
+    <title English="Installation path" Korean="설치 경로" Simplified="安装路径" Traditional="安裝路徑" Russian="" />
+    <info English="Please select the Aras Innovator installation path" Korean="Aras Innovator의 설치 경로를 선택하십시오." Simplified="请选择 Aras Innovator 安装路径" Traditional="請選擇 Aras Innovator 安裝路徑" Russian="Пожалуйста, выберите  Innovator  путь установки  . " />
+  </gobInnPath>
+  <gobInnLogin>
+    <title English="Login Innovator" Korean="Innovator 로그인" Simplified="登录 Innovator" Traditional="登入Innovator" Russian="" />
+    <info English="Please enter the administrator account password and click &quot;Connect&quot;" Korean="어드민 어카운트 패스워드를 입력 해 주십시오 그리고 클릭해 주십시오 &quot;연결&quot;" Simplified="请输入管理员账号密码并单击&quot;连接&quot;。" Traditional="請輸入管理員帳號密碼並按一下&quot;連接&quot;。" Russian=" Пожалуйста, введите  пароль  администратора  и нажмите &quot;соединения  &quot;。" />
+  </gobInnLogin>
+  <gobReportURL>
+    <title English="Report Server" Korean="Report 서버" Simplified="报表服务器" Traditional="報表伺服器" Russian="" />
+    <info English="Please enter the Report Server Web Service URL" Korean="Report 서버의 웹 서비스 URL을 입력하십시오." Simplified="请输入报表服务器 Web 服务 URL" Traditional="請輸入報表伺服器 Web 服務 URL" Russian=" Пожалуйста, введите  url - Адрес  веб -  услуг  сервера отчетов " />
+  </gobReportURL>
+  <gob>
+    <title English="Confirm the installation" Korean="설치 확인" Simplified="确认安装" Traditional="確認安裝" Russian=" подтверждения установки " />
+    <info English="Please confirm whether or not to install this update." Korean="이 업데이트를 설치할 지 여부를 확인하십시오." Simplified="请确认是否安装本次更新。" Traditional="請確認是否安裝本次更新。" Russian=" Убедитесь, что  установить  это обновление  . " />
+  </gob>
+  <gobConfirm>
+    <title English="Start the installation" Korean="설치 시작" Simplified="开始安装" Traditional="開始安裝" Russian=" Для начала установки " />
+    <info English="Now is being installed, please wait." Korean="현재 설치 중입니다, 잠시 기다려주세요." Simplified="正在安装，请稍候。" Traditional="正在安裝，請稍候。" Russian=" установка  ,  пожалуйста, подождите  . " />
+  </gobConfirm>
+  <gobChoose>
+    <title English="Choosing an Installation Method" Korean="설치 방법 선택" Simplified="选择安装方式" Traditional="選擇安裝方式" Russian=" Выбор  способа установки " />
+    <info English="Please select the installation location" Korean="설치 위치를 선택하십시오." Simplified="请选择安装位置" Traditional="請選擇安裝位置" Russian=" Пожалуйста, выберите  место установки " />
+  </gobChoose>
+  <gobPlantform>
+    <title English="Choosing installation plantform" Korean="설치 플랫폼 선택" Simplified="选择安装平台" Traditional="選擇安裝平台" Russian=" выбор  установки платформы " />
+    <info English="Please select the installation plantform" Korean="설치 플랫폼을 선택하십시오." Simplified="请选择安装平台" Traditional="請選擇安裝平台" Russian=" Пожалуйста, выберите  установки платформы " />
+  </gobPlantform>
+  <gobLanguage>
+    <title English="Choosing installation plantform" Korean="설치 플랫폼 선택" Simplified="选择安装语言" Traditional="選擇安裝語系" Russian=" Выберите язык установки " />
+    <info English="Please select the installation plantform" Korean="설치 플랫폼을 선택하십시오." Simplified="请选择安装语言" Traditional="請選擇安裝語系" Russian=" Пожалуйста, выберите  язык установки " />
+  </gobLanguage>
+  <gobTranslateLanguage>
+    <title English="Select the installation language" Korean="설치 언어 선택" Simplified="选择安装语言" Traditional="選擇安裝語系" Russian=" Выберите язык установки " />
+    <info English="Please select the need to translate the language, and moved to the right of the block" Korean="언어를 번역 할 필요성을 선택하고, 블록의 오른쪽으로 이동주세요" Simplified="请选择需要翻译语言，并移至右方区块" Traditional="請選擇需要翻譯語系，並移至右方區塊" Russian=" Пожалуйста, выберите  нуждается в переводе  на  язык  ,  и  справа  блок " />
+  </gobTranslateLanguage>
+  <!-- Add by Sam 2014-03-27 Modify by kenny 2015/12/17 -->
+  <gobPath1>
+    <title English="Please select the installation path 1" Korean="설치 경로 1" Simplified="请选择安装路径1" Traditional="選擇安裝路徑1" Russian=" Пожалуйста, выберите  путь установки 1" />
+    <info English="Please select BCS_FMEA_Adpater.dll" Korean="프로젝트 선택 BCS_FMEA_Adpater.dll" Simplified="请选择BCS_FMEA_Adpater.dll" Traditional="請選擇BCS_FMEA_Adpater.dll" Russian=" Неверный  выбор BCS_FMEA_Adpater.dll" />
+  </gobPath1>
+  <gobPath2>
+    <title English="Please select the installation path 2" Korean="설치 경로 2" Simplified="请选择安装路径2" Traditional="選擇安裝路徑2" Russian=" Пожалуйста, выберите  путь установки 2" />
+    <info English="Please select InnoSoftCommonAras.dll" Korean="프로젝트 선택 InnoSoftCommonAras.dll" Simplified="请选择InnoSoftCommonAras.dll" Traditional="請選擇InnoSoftCommonAras.dll" Russian=" Неверный  выбор InnoSoftCommonAras.dll" />
+  </gobPath2>
+  <gobPath3>
+    <title English="Please select the installation path 3" Korean="설치 경로 3" Simplified="请选择安装路径3" Traditional="選擇安裝路徑3" Russian=" Пожалуйста, выберите  путь установки 3" />
+    <info English="Please select InnoSoftFMEA_Improvement.dll" Korean="프로젝트 선택 InnoSoftFMEA_Improvement.dll" Simplified="请选择InnoSoftFMEA_Improvement.dll" Traditional="請選擇InnoSoftFMEA_Improvement.dll" Russian=" Неверный  выбор InnoSoftFMEA_Improvement.dll" />
+  </gobPath3>
+  <!-- Add by Sam 2014-03-31 -->
+  <gobChoose1>
+    <title English="Install options 1" Korean="실속 옵션에서 1" Simplified="安装选项1" Traditional="安裝選項1" Russian=" вариант установки 1" />
+    <info English="Please select 3" Korean="선택하세요 1" Simplified="请选择1" Traditional="請選擇1" Russian=" Пожалуйста, выберите  1" />
+  </gobChoose1>
+  <gobChoose2>
+    <title English="Install options 2" Korean="실속 옵션에서 2" Simplified="安装选项2" Traditional="安裝選項2" Russian=" вариант установки 2" />
+    <info English="Please select 2" Korean="선택하세요 2" Simplified="请选择2" Traditional="請選擇2" Russian=" Пожалуйста, выберите  2" />
+  </gobChoose2>
+  <gobChoose3>
+    <title English="Install options 3" Korean="실속 옵션에서 3" Simplified="安装选项3" Traditional="安裝選項3" Russian=" вариант установки 3" />
+    <info English="Please select 3" Korean="선택하세요 3" Simplified="请选择3" Traditional="請選擇3" Russian=" Пожалуйста, выберите  3" />
+  </gobChoose3>
+  <End>
+    <title English="The end of the installation" Korean="설치 완료" Simplified="安装结束" Traditional="安裝結束" Russian=" завершения установки " />
+    <right English="Has to perform all installation" Korean="모든 설치가 완료되었습니다." Simplified="已执行所有安装。" Traditional="已執行所有安裝" Russian=" уже  выполняет все  установки. " />
+    <error English="Encountered an error during the installation process." Korean="설치를 진행하는 중 오류가 발생했습니다." Simplified="安装过程中遇到错误。" Traditional="安裝過程中遇到錯誤。" Russian=" в процессе установки  возникли ошибки  . " />
+    <info>
+      <Korean>설치 완료</Korean>
+      <English>Installation of all end</English>
+      <Simplified>安装已全部结束</Simplified>
+      <Traditional>安裝已全部結束</Traditional>
+	  <Russian> установка  уже  все закончится </Russian>
+    </info>
+  </End>
+  <!-- Add by kenny 2015/12/17 -->
+  <Control name="btnInfo" English="For detailed information" Korean="자세한 내용은" Simplified="详细信息" Traditional="詳細訊息" Russian=" Подробная информация " />
+  <Control name="lblPath" English="Installation path" Korean="설치 경로" Simplified="安装路径" Traditional="安裝路徑" Russian="путь установки " />
+  <Control name="lblUrl" English="Server address" Korean="서버 주소" Simplified="服务器地址" Traditional="伺服器網址" Russian=" адрес сервера " />
+  <Control name="lblDatabase" English="Database" Korean="데이터베이스" Simplified="数据库" Traditional="資料庫" Russian=" базы данных " />
+  <Control name="lblRootId" English="Administrator account" Korean="관리자 계정" Simplified="管理员账号" Traditional="管理員帳號" Russian=" администратор счета " />
+  <Control name="lblRootPwd" English="Password" Korean="비밀번호" Simplified="密码" Traditional="密碼" Russian=" пароль "/>
+  <Control name="lblReportUrl" English="Report Server:" Korean="서버 리포트" Simplified="报表服务器地址:" Traditional="報表伺服器:" Russian=" адрес  сервера отчетов :" />
+  <Control name="btnLogin" English="Connection" Korean="연결" Simplified="连接" Traditional="連接" Russian=" связи " />
+  <Control name="btnNext" English="Next" Korean="다음" Simplified="下一步" Traditional="下一步" Russian=" Следующий шаг " />
+  <Control name="btnBack" English="Previous" Korean="이전" Simplified="上一步" Traditional="上一步" Russian=" на  один шаг " />
+  <Control name="btnCancel" English="Cancel" Korean="취소" Simplified="取消" Traditional="取消" Russian=" отменить " />
+  <Control name="btnInstall" English="Start the installation" Korean="설치 시작" Simplified="开始安装" Traditional="開始安裝" Russian=" Для начала установки " />
+  <Control name="lblSLanguage" English="Choose to install the system language" Korean="언어를 선택하십시오." Simplified="选择安装系统语系" Traditional="選擇安裝系統語系" Russian=" Выбор  системы установки  языки " />
+  <messageConnection English="Successful connection" Korean="연결 성공" Simplified="连接成功" Traditional="連接成功" Russian=" Успешное соединение " />
+  <messageIsClosed English="Are you sure you want to abort the installation?" Korean="설치를 중단 하시겠습니까?" Simplified="您确定要中止安装吗？" Traditional="您確定要中止安裝嗎？" Russian=" Вы уверены, что хотите  прервать  установку  ? " />
+  <messagePath English="Invalid installation path." Korean="잘못된 설치 경로" Simplified="无效的安装路径。" Traditional="無效的安裝路徑。" Russian=" неверный  путь установки  . " />
+  <messageUrl English="Invalid URL." Korean="잘못된 URL" Simplified="无效的网址。" Traditional="無效的網址。" Russian=" Неверный  URL. " />
+  <messageIsLogin English="Not logged in, click on the &quot;{0}&quot; button" Korean="설치 준비 &quot;{0}&quot; 버튼 클릭" Simplified="未登录，请点击&quot;{0}&quot;按钮" Traditional="尚未登入，請點擊&quot;{0}&quot;按鈕" Russian="" />
+  <messageInstall English="Setup has equipment ready, click on &quot;{0}&quot; button" Korean="설치 준비 &quot;{0}&quot; 버튼 클릭" Simplified="安装程序已准备就绪，请点击&quot;{0}&quot;按钮" Traditional="安裝程序已準備就緒，請點擊&quot;{0}&quot;按鈕" Russian=" не  войти, пожалуйста,  нажмите на  кнопку  &quot;{0}&quot;" />
+  <messageReport English="Please fill out the report server address." Korean="Report 서버 주소를 입력하십시오." Simplified="请填写报表服务器地址。" Traditional="請填寫報表服務器地址。" Russian=" Пожалуйста, заполните  адрес  сервера отчетов  . " />
+  <messageLoginInfo English="Please fill out the complete login message." Korean="로그인 정보를 입력하십시오." Simplified="请填写完整的登录信息。" Traditional="請填寫完整的登入訊息。" Russian=" Просьба  заполнить  логин  . " />
+  <messageProcessExist English="Please close other running installer." Korean="실행 중인 다른 설치 프로그램을 종료하십시오." Simplified="请关闭其他正在执行的安装程序。" Traditional="請關閉其他正在執行的安裝程式。" Russian=" просьба закрыть  другие  выполнение  программы установки. " />
+  <messageChooseInstallClass English="Please select an installation method." Korean="설치 방법을 선택하십시오." Simplified="请选择一种安装方式。" Traditional="請選擇一種安裝方式。" Russian=" Пожалуйста,  выберите  способ установки  . " />
+  <messageInstallPlantform English="Please select an installation plantform." Korean="설치 플랫폼을 선택하십시오." Simplified="请选择一种安装平台。" Traditional="請選擇一種安裝平台。" Russian=" Пожалуйста, выберите  для установки  платформы. " />
+  <messageInstallSingleLang English="Please select the installed system language." Korean="언어를 선택하십시오." Simplified="请选择安装系统语系。" Traditional="請選擇安裝系統語系。" Russian=" Пожалуйста, выберите  установки системы  языковой семьи  . " />
+  <messageInstallMultiLang English="Please select the installed system language." Korean="언어를 선택하십시오." Simplified="请选择安装系统语系。" Traditional="請選擇安裝系統語系。" Russian=" Пожалуйста, выберите  установки системы  языковой семьи  . " />
+  <messageInstallLanguage English="Please select the installed system language." Korean="언어를 선택하십시오." Simplified="请选择安装系统语系" Traditional="請選擇安裝系統語系" Russian=" Пожалуйста, выберите  установки системы  языки " />
+  <messageCantGetLanguage English="The Aras system #Language# language is not set, please login the Aras system manually after set." Korean="Aras 시스템 #언어# 언어가 설정되지 않았습니다. Aras 시스템에 로그인 후 수동으로 설정하십시오." Simplified="Aras系统并未设定#Language#的语言，请登入Aras系统后手动设置。" Traditional="Aras系統並未設定#Language#的語系，請登入Aras系統後手動設置。" Russian=" не  #Language#  Арас  системы  установить  язык  ,  пожалуйста, войдите  Арас  после  ручной настройки  системы  . " />
+  <!-- Add by Sam 2014-03-27 modify by kenny 2015/12/17 -->
+  <messagePath1 English="Invalid installation path 1" Korean="잘못된 설치 경로 1" Simplified="无效的安装路径 1" Traditional="無效的安裝路徑1。" Russian=" неверный  путь установки  1" />
+  <messagePath2 English="Invalid installation path 2" Korean="잘못된 설치 경로 2" Simplified="无效的安装路径 2" Traditional="無效的安裝路徑2。" Russian=" неверный  путь установки  2" />
+  <messagePath3 English="Invalid installation path 3" Korean="잘못된 설치 경로 3" Simplified="无效的安装路径 3" Traditional="無效的安裝路徑3。" Russian=" неверный  путь установки  3" />
+  <!-- Add by Sam 2014-03-31 modify by kenny 2015/12/17 -->
+  <messageChoose1 English="Invalid Option 1" Korean="유효한 영업 기에서 1" Simplified="无效选择1" Traditional="無效選擇1。" Russian=" Неверный  выбор 1" />
+  <messageChoose2 English="Invalid Option 2" Korean="유효한 영업 기에서 2" Simplified="无效选择2" Traditional="無效選擇2。" Russian=" Неверный  выбор 2" />
+  <messageChoose3 English="Invalid Option 3" Korean="유효한 영업 기에서 3" Simplified="无效选择3" Traditional="無效選擇3。" Russian=" Неверный  выбор 3" />
+  <Aml English="Updating the ItemType..." Korean="ItemType 업데이트 중…" Simplified="正在更新 ItemType..." Traditional="正在更新 ItemType..." Russian=" обновление  itemtype  ... " />
+  <Bin English="File is being updated..." Korean="파일 업데이트 중…" Simplified="正在更新文件..." Traditional="正在更新文件..." Russian=" Обновление  файлов... " />
+  <Import English="Importing update packages..." Korean="업데이트 패키지 임포트……" Simplified="正在导入更新包..." Traditional="正在導入更新包..." Russian=" Импорт  пакет обновления ..." />
+  <Sql English="Material library is being updated ..." Korean="데이터베이스 업데이트 중…" Simplified="正在更新数据库..." Traditional="正在更新質料庫..." Russian=" обновление  базы данных ..." />
+  <SqlLanguage English="Being updated systems language..." Korean="시스템 언어 업데이트 중…" Simplified="正在更新系统语言..." Traditional="正在更新系統語系..." Russian=" Обновление  системы язык ..." />
+  <Report English="Report is being deployed..." Korean="보고서 설치 중…" Simplified="正在部署报表..." Traditional="正在部署報表..." Russian=" развертывание  ведомости ..." />
+  <Complete English="Complete" Korean="완료" Simplified="完成" Traditional="完成" Russian=" завершить " />
+  <!-- Add by Sam 2014-03-10 modify by kenny 2015/12/17 -->
+  <errorFormTitle English="Operation Confirm" Korean="동작 확인" Simplified="操作确认" Traditional="操作確認" Russian=" подтверждение  операции " />
+  <errorBinDLL English="&quot;{0}&quot; is exist. Original file version is &quot;{1}&quot;, length is &quot;{2}&quot; and New file version is &quot;{3}&quot;, length is &quot;{4}&quot;. Do you want to replace?" Korean="&quot;{0}&quot;존재입니다. 원본 파일 버전이&quot;{1}&quot;이고, 길이 {2}와&quot;{3}&quot;, 길이&quot;{4}&quot;. 교체 하시겠습니까되어 새 파일 버전이다?" Simplified="&quot;{0}&quot;已存在。原始文件版本&quot;{1}&quot;,原始文件长度&quot;{2}&quot;，新文件版本&quot;{3}&quot;,新文件长度&quot;{4}&quot;。是否替换文件？" Traditional="&quot;{0}&quot;已存在。原始檔案版本&quot;{1}&quot;,原始檔案長度&quot;{2}&quot;，新檔案版本&quot;{3}&quot;,新檔案長度&quot;{4}&quot;。是否取代檔案？" Russian=" &quot; {0}&quot;  уже существует.  исходный файл  версии  &quot;  {1}&quot;  длина  ,  оригинальный файл  &quot;  {2}&quot; ,  новые  версии файлов  &quot;  {3}&quot;  длина  ,  новый файл  &quot;  {4}&quot;  .  Заменить  файл? " />
+  <errorBinFile English="&quot;{0}&quot; is exist. Original file length is &quot;{1}&quot; and New file length is &quot;{2}&quot;. Do you want to replace?" Korean="&quot;{0}&quot;존재입니다. 원본 파일 길이는&quot;{1}&quot;이고, 새 파일의 길이가&quot;{2}&quot;. 교체 하시겠습니까입니까?" Simplified="&quot;{0}&quot;已存在。原始文件长度&quot;{1}&quot;，新文件长度&quot;{2}&quot;。是否替换文件？" Traditional="&quot;{0}&quot;已存在。原始檔案長度&quot;{1}&quot;，新檔案長度&quot;{2}&quot;。是否取代檔案？" Russian=" &quot;  {0}&quot;  уже существует.  первоначальной  длины файла  &quot;  {1}&quot;  длина  ,  новый файл  &quot;  {2}&quot;  .  Заменить  файл? " />
+  <!-- Add by Tim 2012-08-08 -->
+  <copMessage English="The server-side file is newer, replace?" Korean="서버에 있는 파일이 최신 파일입니다. 바꾸시겠습니까?" Simplified="本地文件较新，是否替换？" Traditional="服務端檔案較新，是否替換？" Russian=" локальный файл  является относительно новой,  вы хотите заменить его  ? " />
+  <iomMessage English="Installation package with the current system version does not match!" Korean="설치 패키지와 현재 시스템의 버전이 일치하지 않습니다." Simplified="安装包与当前系统版本不符！" Traditional="安裝包與當前系統版本不符！" Russian=" пакет установки  и  системы  не соответствует  нынешней  версии  ! " />
+  <checkPath English="The system path does not exist!" Korean="시스템 경로가 존재하지 않습니다." Simplified="系统路径不存在！" Traditional="系統路徑不存在！" Russian=" система путь  не  существует! " />
+  <!-- Add by Sam 2013-01-24 -->
+  <appInstallNew English="had been installed newer version in the server, do you want to reinstall?" Korean="새 버전이 이미 설치되어 있습니다. 다시 설치하시겠습니까?" Simplified="已安装较新版本，是否需要重新安装？" Traditional="已安裝較新版本，是否需要重新安裝？" Russian=" были установлены  более новые версии,  нужно  переустановить  ? " />
+  <appInstallEqual English="had been installed the same version in the server, do you want to reinstall?" Korean="같은 버전이 이미 설치되어 있습니다. 다시 설치하시겠습니까?" Simplified="已安装相同版本，是否需要重新安装？" Traditional="已安裝相同版本，是否需要重新安裝？" Russian=" Установлены  ли  же  версии  ,  нужно  переустановить  ? " />
+  <appInstallOld English="had been installed older version in the server, do you want to reinstall?" Korean="이전 버전이 이미 설치되어 있습니다. 다시 설치하시겠습니까?" Simplified="已安装较旧版本，是否需要重新安装？" Traditional="已安裝較舊版本，是否需要重新安裝？" Russian=" были установлены  более  старые версии  ,  нужно  переустановить  ? " />
+</Language>
