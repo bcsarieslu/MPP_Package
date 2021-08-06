@@ -36,7 +36,8 @@
 			<Package chek_item_type="" >1003</Package>
 			<Package chek_item_type="" >1004</Package>
 			<Package chek_item_type="" >1005</Package>
-			<Package chek_item_type="" >1006</Package>			
+			<Package chek_item_type="" >1006</Package>
+			<Package chek_item_type="" >PBOM2MBOM</Package>
 		</section>	
 
 		<section type="Import" exec="5" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
