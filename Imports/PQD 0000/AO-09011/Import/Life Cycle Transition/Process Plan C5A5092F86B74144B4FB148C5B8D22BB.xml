@@ -1,0 +1,15 @@
+﻿<AML>
+  <Item type="Life Cycle Transition" id="C5A5092F86B74144B4FB148C5B8D22BB" action="add">
+    <from_state type="Life Cycle State">339BD896B4E84CFF9380184700188A93</from_state>
+    <get_comment>0</get_comment>
+    <post_action type="Method"><Item type="Method" action="get" id="6C18F6054EE64B09BA712DF2CE7EB3A0" /></post_action>
+    <pre_action type="Method"><Item type="Method" action="get" id="4C6ED52F3DBB49BFB3E2C3219BDEE888" /></pre_action>
+    <role type="Identity">D46B8ECBDB0C4D94BFF7A93D36FAB474</role>
+    <segments />
+    <sort_order>256</sort_order>
+    <source_id type="Life Cycle Map">9BA615F1FFB34DFF934E06D1704F8807</source_id>
+    <to_state type="Life Cycle State">7109CDD337C84AFF87F55B21CCAC34AC</to_state>
+    <x>-41</x>
+    <y>-24</y>
+  </Item>
+</AML>

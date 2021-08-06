@@ -13,7 +13,10 @@
 		var itemTypeName = par.itemTypeName;
 		var itemType=aras.getItemTypeForClient(itemTypeName);
 		var hasTabs=itemType.getRelationships("RelationshipType").getItemCount()>0?true:false;
-		var myInnovator = new aras.getMostTopWindowWithAras(window).Innovator();
+
+		const mostWin=aras.getMostTopWindowWithAras(window);
+
+		var myInnovator = new mostWin.Innovator();
 
 	</script>
 	<style type="text/css">
@@ -47,13 +50,18 @@
 			relationshipsIframe.src = aras.getScriptsURL() + "relationships.html" + location;
 			relationshipsIframe.onload=function(){
 				window.relationships=this.contentWindow.relationships;
+				if(mostWin.isUsedPQD&&itemTypeName=="mpp_Test"){
+					const relTypeId=aras.getRelationshipTypeId("mpp_TestCharacteristic");
+					const relTypeLabel=aras.getRelationshipType(relTypeId).getProperty("label");
+					relationships.relTabbar.addTab(relTypeId,relTypeLabel);
+					relationships.relTabbar.selectTab(relTypeId);
+				}
 			}
 		}
 		else
 		{
 			document.getElementById("centerMiddle_splitter").style.display="none"
 			document.getElementById("centerMiddle").style.display="none";
-			debugger;
 		}
 		
 		var instance = document.getElementById("instance");
@@ -63,7 +71,15 @@
 		instance.contentWindow.document.userChangeHandler = null;
 		//aras.uiRegWindowEx(itemID, window);
 	}
-		
+
+	//Add By BCS Tengz 2021/7/8 MPP与PQD联动
+	//检验项目对象页面关闭时取消弹窗提示
+	if(mostWin.isUsedPQD&&itemTypeName=="mpp_Test"){
+		onbeforeunload=function(){
+			relationships.iframesCollection[aras.getRelationshipTypeId("mpp_TestCharacteristic")].contentWindow.onbeforeunload=undefined;
+		}
+	}
+
 	var statusbar;
 	var resourceUrl = aras.getI18NXMLResource("tabview_statusbar.xml", aras.getBaseURL());
 	clientControlsFactory.createControl("Aras.Client.Controls.Experimental.StatusBar", {id: "bottom_statusBar", aras: aras, resourceUrl: resourceUrl, imageBase: "../../"}, function(control) {

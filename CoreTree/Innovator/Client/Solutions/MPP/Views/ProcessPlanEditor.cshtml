@@ -225,6 +225,11 @@
 						langToolbarControl.setSelected(wiModel.CurrentLanguageCode());
 					}.bind(this));
 
+					//Modify By BCS Tengz 2021/7/13 MPP与PQD联动
+					let supportedTypes=[' ', 'Parts', 'Tools', 'Machines', 'Documents', 'Skills','CAD'];
+					if(!parent.isUsedPQD){
+						supportedTypes.push("Test");
+					}
 					treeWidget = dijit.byId('processPlanTree');
 					workbenchWidget = new Workbench({
 						aras: aras,
@@ -237,7 +242,7 @@
 						isProcessPlanView: true,
 						//Modify by tengz 2019/6/4
 						//ProcessPlan workbench 里添加CAD选项
-						supportedTypes: [' ', 'Parts', 'Tools', 'Machines', 'Documents', 'Skills','CAD','Test'],
+						supportedTypes: supportedTypes,
 						uiUtils: uiUtils,
 						workbenchData: viewController.shareData.workbenchData,
 						clientControlsFactory: clientControlsFactory

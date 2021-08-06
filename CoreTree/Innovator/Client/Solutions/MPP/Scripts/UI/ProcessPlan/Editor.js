@@ -283,7 +283,7 @@ function(declare, DijitEditor, keys, aspect, domConstruct, domClass, has, DOMRan
 		onLoad: function(html) {
 			//Modify by tengz 2019/5/10
 			//MPP产品包
-			this.iframe.src="../../scripts/WebEditor/ueditor/default.html";
+			this.iframe.src="../../scripts/WebEditor/luckysheet/default.html";
 			
 			this.inherited(arguments);
 
@@ -553,7 +553,7 @@ function(declare, DijitEditor, keys, aspect, domConstruct, domClass, has, DOMRan
 					}
 					else
 					{
-						win.location=aras.getScriptsURL()+"WebEditor/ueditor/default.html";
+						win.location=aras.getScriptsURL()+"WebEditor/luckysheet/default.html";
 						
 						setTimeout(ueditorOnLoad,1000);
 
@@ -624,6 +624,11 @@ function(declare, DijitEditor, keys, aspect, domConstruct, domClass, has, DOMRan
 					winArguments.itemTypeName=selectedIOMItem.getType();
 					winArguments.itemID=selectedIOMItem.getID();
 					winArguments.item=aras.getItemById(winArguments.itemTypeName,winArguments.itemID,0);
+					//Modify By BCS Tengz 2021/7/8 MPP与PQD联动
+					if(parent.isUsedPQD&&winArguments.itemTypeName=="mpp_Test"){
+						winArguments.ppId=dataModel._rootProcessPlanId;
+						winArguments.operationId=selectedItem.Parent._id;
+					}
 					//win.name=aras.mainWindowName+"_"+selectedItems[0].ItemId();
 					win.name=aras.mainWindowName+"_"+aras.generateNewGUID();
 					win=aras.getMostTopWindowWithAras(window).open(aras.getScriptsURL() + "blank.html",win.name);

@@ -521,7 +521,32 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 							isActionAllowed = selectedItems.ContentType() === Enums.ElementContentType.Static;
 							break;
 						case 'removeelement':
+							//Modify By BCS Tengz 2021/6/28 MPP与PQD联动
+							//增加不允许编辑对象逻辑
+							var schemaHelper = this.viewmodel.Schema();
 							isActionAllowed = !this.viewmodel.isRootElementContained(selectedItems);
+							if(isActionAllowed){
+								if(Array.isArray(selectedItems)){
+									for(let selectedItem of selectedItems){
+										if(schemaHelper.getSchemaAttribute(selectedItem.nodeName, 'noedit')){
+											isActionAllowed=false;
+											break;
+										}
+										if(parent.isUsedPQD){
+											if(selectedItem.Parent&&selectedItem.Parent.nodeName=="Test"){
+												isActionAllowed=false;
+												break;
+											}
+										}
+									}
+								}else{
+									isActionAllowed=!schemaHelper.getSchemaAttribute(selectedItems.nodeName, 'noedit');
+									if(parent.isUsedPQD&&isActionAllowed&&selectedItems.Parent){
+										isActionAllowed=selectedItems.Parent.nodeName!="Test";
+									}
+								}
+							}
+							//End Modify
 							break;
 						default:
 							break;
@@ -546,6 +571,12 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 				elementName = expectedElements[i];
 
 				if (elementName !== 'External Content') {
+					//Add By BCS Tengz 2021/6/28 MPP与PQD联动
+					//增加不允许编辑对象的逻辑
+					if(schemaHelper.getSchemaAttribute(elementName, 'noedit') !== undefined){
+						continue;
+					}
+					//End Add
 					elementType = schemaHelper.GetSchemaElementType(elementName);
 					isInternalItem = schemaHelper.getSchemaAttribute(elementName, 'internalitem') !== undefined;
 					itemImage = Enums.getImageFromName(elementName) || Enums.getImagefromType(elementType);
@@ -582,6 +613,13 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 
 				if (elementName !== 'External Content') {
 					elementType = schemaHelper.GetSchemaElementType(elementName);
+					
+					//Add By BCS Tengz 2021/6/28 MPP与PQD联动
+					//增加不允许编辑对象的逻辑
+					if(schemaHelper.getSchemaAttribute(elementName, 'noedit') !== undefined){
+						continue;
+					}
+					//End Add
 
 					// remove cell elements from menu, if menu created for TableCell
 					if (isTableCell && (elementType & TDEnums.XmlSchemaElementType.TableCell) === TDEnums.XmlSchemaElementType.TableCell) {

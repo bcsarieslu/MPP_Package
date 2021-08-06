@@ -1,0 +1,89 @@
+﻿<AML>
+  <Item type="Method" action="add" id="C5EB2B36F3764601A730DADA61F2E1BA">
+    <execution_allowed_to type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</execution_allowed_to>
+    <method_code><![CDATA[const {ppid,viewname,location,operation,itemid}={...inArgs};
+const pqdItem=getRelationPQD();
+if(pqdItem.isError()){
+    aras.AlertError(pqdItem);
+    return;
+}
+aras.uiShowItemEx(pqdItem.node).then((pqdWin) => {
+    setTimeout(selectCMFTab, 100);
+
+    function selectCMFTab() {
+        if (!pqdWin.sidebar || !pqdWin.sidebar.tabs) {
+            setTimeout(selectCMFTab, 100);
+            return;
+        }
+        pqdWin.sidebar.tabs.selectTab("cmf_show_editor").then(() => {
+            if (pqdWin.windowStateObject.state !== 'tabs off') {
+                pqdWin.windowStateObject.setHidden();
+                pqdWin.windowStateObject.updateButtons();
+            }
+
+            pqdWin.dijit.byId('viewers').selectTab('editor_container');
+
+            const event = new Event('commandBarChanged');
+            event.locationName = "ItemWindowSidebar";
+            event.changeType = 'click';
+            event.commandBarTarget = "cmf_show_editor";
+            pqdWin.document.dispatchEvent(event);
+            
+            var viewerToolBar=pqdWin.cmfContainer.contentToolbar.getItem("cmf_view_dropdown");
+            var locationToolBar=pqdWin.cmfContainer.contentToolbar.getItem("bcs_pqd_locations_dropdown");
+            const cmfView=pqdWin.cmfContainer.views.find((_view)=>{
+                return _view.name==viewname;
+            });
+            viewerToolBar.setSelected(cmfView.id);
+            
+            if(location){
+                locationToolBar.setSelected(location);
+            }
+            
+            setTimeout(focusElementNode,100);
+            
+            function focusElementNode() {
+                if(!pqdWin.cmfContainer.qpWindow||!pqdWin.cmfContainer.qpWindow.documentEditor){
+                    setTimeout(focusElementNode,100);
+                    return;
+                }
+                
+                const _tree=pqdWin.cmfContainer.qpWindow.documentEditor._tree;
+                const treeItemCollection=_tree.getStore().getDataStore().treeItemCollection;
+                
+                const rowId=findElementIdByBoundId(operation);//工序
+                const nodeId=itemid?findElementIdByBoundId(itemid):rowId;//要选中的对象
+                if(!rowId||!nodeId){
+                    return;
+                }
+                if(_tree._tree.model.store.getPropertyElements(treeItemCollection[nodeId]).length<1){
+                    setTimeout(focusElementNode,100);
+                }
+                _tree.selectNode(rowId,nodeId);
+
+                function findElementIdByBoundId(boundItemId) {
+                    if(treeItemCollection[boundItemId]){
+                        return boundItemId;
+                    }
+                    
+                    for (var elementId in treeItemCollection) {
+                        if (treeItemCollection[elementId].boundItemId == boundItemId) {
+                            return elementId;
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+
+function getRelationPQD(){
+    let pqdItem=aras.newIOMItem("Process Quality Document","get");
+    pqdItem.setProperty("process_plan_id",ppid);
+    pqdItem=pqdItem.apply();
+    return pqdItem;
+}]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>bcs_MPP_ShowPQD</name>
+  </Item>
+</AML>

@@ -965,20 +965,38 @@ function(declare, DndTarget, connect, BOMGridCommon, Enums) {
 
 			contextMenu.removeAll();
 
-			if(selectItem.userdata.ocid)
-			{
-				selectModelItem=dataModel.rootProcessPlan.getChildByIdPath([selectItem.userdata.oid,selectItem.userdata.ocid]);
+			//Modify By BCS Tengz 2021/7/6 MPP与PQD联动
+			if(parent.isUsedPQD&&selectItem.userdata.itemtype){
+				contextMenu.add(null, this.uiUtils.getResource(selectItem.userdata.itemtype=='APQP Controls Catalog'?'MBOMTreeGridMenu.viewCM':'MBOMTreeGridMenu.viewRP'), null, {
+					onClick: this.onViewItemMenuClick.bind(this)
+				});
+
+				contextMenu.add(null, this.uiUtils.getResource('MBOMTreeGridMenu.viewpqd'), null, {
+					onClick: this.onViewPQDMenuClick.bind(this)
+				});
+				return;
 			}
-			else
-			{
-				selectModelItem=dataModel.rootProcessPlan.getChildByIdPath(selectItem.userdata.id);
+
+			if(selectItem.userdata.ocid){
+				//Modify By BCS Tengz 2021/6/29
+				//selectModelItem=dataModel.rootProcessPlan.getChildByIdPath([selectItem.userdata.oid,selectItem.userdata.ocid]);
+				selectModelItem=dataModel.getItemById(selectItem.userdata.ocid);
+			}else{
+				//Modify By BCS Tengz 2021/6/29
+				//selectModelItem=dataModel.rootProcessPlan.getChildByIdPath(selectItem.userdata.id);
+				selectModelItem=dataModel.getItemById(selectItem.userdata.id);
 			}
 			
 			if(!selectModelItem){return;}
 			
-			if (this.isEditable) {
+			//Modify By BCS Tengz 2021/6/29
+			const selectItemType=selectModelItem.getItemType();
+			const relatedItemType=selectModelItem.hasRelatedItem()?selectModelItem.getRelatedItem().getItemType():undefined;
+
+			//Modify By BCS Tengz 2021/6/29 MPP与PQD联动
+			if (this.isEditable&&!parent.isUsedPQD) {
 				// this._addMenuItemUpdateVersion(rId);
-				if(selectModelItem.getItemType()!="mpp_ProcessPlan")
+				if(selectItemType=="mpp_Operation"||relatedItemType=="mpp_Test")
 				{
 					contextMenu.add(null, this.uiUtils.getResource('MBOMTreeGridMenu.insertTest'), null, {
 						onClick: function(rowId) {
@@ -995,7 +1013,7 @@ function(declare, DndTarget, connect, BOMGridCommon, Enums) {
 					});
 				}
 				
-				if(selectModelItem.getItemType()=="mpp_OperationTest")
+				if(relatedItemType=="mpp_Test")
 				{
 					contextMenu.add(null, this.uiUtils.getResource('MBOMTreeGridMenu.removeTest'), null, {
 						onClick: function(rowId) {
@@ -1019,19 +1037,68 @@ function(declare, DndTarget, connect, BOMGridCommon, Enums) {
 				}
 			}
 			
-			if(selectModelItem.getItemType()=="mpp_OperationTest")
-			{
-				contextMenu.add(null, this.uiUtils.getResource('MBOMTreeGridMenu.viewTest'), null, {
-					onClick: function(rowId) {
-						rowId = rowId || gridControl.getSelectedId();
-
-						if (rowId) {
-							var partId = this.getMBomItemUserData(rowId, 'id');
-
-							this.aras.uiShowItem('mpp_Test', partId);
-						}
-					}.bind(this)
+			if(relatedItemType){
+				contextMenu.add(null, this.uiUtils.getResource(relatedItemType=='mpp_Test'?'MBOMTreeGridMenu.viewTest':'MBOMTreeGridMenu.viewTool'), null, {
+					onClick: this.onViewItemMenuClick.bind(this)
 				});
+			}
+
+			//Modify By BCS Tengz 2021/6/29 MPP与PQD联动
+			//添加查看PQD菜单
+			if(parent.isUsedPQD&&!dataModel.isRootProcessPlanContained(selectModelItem)){
+				contextMenu.add(null, this.uiUtils.getResource('MBOMTreeGridMenu.viewpqd'), null, {
+					onClick: this.onViewPQDMenuClick.bind(this)
+				});
+			}
+		}
+
+		//Add By BCS Tengz 2021/7/6 MPP与PQD联动
+		//查看对象菜单点击事件
+		,onViewItemMenuClick:function(rowId){
+			rowId = rowId || gridControl.getSelectedId();
+
+			if (rowId) {
+				var partId = this.getMBomItemUserData(rowId, 'id');
+
+				//Modify By BCS Tengz 2021/6/29
+				const itemtype=this.getMBomItemUserData(rowId,'itemtype');
+				if(itemtype){
+					this.aras.uiShowItem(itemtype, partId);
+				}else{
+					this.aras.uiShowItem(dataModel.getItemById(this.data.testWorkHourItemsByUid[rowId].userdata.ocid).getRelatedItem().getItemType(), partId);
+				}
+			}
+		}
+
+		//Add By BCS Tengz 2021/7/6 MPP与PQD联动
+		//查看PQD菜单点击事件
+		,onViewPQDMenuClick:function(rowId){
+			const selectItem=this.data.testWorkHourItemsByUid[rowId];
+			let selectModelItem;
+			if(selectItem.userdata.ocid){
+				selectModelItem=dataModel.getItemById(selectItem.userdata.ocid);
+			}else{
+				selectModelItem=dataModel.getItemById(selectItem.userdata.id);
+			}
+			
+			if(!selectModelItem){
+				const parentRowId=this._grid.getParentId(rowId);
+				selectModelItem=dataModel.getItemById(this.data.testWorkHourItemsByUid[parentRowId].userdata.ocid);
+				if(!selectModelItem){return;}
+				aras.evalMethod("bcs_MPP_ShowPQD",undefined,{ppid:dataModel._rootProcessPlanId,viewname:"Process Control Plan",location:selectModelItem.Parent.getProperty("bcs_location"),operation:selectModelItem.Parent._id,itemid:selectItem.userdata.id});
+				return;
+			}
+			if(!selectModelItem){return;}
+
+			if(selectModelItem.getItemType()=="mpp_Operation"){
+				aras.evalMethod("bcs_MPP_ShowPQD",undefined,{ppid:dataModel._rootProcessPlanId,viewname:"Process Control Plan",location:selectModelItem.getProperty("bcs_location"),operation:selectModelItem._id,itemid:undefined});
+			}else{
+				const relatedItem=selectModelItem.getRelatedItem();
+				if(relatedItem.getItemType()=="mpp_Test"){
+					aras.evalMethod("bcs_MPP_ShowPQD",undefined,{ppid:dataModel._rootProcessPlanId,viewname:"Process Control Plan",location:selectModelItem.Parent.getProperty("bcs_location"),operation:selectModelItem.Parent._id,itemid:relatedItem._id});
+				}else{
+					aras.evalMethod("bcs_MPP_ShowPQD",undefined,{ppid:dataModel._rootProcessPlanId,viewname:"Process Control Plan",location:selectModelItem.Parent.Parent.getProperty("bcs_location"),operation:selectModelItem.Parent.Parent._id,itemid:relatedItem._id});
+				}		
 			}
 		}
 	});

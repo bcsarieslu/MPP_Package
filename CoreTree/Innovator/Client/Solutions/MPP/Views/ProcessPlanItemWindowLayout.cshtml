@@ -5,6 +5,11 @@
 @section extra_header
 {
 	<script type="text/javascript">
+		//Add By BCS Tengz 2021/6/28 MPP与PQD联动
+		//检查是否有使用PQD联动
+		var isUsedPQD=!aras.IomInnovator.applyMethod("bcs_MPP_CheckMPPRelationPQD","").isError();
+		//End Add
+
 		var processPlanItem = item;
 		var tabsWasSelected = false; //TODO: the flag should be reset on Save, Refresh, Lock
 		var defaultSetItem = window.setItem;

@@ -69,8 +69,14 @@ function(declare, connect, popup, MoveItemAction, RemoveElementAction, AddItemAc
 				//Add by tengz 2019/6/14
 				//Process Plan Tree添加右键菜单
 				bcsadd2otherlocation:{
-					title:'添加至其它地区',
+					title:this.UIUtils.getResource('bcs.action.add2otherlocation'),
 					priority:200
+				}
+				//Add By BCS Tengz 2021/6/30 MPP与PQD联动
+				//Process Plan Tree添加右键菜单
+				,viewpqd:{
+					title:this.UIUtils.getResource('bcs.action.viewpqd'),
+					priority:300
 				}
 			};
 		},
@@ -234,6 +240,13 @@ function(declare, connect, popup, MoveItemAction, RemoveElementAction, AddItemAc
 								break;
 						}
 					}
+
+					//Add By BCS Tengz 2021/6/30 MPP与PQD联动
+					//增加查看PQD菜单
+					if(isUsedPQD){
+						this.appendActionMenuItem(menuModel, 'viewpqd', selectedItem);
+					}
+					//End Add
 				}
 			}
 
@@ -345,6 +358,12 @@ function(declare, connect, popup, MoveItemAction, RemoveElementAction, AddItemAc
 					//Add by tengz 2019/6/19
 					//"添加至其它地区"菜单处理
 					case 'bcsadd2otherlocation':
+						//Modify By BCS Tengz 2021/6/29 MPP与PQD联动
+						//增加不允许编辑对象逻辑
+						if(!this.checkUsedPQDOrNoEdit(selectedItems)){
+							return;
+						}
+						//End Modify
 						var locationMenuItems=this.getLocationMenu(selectedItems);
 						if(locationMenuItems.length>0)
 						{
@@ -358,6 +377,25 @@ function(declare, connect, popup, MoveItemAction, RemoveElementAction, AddItemAc
 						}
 						isAppended = true;
 						break;
+					//Add By BCS Tengz 2021/6/28 MPP与PQD联动
+					//增加不允许编辑对象逻辑
+					case 'removeelement':
+						isActionAllowed=this.checkUsedPQDOrNoEdit(selectedItems);
+						break;
+					case 'viewpqd':
+						const selectItemType=selectedItems.getItemType();
+						if(selectItemType=="mpp_Operation"||selectItemType=="mpp_OperationTest"){
+							menuItems.push({
+								id: 'datamodel|' + actionName,
+								name: actionTitle,
+								priority: actionPriority,
+								isEditAction: false,
+								onClick:this.onViewPQDMenuClick.bind(selectedItems)
+							});
+						}
+						isAppended = true;
+					break;
+					//End Add
 					default:
 						break;
 				}
@@ -377,8 +415,7 @@ function(declare, connect, popup, MoveItemAction, RemoveElementAction, AddItemAc
 		},
 		//Add by tengz 2019/6/19
 		//读取MPP内所有地区并组成子菜单
-		getLocationMenu:function(selectedItems)
-		{
+		getLocationMenu:function(selectedItems){
 			var locationMenuItems=new Array();
 			var locationId=selectedItems[0].getProperty("bcs_location");
 			var modelType=selectedItems[0].getType();
@@ -531,6 +568,38 @@ function(declare, connect, popup, MoveItemAction, RemoveElementAction, AddItemAc
 				locationMenuItems.splice(0,0,{id:'add2alllocations',name:'所有地区',onClick:onMenuClick});
 			}
 			return locationMenuItems;
+		},
+		//Add By BCS Tengz 2021/6/29 MPP与PQD联动
+		//检查是否有启用PQD以及是否为可编辑对象
+		checkUsedPQDOrNoEdit:function(selectedItems){
+			const viewmodel=viewController.views["pp_viewer"].domNode.contentWindow.wiModel;
+			const schemaHelper =viewmodel.Schema();
+			for(let selectedItem of selectedItems){
+				const selectElement=viewmodel.GetElementsByUid(selectedItem._id)[0];
+				if(schemaHelper.getSchemaAttribute(selectElement.nodeName, 'noedit')){
+					return false;
+				}
+				if(isUsedPQD){
+					if(selectElement.Parent&&selectElement.Parent.nodeName=="Test"){
+						return false;
+					}
+				}
+			}
+			return true;
+		},
+		//Add By BCS Tengz 2021/6/29 MPP与PQD联动
+		//查看PQD菜单点击方法
+		onViewPQDMenuClick:function(){
+			if(this.getItemType()=="mpp_Operation"){
+				aras.evalMethod("bcs_MPP_ShowPQD",undefined,{ppid:itemID,viewname:"Process Flow Diagram",location:this.getProperty("bcs_location"),operation:this._id,itemid:undefined});
+			}else{
+				const relatedItem=this.getRelatedItem();
+				if(relatedItem.getItemType()=="mpp_Test"){
+					aras.evalMethod("bcs_MPP_ShowPQD",undefined,{ppid:itemID,viewname:"Process Control Plan",location:this.Parent.getProperty("bcs_location"),operation:this.Parent._id,itemid:relatedItem._id});
+				}else{
+					aras.evalMethod("bcs_MPP_ShowPQD",undefined,{ppid:itemID,viewname:"Process Control Plan",location:this.Parent.Parent.getProperty("bcs_location"),operation:this.Parent.Parent._id,itemid:relatedItem._id});
+				}		
+			}
 		}
 	});
 });

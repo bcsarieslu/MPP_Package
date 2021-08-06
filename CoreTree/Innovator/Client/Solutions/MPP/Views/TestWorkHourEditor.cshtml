@@ -240,7 +240,8 @@
 					title: uiUtils.getResource('workbench'),
 					controlType: 'iframe',
 					containerId: 'workbenchContainer',
-					supportedTypes: [' ', 'Test'],
+					//Modify By BCS Tengz 2021/6/29 MPP与PQD联动
+					supportedTypes: parent.isUsedPQD?[' ']:[' ', 'Test'],
 					workbenchData: shareData.workbenchData,
 					uiUtils: uiUtils,
 					clientControlsFactory: clientControlsFactory

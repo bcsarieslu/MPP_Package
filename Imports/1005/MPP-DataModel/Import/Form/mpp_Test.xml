@@ -10,6 +10,50 @@
         <bg_color>#FFFFFF</bg_color>
         <sort_order>128</sort_order>
         <Relationships>
+          <Item type="Field" id="22C4C1B565D742589F8FC608E94D1E2C" action="add">
+            <border_width>0</border_width>
+            <display_length>200</display_length>
+            <display_length_unit>px</display_length_unit>
+            <field_type>text</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">样本频率</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">0D819E61DB9E405690CCE3AFD5366B79</propertytype_id>
+            <sort_order>512</sort_order>
+            <tab_index>3200</tab_index>
+            <tab_stop>1</tab_stop>
+            <x>190</x>
+            <y>100</y>
+            <name>bcs_samplefrequency</name>
+          </Item>
+          <Item type="Field" id="CE603FC172BA412DA79A413E91FCACD4" action="add">
+            <border_width>0</border_width>
+            <display_length>200</display_length>
+            <display_length_unit>px</display_length_unit>
+            <field_type>text</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">样本容量</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <propertytype_id type="Property">F0D8AA60F523494EB3F29C7F5EB24A1B</propertytype_id>
+            <sort_order>640</sort_order>
+            <tab_index>3072</tab_index>
+            <tab_stop>1</tab_stop>
+            <x>190</x>
+            <y>155</y>
+            <name>bcs_samplesize</name>
+          </Item>
           <Item type="Field" id="CAF2E7EDC04B4487A874CC5B546F6455" action="add">
             <display_length_unit>px</display_length_unit>
             <field_type>html</field_type>

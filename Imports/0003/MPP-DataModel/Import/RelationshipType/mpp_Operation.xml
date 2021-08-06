@@ -111,6 +111,23 @@
       <track_history>0</track_history>
       <name>setup_time</name>
      </Item>
+     <Item type="Property" id="EAF83D6CB4D94C9392FF99B52D2021D7" action="add">
+        <column_alignment>left</column_alignment>
+        <data_type>string</data_type>
+        <is_hidden>1</is_hidden>
+        <is_hidden2>1</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">bcs_config_id</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>4480</sort_order>
+        <stored_length>32</stored_length>
+        <track_history>0</track_history>
+        <name>bcs_config_id</name>
+     </Item>
      <Item type="Property" id="EFF6A62A97A7455DA569A89CFEA367C6" action="add">
       <column_alignment>left</column_alignment>
       <data_type>ml_string</data_type>
@@ -166,6 +183,13 @@
       <sort_order>256</sort_order>
       <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
      </Item>
+     <Item type="Server Event" id="7D26DC8AC3A74EF29397653BB0097F5E" action="add">
+         <event_version>version_1</event_version>
+         <is_required>0</is_required>
+         <related_id type="Method"><Item type="Method" action="get" id="65206D215744435680812F957E8A6048" /></related_id>
+         <server_event>onBeforeAdd</server_event>
+         <sort_order>384</sort_order>
+      </Item>
     </Relationships>
    </Item>
   </relationship_id>

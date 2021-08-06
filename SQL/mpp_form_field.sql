@@ -25,6 +25,10 @@ SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''物料編號'' 
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''料件名稱'' where id=''5364688A8F1244CCADE2BB1B10DB648A''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''樣本頻率'' where id=''22C4C1B565D742589F8FC608E94D1E2C''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''樣本容量'' where id=''CE603FC172BA412DA79A413E91FCACD4''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='FIELD') 
@@ -51,6 +55,10 @@ SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''物料编号'' 
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''料件名称'' where id=''5364688A8F1244CCADE2BB1B10DB648A''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''样本频率'' where id=''22C4C1B565D742589F8FC608E94D1E2C''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''样本容量'' where id=''CE603FC172BA412DA79A413E91FCACD4''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='FIELD') 
@@ -76,6 +84,10 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label=N''Part Number'' where id=''71110787FC474100AD084F1773407032''';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label=N''Name'' where id=''5364688A8F1244CCADE2BB1B10DB648A''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label=N''Sample Frequency'' where id=''22C4C1B565D742589F8FC608E94D1E2C''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''Sample Size'' where id=''CE603FC172BA412DA79A413E91FCACD4''';
 EXEC SP_EXECUTESQL @UpdateString;
 END
 

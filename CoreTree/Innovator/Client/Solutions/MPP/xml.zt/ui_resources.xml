@@ -11,6 +11,10 @@
   <resource key="action.editItem" value="編輯屬性" />
   <resource key="action.createProcessPlan" value="新增製造流程" />
   <resource key="action.viewProducedPart" value="查看生產零件" />
+
+  <resource key="bcs.action.add2otherlocation" value="添加至其它地區"/>
+	<resource key="bcs.action.viewpqd" value="查看PQD"/>
+
   <resource key="workbenchDropdown.Parts" value="零組件" />
   <resource key="workbenchDropdown.Tools" value="工具類" />
   <resource key="workbenchDropdown.Machines" value="機台" />

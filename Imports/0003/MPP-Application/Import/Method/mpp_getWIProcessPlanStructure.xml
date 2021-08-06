@@ -1,12 +1,12 @@
 ﻿<AML>
   <Item type="Method" action="add" id="AB5EA369AADC4CE8A29EFB00631F06E0">
     <comments>AO-09011:MPP-Application</comments>
-	<execution_allowed_to type="Identity">
+    <execution_allowed_to type="Identity">
       <Item type="Identity" action="get" select="id">
         <name>World</name>
       </Item>
     </execution_allowed_to>
-    <method_code><![CDATA[	Innovator innovatorInstance = this.getInnovator();
+    <method_code><![CDATA[Innovator innovatorInstance = this.getInnovator();
 	List<String> planIdList = this.getProperty("plan_ids").Split(',').ToList();
 	Dictionary<String, String> processPlanXmls = new Dictionary<String, String>();
 	String defaultLangCode = this.getInnovator().getI18NSessionContext().GetDefaultLanguageCode();
@@ -79,6 +79,16 @@
 			processPlans.appendItem(requestItem);
 		}
 	}
+	
+	//Modify By BCS Tengz 2021/6/28 MPP与PQD联动
+	//读取是否有开启PQD联动
+	bool isUsedPQD=false;
+	try{
+	    isUsedPQD=!innovatorInstance.applyMethod("bcs_MPP_CheckMPPRelationPQD","").isError();
+	}catch{
+	    
+	}
+	//End Modify
 
 	// cleaning up item, that created during variable declaration
 	processPlans.removeItem(processPlans.getItemByIndex(0));
@@ -210,6 +220,24 @@
 
 							xw.WriteStartElement("Test");
 							xw.WriteAttributeString("aras", "id", null, testRelationship.getID());
+							
+							//Modify By BCS Tenngz 2021/6/28 MPP与PQD联动
+							//处理检验设备
+							if(isUsedPQD)
+							{
+							    Item testItem=testRelationship.getRelatedItem();
+							    Item testToolItems=testItem.getRelationships();
+    							int testToolCount=testToolItems.getItemCount();
+    							for(int m=0;m<testToolCount;m++)
+    							{
+    							    Item testToolItem=testToolItems.getItemByIndex(m);
+    							    xw.WriteStartElement("Resource");
+							        xw.WriteAttributeString("aras", "id", null, testToolItem.getID());
+							        xw.WriteEndElement();
+    							}
+							}
+							//End Modify
+							
 							xw.WriteEndElement();
 						}
                         //End Modify

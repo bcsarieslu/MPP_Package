@@ -19,6 +19,8 @@ SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label_zt = N''�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label_zt = N''生產零件'' where name = ''mpp_ProcessPlanProducedPart''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label_zt = N''特殊特性'' where name = ''mpp_TestCharacteristic''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='RELATIONSHIPTYPE') 
@@ -39,6 +41,8 @@ SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label_zc = N''�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label_zc = N''生产零部件'' where name = ''mpp_ProcessPlanProducedPart''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label_zc = N''特殊特性'' where name = ''mpp_TestCharacteristic''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='RELATIONSHIPTYPE') 
@@ -58,5 +62,7 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label = N''Locations'' where name = ''mpp_ProcessPlanLocation''';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label = N''Produced Part'' where name = ''mpp_ProcessPlanProducedPart''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[RELATIONSHIPTYPE] set label = N''Characteristics'' where name = ''mpp_TestCharacteristic''';
 EXEC SP_EXECUTESQL @UpdateString;
 END

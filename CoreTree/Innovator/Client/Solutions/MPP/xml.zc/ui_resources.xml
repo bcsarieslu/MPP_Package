@@ -11,6 +11,10 @@
   <resource key="action.editItem" value="编辑属性" />
   <resource key="action.createProcessPlan" value="创建工艺流程" />
   <resource key="action.viewProducedPart" value="查看生产零件" />
+
+  <resource key="bcs.action.add2otherlocation" value="添加至其它地区"/>
+	<resource key="bcs.action.viewpqd" value="查看PQD"/>
+
   <resource key="workbenchDropdown.Parts" value="零部件" />
   <resource key="workbenchDropdown.Tools" value="工具类" />
   <resource key="workbenchDropdown.Machines" value="机台" />
@@ -46,6 +50,10 @@
   <resource key="MBOMTreeGridMenu.insertTest" value="插入测试项" />
   <resource key="MBOMTreeGridMenu.removeTest" value="删除测试项" />
   <resource key="MBOMTreeGridMenu.viewTest" value="查看测试项" />
+  <resource key="MBOMTreeGridMenu.viewTool" value="查看检验设备" />
+  <resource key="MBOMTreeGridMenu.viewCM" value="查看控制方法" />
+  <resource key="MBOMTreeGridMenu.viewRP" value="查看相应计划" />
+  <resource key="MBOMTreeGridMenu.viewpqd" value="查看PQD" />
   <resource key="elementRendererTree.itemIsBlocked" value="物件被封锁" />
   <resource key="ConsumedPartElementTree.phantom" value="虚拟件" />
   <resource key="operationElementRenderer.edit" value="编辑" />

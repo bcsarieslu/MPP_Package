@@ -1,0 +1,143 @@
+﻿<AML>
+  <Item type="Method" action="add" id="FE3763D52DC047DC9527041DFCD66D67">
+    <comments />
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[function main() {
+    if(aras.IomInnovator.applyMethod("bcs_MPP_CheckMPPRelationPQD","").isError()){
+       return; 
+    }
+    var factory = inArgs.factory;
+    var res = [];
+    var filledElementIds = {};
+
+    var ppId = getProcessPlanId();
+    if (!ppId) {
+        return res;
+    }
+
+    var ppItem = parent.aras.getItemById("mpp_ProcessPlan", ppId);
+
+    //Add by Tengz 2021/6/10 读取厂区
+    const locationsToolBar = cmfContainer.contentToolbar.getItem("bcs_pqd_locations_dropdown");
+    const currentLocation = locationsToolBar.getSelectedItem();
+    //End Add
+
+    //Modify by bcs Tengz 2021/6/10 使用厂区过滤工序
+    //var mppOperations = ppItem.selectNodes("Relationships/Item[@type=\"mpp_Operation\"]");
+    var mppOperations = ppItem.selectNodes("Relationships/Item[@type=\"mpp_Operation\" " + (currentLocation ? `and (bcs_location="${currentLocation}" or not(bcs_location))` : "") + "]");
+    //End Modify
+
+    var operationObjects = [];
+    for (var j = 0; j < mppOperations.length; j++) {
+        var businessObjectId = mppOperations[j].getAttribute("id");
+        var sortOrder = mppOperations[j].selectSingleNode("sort_order").text;
+        sortOrder = parseInt(sortOrder, 10);
+        operationObjects.push({
+            id: businessObjectId,
+            sortOrder: sortOrder
+        });
+    }
+
+    operationObjects.sort(function(a, b) {
+        return a.sortOrder - b.sortOrder;
+    });
+
+    for (var i = 0; i < operationObjects.length; i++) {
+        var found = compareByCriteria(operationObjects[i].id);
+        var resultModel = factory.createMappingModel();
+        resultModel.relatedId = operationObjects[i].id;
+        resultModel.sortOrder = i;
+        resultModel.parentSourceId = null;
+        resultModel.action = "bind";
+        if (found.length > 0) {
+            resultModel.sourceId = found[0].id;
+            filledElementIds[found[0].id] = true;
+        }
+        res.push(resultModel);
+    }
+
+    checkOnNotFound(filledElementIds, factory, res, ppItem);
+
+    checkFilterItem(res, filledElementIds);
+    return res;
+}
+
+function checkFilterItem(res, filledElementIds) {
+    const dataStore = cmfContainer.qpWindow.documentEditor._dataStore;
+    const parentNode = dataStore.getDocElement("root");
+
+    //还原被移除的当前厂区的Operation
+    if (window.locationFilterItems.length > 0) {
+        for (let filterItem of window.locationFilterItems) {
+            const found = res.find((modelItem) => {
+                return modelItem.relatedId == filterItem._boundItemId;
+            });
+            if (found) {
+                if (!parentNode.childrenIds.includes(filterItem._id)) {
+                    filterItem._isRemoved = false;
+                    dataStore.insertDocElement(parentNode, filterItem);
+                }
+                found.sourceId = filterItem.id;
+            }
+        }
+    }
+
+    //移除非当前厂区的Operation
+    for (var i = 0; i < inArgs.elements.length; i++) {
+        if (!filledElementIds[inArgs.elements[i].id]) {
+            const deletedNode = dataStore.getDocElement(inArgs.elements[i].id);
+            dataStore.removeDocElement(parentNode, deletedNode);
+            
+            if(!window.locationFilterItems.includes(deletedNode)){
+                window.locationFilterItems.push(deletedNode);
+            }
+        }
+    }
+}
+
+function checkOnNotFound(filledElementIds, factory, res, ppItem) {
+    for (var i = 0; i < inArgs.elements.length; i++) {
+        if (!filledElementIds[inArgs.elements[i].id]) {
+            var resultModel = factory.createMappingModel();
+            resultModel.sourceId = inArgs.elements[i].id;
+            resultModel.action = "bind";
+            res.push(resultModel);
+
+            if (!ppItem.selectSingleNode(`Relationships/Item[@type='mpp_Operation' and @id='${inArgs.elements[i].boundItemId}']`)) {
+                filledElementIds[inArgs.elements[i].id] = true;
+            }
+        }
+    }
+}
+
+function compareByCriteria(boundItemId) {
+    return inArgs.elements.filter(function(element) {
+        return element.boundItemId === boundItemId;
+    });
+}
+
+function getProcessPlanId() {
+    var ppNode = item.selectSingleNode("process_plan_id");
+    if (!ppNode) {
+        return null;
+    }
+
+    var ppId;
+    var justLinkedPp = ppNode.selectSingleNode("Item");
+    if (justLinkedPp) {
+        ppId = justLinkedPp.getAttribute("id");
+    } else {
+        ppId = ppNode.text;
+    }
+    return ppId;
+}
+
+return main();]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>bcs_PQD_OPStructureMapping</name>
+  </Item>
+</AML>
