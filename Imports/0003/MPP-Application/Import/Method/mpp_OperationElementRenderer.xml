@@ -265,7 +265,12 @@
                 //调整MPP ProcessPlan Tree 显示对象KeyedName
 				//elementName = schemaElement.getProperty('sort_order') + (itemName ? ' : ' + itemName : '');
 				var keyed_name=schemaElement.getProperty('keyed_name');
-				elementName = (keyed_name ? keyed_name : schemaElement.getProperty('sort_order')) + (itemName ? ' : ' + itemName : '');
+				//如果KeyedName没填则为ID,判断KeyedName是否为ID
+				var reg = new RegExp(/^[0-9A-Z]{8}[0-9A-Z]{4}[0-9A-Z]{4}[0-9A-Z]{4}[0-9A-Z]{12}$/);
+				if(!keyed_name||reg.test(keyed_name)){
+					keyed_name=itemName;
+				}
+				elementName = schemaElement.getProperty('sort_order') + (keyed_name ? ' : ' + keyed_name : '');
 			}
 
 			return this.wrapInTag(elementName, 'span', {class: 'ArasXmlSchemaElementTypeNode'});

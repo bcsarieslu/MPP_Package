@@ -92,6 +92,7 @@
       <is_keyed>0</is_keyed>
       <is_multi_valued>0</is_multi_valued>
       <is_required>0</is_required>
+      <keyed_name_order>100</keyed_name_order>
       <label xml:lang="en">Name</label>
       <range_inclusive>0</range_inclusive>
       <readonly>0</readonly>
@@ -226,7 +227,6 @@
     <is_keyed>0</is_keyed>
     <is_multi_valued>0</is_multi_valued>
     <is_required>0</is_required>
-    <keyed_name_order>1</keyed_name_order>
     <label xml:lang="en">Operation Number</label>
     <order_by>1</order_by>
     <range_inclusive>0</range_inclusive>
