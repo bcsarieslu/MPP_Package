@@ -1,7 +1,7 @@
 ﻿<AML>
   <Item type="Property" id="D0CCD008DA414F5199DF870FC552BCD6" action="add">
     <column_alignment>left</column_alignment>
-    <data_type>float</data_type>
+    <data_type>string</data_type>
     <is_hidden>0</is_hidden>
     <is_hidden2>0</is_hidden2>
     <is_indexed>0</is_indexed>
@@ -14,7 +14,15 @@
     <scale>2</scale>
     <sort_order>4096</sort_order>
     <source_id type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+    <stored_length>32</stored_length>
     <track_history>0</track_history>
     <name>bcs_hours</name>
+    <Relationships>
+         <Item type="Grid Event" id="24E9F67599F349F7B4A131F760DF4930" action="add">
+            <grid_event>oneditstart</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="343AC7D580CB4090A15A5954F0C3ADA4" /></related_id>
+            <sort_order>128</sort_order>
+         </Item>
+      </Relationships>
   </Item>
 </AML>

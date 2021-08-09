@@ -117,4 +117,7 @@ Other user's edit: Part removed"/>
 	
 	<!-- Add by tengz  -->
 	<resource key="import.itemIsNotLocked" value="Item is not locked"/>
+
+	<resource key="bcs.promptmessage" value="Please fill in the time (seconds)" />
+  	<resource key="bcs.formaterror" value="The input format is wrong (only integer numbers can be input)!" />
 </ui_resources>

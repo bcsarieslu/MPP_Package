@@ -39,7 +39,7 @@
      <Item type="Property" id="35C3C8E0DD184501B25F57844655A1C3" action="add">
       <column_alignment>left</column_alignment>
       <column_width>130</column_width>
-      <data_type>decimal</data_type>
+      <data_type>string</data_type>
       <is_hidden>0</is_hidden>
       <is_hidden2>0</is_hidden2>
       <is_indexed>0</is_indexed>
@@ -52,8 +52,16 @@
       <readonly>0</readonly>
       <sort_order>640</sort_order>
       <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <stored_length>32</stored_length>
       <track_history>0</track_history>
       <name>cycle_time</name>
+      <Relationships>
+         <Item type="Grid Event" id="55E4F8EDD1124975B73AE8B8312E6B80" action="add">
+            <grid_event>oneditstart</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="343AC7D580CB4090A15A5954F0C3ADA4" /></related_id>
+            <sort_order>128</sort_order>
+         </Item>
+      </Relationships>
      </Item>
      <Item type="Property" id="C2DAA1D1C07647B1BAD0740211A582E6" action="add">
       <column_alignment>left</column_alignment>
@@ -96,7 +104,7 @@
      <Item type="Property" id="ECD2580B8D2243BB8B5CEE211175921F" action="add">
       <column_alignment>left</column_alignment>
       <column_width>130</column_width>
-      <data_type>decimal</data_type>
+      <data_type>string</data_type>
       <is_hidden>0</is_hidden>
       <is_hidden2>0</is_hidden2>
       <is_indexed>0</is_indexed>
@@ -108,8 +116,16 @@
       <readonly>0</readonly>
       <sort_order>512</sort_order>
       <source_id keyed_name="mpp_Operation" type="ItemType" name="mpp_Operation">91B674D7C7AF47F99CA1C2FB26C38DBF</source_id>
+      <stored_length>32</stored_length>
       <track_history>0</track_history>
       <name>setup_time</name>
+      <Relationships>
+         <Item type="Grid Event" id="1F0291EC6B6A4576947461B52B1475A6" action="add">
+            <grid_event>oneditstart</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="343AC7D580CB4090A15A5954F0C3ADA4" /></related_id>
+            <sort_order>128</sort_order>
+         </Item>
+      </Relationships>
      </Item>
      <Item type="Property" id="EAF83D6CB4D94C9392FF99B52D2021D7" action="add">
         <column_alignment>left</column_alignment>

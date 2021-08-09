@@ -98,4 +98,8 @@
   <resource key="find.found_of_matches" value="{1}中的{0}" />
   <!-- Add by tengz  -->
   <resource key="import.itemIsNotLocked" value="物件未锁定" />
+
+  <resource key="bcs.promptmessage" value="请填写时间(秒)" />
+  <resource key="bcs.formaterror" value="输入格式错误(只能输入整数数字)!" />
+  
 </ui_resources>
