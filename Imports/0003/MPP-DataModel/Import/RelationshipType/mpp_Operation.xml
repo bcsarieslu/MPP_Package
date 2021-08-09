@@ -204,7 +204,7 @@
     <column_width>130</column_width>
     <data_type>integer</data_type>
     <default_search />
-    <is_hidden>1</is_hidden>
+    <is_hidden>0</is_hidden>
     <is_hidden2>0</is_hidden2>
     <is_indexed>0</is_indexed>
     <is_keyed>0</is_keyed>
