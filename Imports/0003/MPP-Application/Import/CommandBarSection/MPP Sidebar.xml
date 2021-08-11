@@ -25,6 +25,13 @@
     <sort_order>384</sort_order>
     <source_id keyed_name="MPP Sidebar" type="CommandBarSection">23281A91255D42B4803C2F98B91184F0</source_id>
    </Item>
+   <Item type="CommandBarSectionItem" id="9FB68F77C4B8428C9E8B05F35B479D12" action="add">
+    <action>Add</action>
+    <related_id keyed_name="mpp_show_process_flows" type="CommandBarItem">C7EED45B2E3C4885B3D697B9C05AB9A2</related_id>
+    <role keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</role>
+    <sort_order>768</sort_order>
+    <source_id keyed_name="MPP Sidebar" type="CommandBarSection">23281A91255D42B4803C2F98B91184F0</source_id>
+    </Item>
   </Relationships>
  </Item>
 </AML>

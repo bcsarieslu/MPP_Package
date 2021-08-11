@@ -71,6 +71,10 @@ SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''是否為模�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''製造流程規劃'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''BCS AQM PFMEA V2'' and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''工序圖標'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_Operation'' and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[FIELD] set label_zt = N''廠區圖標'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_Location'' and a.name=''bcs_icon'')';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='FIELD') 
@@ -143,6 +147,10 @@ SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''是否为模�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''工艺流程规划'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''BCS AQM PFMEA V2'' and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''工序图标'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_Operation'' and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[FIELD] set label_zc = N''厂区图标'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_Location'' and a.name=''bcs_icon'')';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='FIELD') 
@@ -214,5 +222,9 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[FIELD] set label = N''Is Template'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_ProcessPlan'' and a.name=''is_template'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[FIELD] set label = N''Process Plan'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''BCS AQM PFMEA V2'' and a.name=''process_plan_id'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[FIELD] set label = N''Process icon'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_Operation'' and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[FIELD] set label = N''bcs_icon'' where id = ( select a.id from [innovator].[FIELD] as a left join [innovator].[PROPERTY] as b on a.propertytype_id=b.id left join [innovator].[ITEMTYPE] as c on b.source_id=c.id left join [innovator].[BODY] as d on a.source_id=d.id left join [innovator].[Form] as e on d.source_id=e.id where a.is_current=1 and e.name=''mpp_Location'' and a.name=''bcs_icon'')';
 EXEC SP_EXECUTESQL @UpdateString;
 END

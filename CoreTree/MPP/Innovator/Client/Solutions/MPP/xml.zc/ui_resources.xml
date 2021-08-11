@@ -98,4 +98,14 @@
   <resource key="find.found_of_matches" value="{1}中的{0}" />
   <!-- Add by tengz  -->
   <resource key="import.itemIsNotLocked" value="物件未锁定" />
+  <!--Add by zhou-->
+  <!--工艺流程图页面工具栏&&属性栏-->
+  <resource key="flwo_delete" value="删除" /> 
+  <resource key="flwo_property" value="属性" /> 
+  <resource key="flwo_toolkit" value="工具集" />
+  <resource key="flwo_pointer" value="选择" />
+  <resource key="flwo_path" value='连接' /> 
+  <resource key="flwo_amplification" value='放大' />
+  <resource key="flwo_shrink" value='缩小' /> 
+  <resource key="flwo_replacement" value='恢复' /> 
 </ui_resources>

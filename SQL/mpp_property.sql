@@ -375,6 +375,10 @@ SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''樣本容�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''製造流程規劃'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''工序圖標'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Operation'' and a.is_current=1 and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''廠區圖標'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Location'' and a.is_current=1 and a.name=''bcs_icon'')';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='PROPERTY') 
@@ -751,6 +755,10 @@ SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''样本容�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''工艺流程规划'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''工序图标'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Operation'' and a.is_current=1 and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''厂区图标'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Location'' and a.is_current=1 and a.name=''bcs_icon'')';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='PROPERTY') 
@@ -1126,5 +1134,9 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Sample Size'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Test'' and a.is_current=1 and a.name=''bcs_samplesize'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Process Plan'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Process icon'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Operation'' and a.is_current=1 and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''bcs_icon'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Location'' and a.is_current=1 and a.name=''bcs_icon'')';
 EXEC SP_EXECUTESQL @UpdateString;
 END

@@ -14,14 +14,16 @@
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_process_flows', '../images/WorkflowMap.svg', false);
 		break;
-	case 'mpp_show_ebom_view':
+		case 'mpp_show_ebom_view':
 		inArgs.switchToTabId = 'ebom_viewer';
 		inArgs.enabledButtonImage = '../images/EBOM.svg';
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_pp_view', '../images/ProcessPlanEditorOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_process_flows', '../images/WorkflowMap.svg', false);
 		break;
 	case 'mpp_show_mbom_view':
 		inArgs.switchToTabId = 'mbom_viewer';
@@ -30,6 +32,7 @@
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_process_flows', '../images/WorkflowMap.svg', false);
 		break;
 	//Add by tengz For MPP
 	//页头页尾SideBar图标处理
@@ -40,6 +43,7 @@
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_process_flows', '../images/WorkflowMap.svg', false);
 	    break;
 	//Add by tengz For MPP
 	//检验项目&工时定额SideBar图标处理
@@ -50,7 +54,17 @@
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
 		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
-	    break;	    
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_process_flows', '../images/WorkflowMap.svg', false);
+	    break;	  
+	case 'mpp_show_process_flows':
+	    inArgs.switchToTabId = 'process_flows';
+		inArgs.enabledButtonImage = '../images/WorkflowProcess.svg';
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_pp_view', '../images/ProcessPlanEditorOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_ebom_view', '../images/EBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_mbom_view', '../images/MBOMOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_headerfooter', '../images/PDFViewerOff.svg', false);
+		dijit.byId('sidebar').switchSidebarButton('mpp_show_testworkhour', '../images/xClassificationOff.svg', false);
+		break;
 	default:
 		return;
 }

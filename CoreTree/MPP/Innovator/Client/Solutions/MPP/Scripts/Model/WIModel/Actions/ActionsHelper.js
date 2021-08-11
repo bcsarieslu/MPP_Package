@@ -322,6 +322,28 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 					var action = dataModelActions.actions[actionName];
 					actionArguments.actionArgumentsOptionalArgs = action.actionOptionalArgs;
 					dataModelActions.executeAction(actionName, actionArguments);
+					var currentItem, flowCourses;
+					if (selectedModelItems && actionName == "removeelement") {
+						for (var i = 0; i < selectedModelItems.length; i++) {
+							currentItem = selectedModelItems[i];
+							flowCourses = aras.getRelationships(parent.item, "mpp_process_flow");
+							if (flowCourses.length < 1) {
+								processFlowItem = aras.getItemRelationshipsEx(parent.item, "mpp_process_flow");
+								flowCourses = aras.getRelationships(parent.item, "mpp_process_flow");
+							}
+							if (flowCourses.length > 0) {
+								var flowCourse, path_to_id, path_from_id;
+								for (var x = 0; x < flowCourses.length; x++) {
+									flowCourse = flowCourses[x];
+									path_to_id = aras.getItemProperty(flowCourse, "path_to_id");
+									path_from_id = aras.getItemProperty(flowCourse, "path_from_id");
+									if (path_to_id.substring(4) == currentItem._id || path_from_id.substring(4) == currentItem._id) {
+										flowCourse.setAttribute("action", "delete");
+									}
+								}
+							}
+						}
+					}
 				}
 			} catch (ex) {
 				this.aras.AlertError(ex.message);
