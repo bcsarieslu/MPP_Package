@@ -22,6 +22,7 @@
   <resource key="workbenchDropdown.Skills" value="技能專長" />
   <resource key="workbench.sendToWorkbenchButton" value="送出" />
   <resource key="workbench.sendToWorkbenchWarning" value="刪除還是加入至物件總管？" />
+  <resource key="workbench.unauthorized" value="無產品授權,請申請產品授權" />
   <!-- Add by tengz  -->
   <!-- Process Plan的workbench里添加对象类 -->
   <resource key="workbenchDropdown.CAD" value="工程图" />

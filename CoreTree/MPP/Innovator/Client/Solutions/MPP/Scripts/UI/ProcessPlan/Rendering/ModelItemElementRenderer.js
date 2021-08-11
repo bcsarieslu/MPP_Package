@@ -99,6 +99,20 @@ function(declare, ItemXmlSchemaElementRenderer) {
 					{
 						marksContent += this.wrapInTag('', 'img', {src: '../../images/FlaggedBy.svg', class: 'ConditionMark', style: markCount ? 'right:' + markCount * 20 + 'px;' : ''});
 					}
+					else {
+						var icon = aras.newIOMItem("mpp_Location", "get");
+						icon.setAttribute("select", "icon");
+						icon.setAttribute("id", schemaElement.getProperty("bcs_location"));
+						icon = icon.apply();
+						var iconurl = icon.getProperty("icon");
+						if (iconurl.indexOf(".") != -1) {
+							iconurl = "../" + iconurl;
+						}
+						else {
+							iconurl = dojoConfig.arasContext.adjustIconUrl(iconurl);
+						}
+						marksContent += this.wrapInTag('', 'img', { src: iconurl, class: 'ConditionMark', style: markCount ? 'right:' + markCount * 20 + 'px;' : '' });
+					}
 				}
 				
 				return marksContent;
