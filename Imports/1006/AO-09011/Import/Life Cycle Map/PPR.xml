@@ -138,7 +138,7 @@
       <Item type="Life Cycle Transition" id="A522A43C24A542688EDF6747F37CB43F" action="add">
         <from_state type="Life Cycle State">D650D294F9AF4802B83659C1DA4F6B1F</from_state>
         <get_comment>0</get_comment>
-        <post_action type="Method"><Item type="Method" action="get" id="6DDDB31EED1340F990C7FC2AE680C962" /></post_action>
+        <post_action type="Method"><Item type="Method" action="get" id="CB885F4CDCBC426086B9683E08D280E5" /></post_action>
         <pre_action type="Method"><Item type="Method" action="get" id="2F9DC06E2EB74D6CB745C7B0F7397FF4" /></pre_action>
         <role type="Identity">56A96DA9E981481688563E2D14D5D878</role>
         <sort_order>768</sort_order>

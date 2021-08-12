@@ -71,6 +71,14 @@ SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_zt = N''生產零�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural_zt = N''生產零件'' where name = ''mpp_ProcessPlanProducedPart''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_zt = N''受影響物件'' where name = ''MPP Affected Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural_zt = N''受影響物件'' where name = ''MPP Affected Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_zt = N''變更控制物件'' where name = ''MPP Change Controlled Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural_zt = N''變更控制物件'' where name = ''MPP Change Controlled Item''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='ITEMTYPE') 
@@ -143,6 +151,14 @@ SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_zc = N''生产零�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural_zc = N''生产零部件'' where name = ''mpp_ProcessPlanProducedPart''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_zc = N''影响对象'' where name = ''MPP Affected Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural_zc = N''影响对象'' where name = ''MPP Affected Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_zc = N''变更控制对象'' where name = ''MPP Change Controlled Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural_zc = N''变更控制对象'' where name = ''MPP Change Controlled Item''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='ITEMTYPE') 
@@ -214,5 +230,13 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label = N''Produced Part'' where name = ''mpp_ProcessPlanProducedPart''';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural = N''Produced Part'' where name = ''mpp_ProcessPlanProducedPart''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label = N''Affected Item'' where name = ''MPP Affected Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural = N''Affected Items'' where name = ''MPP Affected Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label = N''Change Controlled Item'' where name = ''MPP Change Controlled Item''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[ITEMTYPE] set label_plural = N''Change Controlled Item'' where name = ''MPP Change Controlled Item''';
 EXEC SP_EXECUTESQL @UpdateString;
 END

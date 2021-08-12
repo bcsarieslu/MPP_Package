@@ -1,0 +1,12 @@
+﻿<AML>
+  <Item type="Action" id="581FB41CB70F4311BDA6C179A7C0F5C5" action="add">
+    <item_query>&lt;Item type="{@type}" id="{@id}" levels= "1" action="get" /&gt;</item_query>
+    <label xml:lang="zc">添加至变更单...</label>
+    <location>client</location>
+    <method type="Method"><Item type="Method" action="get" id="BC74EDD7DFB7417BB537B9CF1C37D300" /></method>
+    <on_complete type="Method"><Item type="Method" action="get" id="44E653B352FF477A93C51A8D950F6F70" /></on_complete>
+    <target>none</target>
+    <type>item</type>
+    <name>bcs_MPP_AddToChange</name>
+  </Item>
+</AML>

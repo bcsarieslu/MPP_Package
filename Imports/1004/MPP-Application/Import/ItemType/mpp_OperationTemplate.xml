@@ -35,10 +35,6 @@
         </related_id>
         <sort_order>128</sort_order>
       </Item>
-      <Item type="Item Action" id="83C802E3AB134A3996BE0FC13CFA3E90" action="add">
-        <related_id type="Action">83FB72FC3E4D42B8B51BCD7F4194E527</related_id>
-        <sort_order>128</sort_order>
-      </Item>
       <Item type="ItemType Life Cycle" id="17258FB7D8B8402CA27CFC1764A39718" action="add">
         <related_id type="Life Cycle Map">89AAAC828A444FD39BFD8DBB339910E4</related_id>
         <sort_order>128</sort_order>
@@ -131,14 +127,14 @@
       <Item type="Server Event" id="325A107C4D874DC783D93CE385BB8350" action="add">
         <event_version>version_1</event_version>
         <is_required>0</is_required>
-        <related_id type="Method"><Item type="Method" action="get" id="DB6A7506779F42F596433298E0855FD1" /></related_id>
+        <related_id type="Method"><Item type="Method" action="get" id="B9C5A072000C40F1B94EEC1F25C3E90D" /></related_id>
         <server_event>onAfterCopy</server_event>
         <sort_order>384</sort_order>
       </Item>
       <Item type="Server Event" id="339A165A200748729A0D82B39626E0E3" action="add">
         <event_version>version_1</event_version>
         <is_required>0</is_required>
-        <related_id type="Method"><Item type="Method" action="get" id="DB6A7506779F42F596433298E0855FD1" /></related_id>
+        <related_id type="Method"><Item type="Method" action="get" id="B9C5A072000C40F1B94EEC1F25C3E90D" /></related_id>
         <server_event>onAfterVersion</server_event>
         <sort_order>512</sort_order>
       </Item>
