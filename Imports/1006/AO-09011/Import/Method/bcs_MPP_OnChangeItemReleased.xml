@@ -1,0 +1,18 @@
+﻿<AML>
+  <Item type="Method" action="add" id="CB885F4CDCBC426086B9683E08D280E5">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[this.setAction("bcs_MPP_update_has_change_pendin");
+this.apply();
+
+this.setAction("Set Release Date");
+this.apply();
+
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_MPP_OnChangeItemReleased</name>
+  </Item>
+</AML>
