@@ -1,0 +1,32 @@
+﻿<AML>
+  <Item type="Method" action="add" id="32108B9113064FF2B942E7C5DDAC4DF8">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[if (RequestState.Contains("is_search")){
+    return this;
+}
+
+Innovator inn=this.getInnovator();
+
+int _count = this.getItemCount();
+for (int i = 0; i < _count; i++) {
+    Item controlItem = this.getItemByIndex(i);
+    if (controlItem.getProperty("itemtype") == "2DF7A7891AE4480AB1B1AAACBB4246E6") {
+        RequestState.Add("is_search", "1");
+        Item MPart=inn.newItem("MPart","get");
+        MPart.setID(controlItem.getID());
+        MPart.setAttribute("select","bcs_part_item_number,bcs_part_name");
+        MPart=MPart.apply();
+        RequestState.Clear();
+        controlItem.setProperty("item_number", MPart.getProperty("bcs_part_item_number"));
+        controlItem.setProperty("name", MPart.getProperty("bcs_part_name"));
+    }
+}
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_MBOM_setPropertyOnAfterGet</name>
+  </Item>
+</AML>

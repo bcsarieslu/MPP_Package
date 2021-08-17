@@ -1,0 +1,59 @@
+﻿<AML>
+  <Item type="Method" action="add" id="082900096E7E46EE88E86EBE20C08F67">
+    <execution_allowed_to type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</execution_allowed_to>
+    <method_code><![CDATA[' name: checkAffectedTypeOnServer
+' purpose: PLM. Checks in onBeforeAdd and onBeforeUpdate server events type of affected_id and new_item_id properties.
+' created: 12-AUG-2005 Yuri Delyamba
+' (c) Copyright by Aras Corporation, 2005-2007.
+' MethodTemplateName=VBMain;
+
+Dim innovator As Innovator = Me.getInnovator()
+
+Function Main() As Item
+
+	Dim affectedId As String = Me.getProperty("affected_id", "")
+	Dim supersedingId As String = Me.getProperty("new_item_id", "")
+
+	If String.IsNullOrEmpty(affectedId) OrElse String.IsNullOrEmpty(supersedingId) Then Exit Function
+
+	Dim affectedItems As Item = GetAffectedItems(affectedId, supersedingId)
+	If affectedItems.isError() Then
+
+		Return affectedItems
+	End If
+
+	Dim affectedItem As Item = GetAffectedItem(affectedItems, affectedId)
+	If (affectedItem.isError()) Then Return affectedItem
+
+	Dim supersedingItem As Item = GetAffectedItem(affectedItems, supersedingId)
+	If (supersedingItem.isError()) Then Return supersedingItem
+
+	If Not String.Equals(affectedItem.getProperty("itemtype"), supersedingItem.getProperty("itemtype"), StringComparison.Ordinal) Then
+
+		Return innovator.newError("Affected type should be the same at affected_id and new_item_id properties")
+	End If
+End Function
+
+Private Function GetAffectedItems(ByVal affected_id As String, ByVal new_item_id As String) As Item
+
+	Dim qry As Item = Me.newItem("MPP Change Controlled Item", "get")
+	qry.setAttribute("select", "id, itemtype")
+	qry.setAttribute("idlist", affected_id & "," & new_item_id)
+	Return qry.apply()
+End Function
+
+Private Function GetAffectedItem(ByVal affectedItems As Item, ByVal id As String) As Item
+
+	Dim affectedItem As Item = affectedItems.getItemsByXPath("descendant-or-self::Item[@id='" & id & "']")
+	If (affectedItem.node Is Nothing) Then
+		Dim qry As Item = Me.newItem("MPP Change Controlled Item", "get")
+		qry.setAttribute("select", "id, itemtype")
+		qry.setID(id)
+		affectedItem = qry.apply()
+	End If
+	Return affectedItem
+End Function]]></method_code>
+    <method_type>VB</method_type>
+    <name>bcs_MPP_checkAffectedTypeOnServe</name>
+  </Item>
+</AML>

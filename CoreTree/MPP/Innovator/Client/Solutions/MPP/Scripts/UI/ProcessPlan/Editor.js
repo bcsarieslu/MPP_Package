@@ -283,7 +283,7 @@ function(declare, DijitEditor, keys, aspect, domConstruct, domClass, has, DOMRan
 		onLoad: function(html) {
 			//Modify by tengz 2019/5/10
 			//MPP产品包
-			this.iframe.src="../../scripts/WebEditor/luckysheet/default.html";
+			this.iframe.src="../../scripts/WebEditor/ueditor/default.html";
 			
 			this.inherited(arguments);
 
@@ -553,7 +553,7 @@ function(declare, DijitEditor, keys, aspect, domConstruct, domClass, has, DOMRan
 					}
 					else
 					{
-						win.location=aras.getScriptsURL()+"WebEditor/luckysheet/default.html";
+						win.location=aras.getScriptsURL()+"WebEditor/ueditor/default.html";
 						
 						setTimeout(ueditorOnLoad,1000);
 

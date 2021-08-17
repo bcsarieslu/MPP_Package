@@ -2,7 +2,7 @@
   <Item type="Server Event" id="058BF3F23EB14508A508D0A8C4E64692" action="add">
     <event_version>version_1</event_version>
     <is_required>0</is_required>
-    <related_id type="Method"><Item type="Method" action="get" id="DB6A7506779F42F596433298E0855FD1" /></related_id>
+    <related_id type="Method"><Item type="Method" action="get" id="B9C5A072000C40F1B94EEC1F25C3E90D" /></related_id>
     <server_event>onAfterVersion</server_event>
     <sort_order>512</sort_order>
     <source_id type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</source_id>

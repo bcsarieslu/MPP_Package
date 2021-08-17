@@ -1,7 +1,11 @@
 ﻿<AML>
- <Item type="Method" id="B3D6E181DCE04064A22DFB6E0B8FAAEC" action="add">
-  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
-  <method_code><![CDATA[//Modify by tengz 2019/7/9
+  <Item type="Method" action="add" id="1287CDFBBFCE4748864A82F445F6964A">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[//Modify by tengz 2019/7/9
 //增加MPP添加至PPR变更流程逻辑
 
 //Modify by tengz 2019/9/26
@@ -12,26 +16,18 @@ ChooseCMItemDialog = function (itemTypeName)
 	document.isEditMode = true;
 	this.ItemTypeName = itemTypeName;
 	//this.ChangeItemList = aras.newArray("PR", "ECN", "ECR", "Simple ECO", "Simple MCO", "Express ECO", "Express DCO");
-	this.ChangeItemList = top.aras.newArray("Simple ECO", "Express DCO","PPR");  
+	this.ChangeItemList = top.aras.newArray("PPR");  
 	this.ChangeTypeInput = document.querySelector("select[name='change_type_input']");
 	this.ItemInput = document.querySelector("select[name='item_input']");
 
 	var preferences = this.GetDefaultChangesPreferences();
-	var defaultChangeType = "ECR";
+	var defaultChangeType = "PPR";
 	switch(itemTypeName)
 	{
-		case "Document":
-			defaultChangeType = preferences["change_type_document"];
-			break;
-		case "CAD":
-			defaultChangeType = preferences["change_type_cad_document"];
-			break;
-		case "Part":
-			defaultChangeType = preferences["change_type_part"];
-			break;
 		//Modify by tengz
 		case "mpp_ProcessPlan":
 		case "mpp_OperationTemplate":
+		case "MPart":
 		    defaultChangeType = "PPR";
 			break;
 	}
@@ -45,22 +41,8 @@ ChooseCMItemDialog.prototype.PopulateChangeType = function ChooseCMItemDialog_Po
     this.ChangeTypeInput.remove(0);
     
     for(var i = 0; i < this.ChangeItemList.length; i++)
-    { 
+    {
         var changeItemName = this.ChangeItemList[i];
-        if(this.ItemTypeName == "Part" && changeItemName == "Express DCO")
-            continue;
-        
-        if((this.ItemTypeName == "Document" || this.ItemTypeName == "CAD") && (changeItemName == "Express ECO" || changeItemName == "Simple MCO"))
-            continue;  
-
-        //Modified by tengz
-        if((this.ItemTypeName != "mpp_ProcessPlan" && this.ItemTypeName != "mpp_OperationTemplate" && changeItemName == "PPR") || ((this.ItemTypeName == "mpp_ProcessPlan" || this.ItemTypeName == "mpp_OperationTemplate") && changeItemName !="PPR"))
-            continue;  
-
-        //Modified by BCS Team 2020/10/25(APV6)
-        if(this.ItemTypeName == "SAD" && changeItemName == "Express DCO")
-            continue;
-            
         var option = this.AddOptionToDropDown(this.ChangeTypeInput, changeItemName);
         if(defaultChangeType == changeItemName)
             option.selected = true;
@@ -196,7 +178,7 @@ ChooseCMItemDialog.prototype.Cancel = function ChooseCMItemDialog_Cancel()
 	parent.args.dialog.close();
 }
 ]]></method_code>
-  <method_type>JavaScript</method_type>
-  <name>PE_ChooseCMItem_API</name>
- </Item>
+    <method_type>JavaScript</method_type>
+    <name>bcs_MPP_ChooseCMItem_API</name>
+  </Item>
 </AML>

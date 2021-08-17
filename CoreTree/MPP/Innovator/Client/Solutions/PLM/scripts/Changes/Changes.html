@@ -156,7 +156,7 @@
 
 			var aml = "<Item type='" + relationshipName + "' action='get' select='source_id(id, item_number, title, state)'>" +
 				"	<related_id>" +
-				"		<Item type='Affected Item'>" +
+				"		<Item type='MPP Affected Item'>" +
 				"			<OR>" +
 				"				<new_item_id condition='in'>" + ids + "</new_item_id>" +
 				"				<affected_id condition='in'>" + ids + "</affected_id>" +

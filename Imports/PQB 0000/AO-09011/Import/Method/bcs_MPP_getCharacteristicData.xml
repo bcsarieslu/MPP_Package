@@ -17,7 +17,7 @@ function bulidData(){
                 <Item type="Process Quality Document" action="get" select="id" >
                     <process_plan_id>${mppId}</process_plan_id>
                     <Relationships>
-                        <Item type="PQD Operation" action="get" select="reference_id" >
+                        <Item type="PQD Process Step Element" action="get" select="reference_id" >
                             <bound_item_id>${operationId}</bound_item_id>
                         </Item>
                     </Relationships>

@@ -1,0 +1,56 @@
+﻿<AML>
+  <Item type="SQL" id="5ED1F1734CD5464ABFDCB719BAC0FD9F" action="add">
+    <execution_flag>immediate</execution_flag>
+    <old_name>bcs_MPP_update_has_change_pending_flag</old_name>
+    <sqlserver_body><![CDATA[create procedure bcs_MPP_update_has_change_pending_flag(@itemTypeNameDbName nvarchar(32), @itemID char(32), @ignoreAffectedItemID char(32))
+AS
+BEGIN
+	DECLARE @pendingChangesCounter int
+	
+	IF @itemTypeNameDbName IS NULL OR @itemTypeNameDbName = '' BEGIN
+		SET @itemTypeNameDbName = '[' +
+			(
+			select instance_data from [ITEMTYPE] where ID = 
+				(
+				select itemtype from [MPP_CHANGE_CONTROLLED_ITEM] where ID = @itemID
+				)
+			) + ']'
+	END
+			
+	SET @pendingChangesCounter =
+	(
+	select COUNT(ai.ID) from [MPP_AFFECTED_ITEM] ai 
+	where 
+		(
+		ai.AFFECTED_ID = @itemID
+		OR 
+		ai.NEW_ITEM_ID = @itemID
+		)
+		AND
+		ai.id <> @ignoreAffectedItemID
+		AND
+		(
+		EXISTS(select ppr.id from [PPR] ppr where ppr.id = (select SOURCE_ID from [PPR_AFFECTED_ITEM] where RELATED_ID = ai.id) AND (ppr.STATE <> N'Released' OR ppr.STATE IS NULL))
+		)
+	)
+	
+	DECLARE @SQLstr nvarchar(500)
+	DECLARE @ParmDefinition nvarchar(500);
+	SET @ParmDefinition = N'@id char(32), @count int';
+
+	SET @SQLstr = N'UPDATE ' + @itemTypeNameDbName + ' 
+	SET HAS_CHANGE_PENDING = CASE 
+		WHEN @count > 0 
+			THEN ''1'' 
+			ELSE ''0'' 
+		END
+	WHERE ID=@id';
+  
+	EXECUTE sp_executesql @SQLstr, @ParmDefinition, @id=@itemID, @count=@pendingChangesCounter
+END]]></sqlserver_body>
+    <stale>0</stale>
+    <transform_first>0</transform_first>
+    <type>procedure</type>
+    <name>bcs_MPP_update_has_change_pending_flag</name>
+  </Item>
+</AML>

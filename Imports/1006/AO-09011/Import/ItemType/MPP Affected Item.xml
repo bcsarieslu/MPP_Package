@@ -1,0 +1,228 @@
+﻿<AML>
+  <Item type="ItemType" id="EB293817C4354BFA84A4BDB67E54511E" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>1</auto_search>
+    <default_page_size>25</default_page_size>
+    <enforce_discovery>1</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <history_template type="History Template">3BC16EF9E52B4F9792AB76BCE0492F29</history_template>
+    <implementation_type>table</implementation_type>
+    <instance_data>MPP_AFFECTED_ITEM</instance_data>
+    <is_dependent>1</is_dependent>
+    <is_relationship>0</is_relationship>
+    <is_versionable>0</is_versionable>
+    <label xml:lang="zc">影响对象</label>
+    <label_plural xml:lang="zc">影响对象</label_plural>
+    <large_icon>../Images/AffectedItem.svg</large_icon>
+    <open_icon>../Images/AffectedItem.svg</open_icon>
+    <revisions type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs off</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>0</use_src_access>
+    <name>MPP Affected Item</name>
+    <Relationships>
+      <Item type="Allowed Permission" id="46138E03AB354B499D13542252C5A5E3" action="add">
+        <is_default>1</is_default>
+        <related_id type="Permission">1712BEEB88234763B5E431015F9CFD2D</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Can Add" id="11F710E12D734FD3A182C65B7E6911BB" action="add">
+        <can_add>1</can_add>
+        <related_id type="Identity">
+          <Item type="Identity" action="get" select="id">
+            <name>World</name>
+          </Item>
+        </related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="ItemType Life Cycle" id="26A0D9785DAB46C8B2BE1C6901917FDC" action="add">
+        <related_id type="Life Cycle Map">2F3B75E17C4E4F2D9599579A965BFA64</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Property" id="BE837415AF9C4C56B828B1876B17C3B0" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>70</column_width>
+        <data_source>5C72C69E1762447FAB17F8AD2B3F5DFC</data_source>
+        <data_type>list</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">操作</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>256</sort_order>
+        <stored_length>64</stored_length>
+        <track_history>0</track_history>
+        <name>action</name>
+        <Relationships>
+          <Item type="Grid Event" id="C0A0E1AF817E4317B874BA555E4AAFAC" action="add">
+            <grid_event>onchangecell</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="8E288C5BF8CB45C8B355BFBD5D87DB41" /></related_id>
+            <sort_order>128</sort_order>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="Property" id="AB9688F3AFC94B1F9B788A0C2F5ABEC2" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>100</column_width>
+        <data_source type="ItemType" name="MPP Change Controlled Item">1152E941C53A4A3AB12CE88C95E88813</data_source>
+        <data_type>item</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>1</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <item_behavior>fixed</item_behavior>
+        <label xml:lang="zc">旧编号</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>384</sort_order>
+        <stored_length>32</stored_length>
+        <track_history>0</track_history>
+        <name>affected_id</name>
+        <Relationships>
+          <Item type="Grid Event" id="258E26F6A74A43B9B067AF6E7F1D8182" action="add">
+            <grid_event>onchangecell</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="990F4536F402411B8957B1F719DE98F6" /></related_id>
+            <sort_order>128</sort_order>
+          </Item>
+          <Item type="Grid Event" id="B4D1E0DCCD324DE390C17C32EB730020" action="add">
+            <grid_event>onchangecell</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="D11B637DBC9940D6ADA97EA2EFAE45DB" /></related_id>
+            <sort_order>512</sort_order>
+          </Item>
+          <Item type="Grid Event" id="880AD89EDCFE4AD48C037C1027ADD67B" action="add">
+            <grid_event>oneditstart</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="8E288C5BF8CB45C8B355BFBD5D87DB41" /></related_id>
+            <sort_order>256</sort_order>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="Property" id="D6B3BCBBECAE4FE09D7175910805B85B" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>40</column_width>
+        <data_type>federated</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">类型</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>1</readonly>
+        <sort_order>128</sort_order>
+        <track_history>0</track_history>
+        <name>affected_type</name>
+      </Item>
+      <Item type="Property" id="CE4F9B9B319F4ACFABCCE69C4919ECEA" action="add">
+        <column_alignment>center</column_alignment>
+        <column_width>90</column_width>
+        <data_type>boolean</data_type>
+        <default_value xml:lang="zc">1</default_value>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">执行变更</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>640</sort_order>
+        <track_history>0</track_history>
+        <name>interchangeable</name>
+        <Relationships>
+          <Item type="Grid Event" id="34F911FF84D34521AC53E3C1E83E60BA" action="add">
+            <grid_event>oneditstart</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="8E288C5BF8CB45C8B355BFBD5D87DB41" /></related_id>
+            <sort_order>128</sort_order>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="Property" id="41F7FA027AD04B0D8BBD46FC5AD07FF5" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>100</column_width>
+        <data_source type="ItemType" name="MPP Change Controlled Item">1152E941C53A4A3AB12CE88C95E88813</data_source>
+        <data_type>item</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>1</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <item_behavior>fixed</item_behavior>
+        <label xml:lang="zc">新编号</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>768</sort_order>
+        <track_history>0</track_history>
+        <name>new_item_id</name>
+        <Relationships>
+          <Item type="Grid Event" id="BEEAD3C318DD41F282C363FBD1D29A96" action="add">
+            <grid_event>onchangecell</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="990F4536F402411B8957B1F719DE98F6" /></related_id>
+            <sort_order>128</sort_order>
+          </Item>
+          <Item type="Grid Event" id="2576653650614542BFAC924D8281EFFD" action="add">
+            <grid_event>onchangecell</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="8E288C5BF8CB45C8B355BFBD5D87DB41" /></related_id>
+            <sort_order>256</sort_order>
+          </Item>
+          <Item type="Grid Event" id="AEA02160489A4E8E844A085B6D80FDFA" action="add">
+            <grid_event>onchangecell</grid_event>
+            <related_id type="Method"><Item type="Method" action="get" id="D11B637DBC9940D6ADA97EA2EFAE45DB" /></related_id>
+            <sort_order>512</sort_order>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="Server Event" id="C2472CD1F4474B61AF788995CCADCC92" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="78FB7FE350D34238B9BA95B68309AC99" /></related_id>
+        <server_event>onAfterAdd</server_event>
+        <sort_order>1</sort_order>
+      </Item>
+      <Item type="Server Event" id="08C23FC9A3D6471DB39FF907A3318454" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="B9C5A072000C40F1B94EEC1F25C3E90D" /></related_id>
+        <server_event>onAfterUpdate</server_event>
+        <sort_order>1</sort_order>
+      </Item>
+      <Item type="Server Event" id="007C6F7F88C248448A0B68F5635C8856" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="78FB7FE350D34238B9BA95B68309AC99" /></related_id>
+        <server_event>onAfterUpdate</server_event>
+        <sort_order>2</sort_order>
+      </Item>
+      <Item type="Server Event" id="48BF8B8C57B148C5B2C70ED3DC8260DF" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="082900096E7E46EE88E86EBE20C08F67" /></related_id>
+        <server_event>onBeforeAdd</server_event>
+        <sort_order>1</sort_order>
+      </Item>
+      <Item type="Server Event" id="1FB56705B0B64BA9A0220576D38C412C" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="082900096E7E46EE88E86EBE20C08F67" /></related_id>
+        <server_event>onBeforeUpdate</server_event>
+        <sort_order>1</sort_order>
+      </Item>
+      <Item type="Server Event" id="CC69F830BF3548CF8EE8A0D1A0966F44" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="B9C5A072000C40F1B94EEC1F25C3E90D" /></related_id>
+        <server_event>onBeforeUpdate</server_event>
+        <sort_order>2</sort_order>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

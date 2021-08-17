@@ -94,4 +94,7 @@
   <resource key="find.found_of_matches" value="{1}中的{0}" />
   <!-- Add by tengz  -->
   <resource key="import.itemIsNotLocked" value="物件未鎖定" />
+
+  <resource key="bcs.promptmessage" value="請填寫時間(秒)" />
+  <resource key="bcs.formaterror" value="輸入格式錯誤(只能輸入整數數字)!" />
 </ui_resources>

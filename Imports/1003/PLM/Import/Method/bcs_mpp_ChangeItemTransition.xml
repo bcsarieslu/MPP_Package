@@ -35,21 +35,6 @@
       //Create instance of promoted item
       switch (item.getType())
       {
-        case "ECN":
-          changeItem = new ECN(item);
-          break;
-        case "Simple ECO":
-          changeItem = new SimpleECO(item);
-          break;
-        case "Express ECO":
-          changeItem = new ExpressECO(item);
-          break;
-        case "Express DCO":
-          changeItem = new ExpressDCO(item);
-          break;
-        case "Express EDR":
-          changeItem = new ExpressEDR(item);
-          break;
         case "PPR":
           changeItem = new PPR(item);
           break;
@@ -3997,18 +3982,13 @@ class RelationshipItemList<T> : IList<T>, ICollection<T>, IEnumerable<T>
 		relshipItems.setProperty("source_id", sourceItem.ID);
 		relshipItems.setAttribute("serverEvents", "0");
 
-		if (this.Name == "ECN Affected Item" || 
-			this.Name == "Simple ECO Affected Item" || 
-			this.Name == "Express DCO Affected Item" || 
-			this.Name == "Express ECO Affected Item" ||
-			this.Name == "Express EDR Affected Item" ||
-			this.Name == "PPR Affected Item")
+		if (this.Name == "PPR Affected Item")
 		{
-			Item affItem = Utils.Innovator.newItem("Affected Item", "get");
+			Item affItem = Utils.Innovator.newItem("MPP Affected Item", "get");
 			affItem.setAttribute("select", "interchangeable, item_action, action, affected_id, new_item_id, grouping");
 			affItem.setAttribute("serverEvents", "0");
 
-			Item changeControlledItem = Utils.Innovator.newItem("Change Controlled Item", "get");
+			Item changeControlledItem = Utils.Innovator.newItem("MPP Change Controlled Item", "get");
 			changeControlledItem.setAttribute("serverEvents", "0");
 			affItem.setPropertyItem("affected_id", changeControlledItem);
 			affItem.setPropertyItem("new_item_id", changeControlledItem);
