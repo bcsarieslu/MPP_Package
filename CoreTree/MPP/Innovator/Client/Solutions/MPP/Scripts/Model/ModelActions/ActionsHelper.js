@@ -580,6 +580,9 @@ function(declare, connect, popup, MoveItemAction, RemoveElementAction, AddItemAc
 					return false;
 				}
 				if(isUsedPQD){
+					if(selectElement.nodeName=="Test"){
+						return false;
+					}
 					if(selectElement.Parent&&selectElement.Parent.nodeName=="Test"){
 						return false;
 					}

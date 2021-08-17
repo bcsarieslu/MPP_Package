@@ -533,6 +533,10 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 											break;
 										}
 										if(parent.isUsedPQD){
+											if(selectedItem.nodeName=="Test"){
+												isActionAllowed=false;
+												break;
+											}
 											if(selectedItem.Parent&&selectedItem.Parent.nodeName=="Test"){
 												isActionAllowed=false;
 												break;
@@ -540,9 +544,19 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 										}
 									}
 								}else{
-									isActionAllowed=!schemaHelper.getSchemaAttribute(selectedItems.nodeName, 'noedit');
-									if(parent.isUsedPQD&&isActionAllowed&&selectedItems.Parent){
-										isActionAllowed=selectedItems.Parent.nodeName!="Test";
+									if(schemaHelper.getSchemaAttribute(selectedItems.nodeName, 'noedit')){
+										isActionAllowed=false;
+										break;
+									}
+									if(parent.isUsedPQD){
+										if(selectedItems.nodeName=="Test"){
+											isActionAllowed=false;
+											break;
+										}
+										if(selectedItems.Parent&&selectedItems.Parent.nodeName=="Test"){
+											isActionAllowed=false;
+											break;
+										}
 									}
 								}
 							}
@@ -573,7 +587,7 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 				if (elementName !== 'External Content') {
 					//Add By BCS Tengz 2021/6/28 MPP与PQD联动
 					//增加不允许编辑对象的逻辑
-					if(schemaHelper.getSchemaAttribute(elementName, 'noedit') !== undefined){
+					if(elementName=="Test"||schemaHelper.getSchemaAttribute(elementName, 'noedit') !== undefined){
 						continue;
 					}
 					//End Add
@@ -616,7 +630,7 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 					
 					//Add By BCS Tengz 2021/6/28 MPP与PQD联动
 					//增加不允许编辑对象的逻辑
-					if(schemaHelper.getSchemaAttribute(elementName, 'noedit') !== undefined){
+					if(elementName=="Test"||schemaHelper.getSchemaAttribute(elementName, 'noedit') !== undefined){
 						continue;
 					}
 					//End Add

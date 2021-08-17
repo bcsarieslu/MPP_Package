@@ -688,7 +688,7 @@ define([
 									selectedTreeItem
 								);
 								//Modify by BCS Tengz 2021/6/21 MPP与PQD联动 不允许插入Operation
-								if(!parent.isPQD || !parent.isUsedMPP || docElemType.name!="PQD Operation"){
+								if(!parent.isPQD || !parent.isUsedMPP || docElemType.name!="PQD Process Step Element"){
 									this.menuHelper.addAddMenu(docElemType, subMenu, treeMenu);
 								}
 								//End Modify
@@ -918,7 +918,7 @@ define([
 					}
 
 					//Modify by BCS Tengz 2021/6/21 MPP与PQD联动 不允许插入Operation
-					if(!parent.isPQD || !parent.isUsedMPP || documElemType.name!="PQD Operation"){
+					if(!parent.isPQD || !parent.isUsedMPP || documElemType.name!="PQD Process Step Element"){
 						label =
 							CMF.Utils.getResource('menu_add') +
 							(documElemType.elementTypeLabel || documElemType.name);
@@ -941,7 +941,7 @@ define([
 				} else {
 					docElementTypes = treeItem.docElementTypes.filter(function (element) {
 						//Modify by BCS Tengz 2021/6/21 MPP与PQD联动 不允许插入Operation
-						if(parent.isPQD && parent.isUsedMPP && element.name == "PQD Operation"){
+						if(parent.isPQD && parent.isUsedMPP && element.name == "PQD Process Step Element"){
 							return false;
 						}
 						//End Modify
