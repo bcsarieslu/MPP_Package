@@ -1,0 +1,11 @@
+﻿<AML>
+  <Item type="Action" id="5D83F45DD4E446B59E848889CC1F2AE9" action="add">
+    <item_query />
+    <label xml:lang="zc">零件转MPP</label>
+    <location>client</location>
+    <method type="Method"><Item type="Method" action="get" id="0AED2B5D97A14E42AB467EDF5FC7100C" /></method>
+    <target>none</target>
+    <type>item</type>
+    <name>bcs_PartConversionMPP</name>
+  </Item>
+</AML>

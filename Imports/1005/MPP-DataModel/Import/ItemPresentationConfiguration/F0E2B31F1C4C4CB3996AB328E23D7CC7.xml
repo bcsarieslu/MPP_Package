@@ -1,0 +1,8 @@
+﻿<AML>
+  <Item type="ItemPresentationConfiguration" id="F0E2B31F1C4C4CB3996AB328E23D7CC7" action="add">
+    <client_type>js</client_type>
+    <item_id type="rb_TreeGridViewDefinition">9533D4418D844C21970DD66001D10937</item_id>
+    <item_type_id type="ItemType" name="rb_TreeGridViewDefinition">6AFE8A9127ED48FFB2F9183B9922981B</item_type_id>
+    <presentation_config_id type="PresentationConfiguration">E69ED81B946D48C99C21D9DB6878F702</presentation_config_id>
+  </Item>
+</AML>

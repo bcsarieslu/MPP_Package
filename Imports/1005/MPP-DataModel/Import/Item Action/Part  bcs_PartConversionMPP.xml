@@ -1,0 +1,7 @@
+﻿<AML>
+  <Item type="Item Action" id="E1A39F6591FB4967AB41398F45F59856" action="add">
+    <related_id type="Action">5D83F45DD4E446B59E848889CC1F2AE9</related_id>
+    <sort_order>1792</sort_order>
+    <source_id type="ItemType" name="Part">4F1AC04A2B484F3ABA4E20DB63808A88</source_id>
+  </Item>
+</AML>

@@ -1,0 +1,119 @@
+﻿<AML>
+  <Item type="rb_TreeGridViewDefinition" id="9533D4418D844C21970DD66001D10937" action="add">
+    <description>Prat反查MPP</description>
+    <max_child_items>100</max_child_items>
+    <max_query_depth>2</max_query_depth>
+    <query_definition type="qry_QueryDefinition">7A331D2DC76043AAB1B3722B1FC4A5D7</query_definition>
+    <name>BCS_PartPeggingMPP</name>
+    <Relationships>
+      <Item type="rb_ColumnDefinition" id="0F0EC21A186B4AD3B42B2E80F3F31BFF" action="add">
+        <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
+        <header xml:lang="zc">状态</header>
+        <name>7FCCED838B5D4F61AE7A8D551D8DE721</name>
+        <position_order>2</position_order>
+        <sort_order>384</sort_order>
+        <width>131</width>
+        <Relationships>
+          <Item type="rb_ColumnMapping" id="2EC571E6C79E4DB3BB2170C2214E5521" action="add">
+            <cell_view_type>Text</cell_view_type>
+            <sort_order>128</sort_order>
+            <template>{"text_template":"{MPP.state}"}</template>
+            <tree_row_ref_id>A3D72A8A8C934E2DB2969A798BE234D0</tree_row_ref_id>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="rb_ColumnDefinition" id="17C8C884C736478C8E3657BC067133C4" action="add">
+        <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
+        <header xml:lang="zc">名称</header>
+        <name>083C5480754E40588FF3E0FEE4D8BDB3</name>
+        <position_order>1</position_order>
+        <sort_order>256</sort_order>
+        <width>203</width>
+        <Relationships>
+          <Item type="rb_ColumnMapping" id="C6A718C130BB42DD8364764BE67AA7AC" action="add">
+            <cell_view_type>Text</cell_view_type>
+            <sort_order>128</sort_order>
+            <template>{"text_template":"{MPP.name}"}</template>
+            <tree_row_ref_id>A3D72A8A8C934E2DB2969A798BE234D0</tree_row_ref_id>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="rb_ColumnDefinition" id="20044C0C51F94CB999A007CCA736B84F" action="add">
+        <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
+        <header xml:lang="zc">创建者</header>
+        <name>1DAF7698A16143F986E0D1D1D9190337</name>
+        <position_order>5</position_order>
+        <sort_order>768</sort_order>
+        <width>127</width>
+        <Relationships>
+          <Item type="rb_ColumnMapping" id="0185E3CDE5FE4D9EB97A5E629CE47ED9" action="add">
+            <cell_view_type>Text</cell_view_type>
+            <sort_order>128</sort_order>
+            <template>{"text_template":"{MPP.created_by_id/@keyed_name}"}</template>
+            <tree_row_ref_id>A3D72A8A8C934E2DB2969A798BE234D0</tree_row_ref_id>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="rb_ColumnDefinition" id="45E3FC37A02B48BF9B0B36476F18DB67" action="add">
+        <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
+        <header xml:lang="zc">所有权人</header>
+        <name>17EF43DFA6F84982B7B948F875AA1D8E</name>
+        <position_order>4</position_order>
+        <sort_order>640</sort_order>
+        <width>106</width>
+        <Relationships>
+          <Item type="rb_ColumnMapping" id="9319AA0C6D1F499999536C36A460D7EF" action="add">
+            <cell_view_type>Text</cell_view_type>
+            <sort_order>128</sort_order>
+            <template>{"text_template":"{MPP.owned_by_id/@keyed_name}"}</template>
+            <tree_row_ref_id>A3D72A8A8C934E2DB2969A798BE234D0</tree_row_ref_id>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="rb_ColumnDefinition" id="61734EFC96FB41AB8F8A7A0737AE9F5F" action="add">
+        <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
+        <header xml:lang="zc">工艺流程规划编号</header>
+        <name>BCS_PartPeggingMPP</name>
+        <position_order>0</position_order>
+        <sort_order>128</sort_order>
+        <width>193</width>
+        <Relationships>
+          <Item type="rb_ColumnMapping" id="73FF5989E1ED4DF093CF6509031D371B" action="add">
+            <cell_view_type>Text</cell_view_type>
+            <data_template>{"id": "INVALID_ID_VALUE", "type": "mpp_ProcessPlan"}</data_template>
+            <sort_order>128</sort_order>
+            <template>{"text_template":"{MPP.item_number}"}</template>
+            <tree_row_ref_id>A3D72A8A8C934E2DB2969A798BE234D0</tree_row_ref_id>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="rb_ColumnDefinition" id="D915603335AC4FA1BA7B4DAAEEF1FF40" action="add">
+        <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
+        <header xml:lang="zc">版本</header>
+        <name>9AA97B928F77452AA3B049A19C6F90D5</name>
+        <position_order>3</position_order>
+        <sort_order>512</sort_order>
+        <width>87</width>
+        <Relationships>
+          <Item type="rb_ColumnMapping" id="63F0A43EDB5D4CB092E304F395CFC6B8" action="add">
+            <cell_view_type>Text</cell_view_type>
+            <sort_order>128</sort_order>
+            <template>{"text_template":"{MPP.major_rev}"}</template>
+            <tree_row_ref_id>A3D72A8A8C934E2DB2969A798BE234D0</tree_row_ref_id>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="rb_TreeRowDefinition" id="98EE9BF7030F4E9D8C987CEA505DE31B" action="add">
+        <query_item_ref_id>97BC2F52A2FC4A69987D296E43A45D2E</query_item_ref_id>
+        <ref_id>A3D72A8A8C934E2DB2969A798BE234D0</ref_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="rb_TreeRowReference" id="E01530DB710D410ABD0AA760215DBAAA" action="add">
+        <child_ref_id>A3D72A8A8C934E2DB2969A798BE234D0</child_ref_id>
+        <reference_type>child</reference_type>
+        <sort_order>128</sort_order>
+        <view_order>128</view_order>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

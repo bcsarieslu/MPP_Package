@@ -58,6 +58,7 @@
 			<File>mpp_Step_field.sql</File>
 			<File>mpp_Step_property.sql</File>
 			<File>commandbarmenu_label.sql</File>
+			<File>mpp_rb_ColumnDefinition.sql</File>
 		</section>	
 		
 		<section type="Import" exec="7" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		

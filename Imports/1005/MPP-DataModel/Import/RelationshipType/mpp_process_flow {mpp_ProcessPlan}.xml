@@ -32,9 +32,9 @@
         <use_src_access>1</use_src_access>
         <name>mpp_process_flow</name>
         <Relationships>
-          <Item type="Allowed Permission" id="65E8565CD5AF46A79979A0BB96FACB08" action="add">
+          <Item type="Allowed Permission" id="16463C0597B34761965EC198DD961A60" action="add">
             <is_default>1</is_default>
-            <related_id type="Permission">AE3A6F51748A4A61BFAC306DB7705B85</related_id>
+            <related_id type="Permission">A78D55EDCF4F4595AA34B8F29EE4F2AD</related_id>
             <sort_order>128</sort_order>
           </Item>
           <Item type="Can Add" id="1844185CE4894D029F10C3618BEF1822" action="add">
@@ -130,34 +130,6 @@
             <stored_length>128</stored_length>
             <track_history>0</track_history>
             <name>path_to_id</name>
-          </Item>
-          <Item type="TOC Access" id="C86C24D3FFAD40EC94521BF4CA11263F" action="add">
-            <related_id type="Identity">
-              <Item type="Identity" action="get" select="id">
-                <name>World</name>
-              </Item>
-            </related_id>
-            <sort_order>128</sort_order>
-          </Item>
-          <Item type="TOC View" id="65B44D33154A40CCB0E3A4D34DCD17C3" action="add">
-            <related_id type="Identity">
-              <Item type="Identity" action="get" select="id">
-                <name>World</name>
-              </Item>
-            </related_id>
-            <sort_order>128</sort_order>
-          </Item>
-          <Item type="View" id="B00C099B12AF4A6F9F2C5F71896D3473" action="add">
-            <client>js</client>
-            <related_id type="Form">62BA8C77A22A4615AE721262A961C51F</related_id>
-            <role type="Identity">
-              <Item type="Identity" action="get" select="id">
-                <name>World</name>
-              </Item>
-            </role>
-            <show_ssvc>0</show_ssvc>
-            <sort_order>128</sort_order>
-            <type>default</type>
           </Item>
         </Relationships>
       </Item>

@@ -1011,9 +1011,9 @@
                 return;
             }
             courseNamePosAmend({
-                x: r + q.textPos.x,
-                y: o + q.textPos.y
-            }, q.id);
+                x: r + B.textPos.x,
+                y: o + B.textPos.y
+            }, q.id || v.id());
             f.attr({
                 x: y + r,
                 y: w + o
@@ -1345,7 +1345,7 @@
                     var coursefrom = key.from().getId();
                     var courseto = key.to().getId();
                     if (coursefrom == keyId || courseto == keyId) {
-                        removecourse(g[key.getId()].id());
+                        removecourse(key.id());
                         g[key.getId()] = null;
                         key.remove();
                         delete g[key.getId()];
@@ -1362,7 +1362,7 @@
             }
             else {
                 if (i.getId().substring(0, 4) == "path") {
-                    removecourse(g[i.getId()].id());
+                    removecourse(i.id());
                     g[i.getId()] = null;
                     i.remove();
                     delete g[i.getId()];
