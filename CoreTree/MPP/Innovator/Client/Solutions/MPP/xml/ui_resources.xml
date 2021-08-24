@@ -128,4 +128,7 @@ Other user's edit: Part removed"/>
 	<resource key="flwo_amplification" value='amplification' />
  	<resource key="flwo_shrink" value='shrink' /> 
   	<resource key="flwo_replacement" value='replacement' /> 
+ 	<!--Add by zhou-->
+ 	<!--MPP Tree右键菜单-->
+  	<resource key="Phantom" value="Phantom" />
 </ui_resources>
