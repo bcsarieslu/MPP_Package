@@ -105,4 +105,7 @@
   <resource key="flwo_amplification" value='放大' />
   <resource key="flwo_shrink" value='縮小' /> 
   <resource key="flwo_replacement" value='恢復' /> 
+  <!--Add by zhou-->
+  <!--MPP Tree右键菜单-->
+  <resource key="Phantom" value="虛擬件" />
 </ui_resources>
