@@ -239,6 +239,7 @@
 					} else {
 						name = this.GetTreeName(schemaElement, elementState);
 					}
+					//Add by 2021/11/16 silv 本地图片,上传图片读取
 					if (bcs_operation_image) {
 						if (bcs_operation_image.indexOf(".") != -1) {
 							style = { backgroundImage: 'url(\"../' + schemaElement.getProperty("bcs_operation_image") + '\")' };

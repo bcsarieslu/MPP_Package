@@ -2,7 +2,6 @@
 <!--<:&lt; >:&gt; &:&amp; ':&apos; ":&quot;-->
 <Language>
   <!-- 語系對應 -->
-  <!--测试-->
   <LanguageTypes>
     <LanguageType lang="zh-TW,zh-HK,zh-MO,zh-CHT" type="Traditional" />
     <LanguageType lang="zh-CN,zh-CHS,zh-SG" type="Simplified" />
