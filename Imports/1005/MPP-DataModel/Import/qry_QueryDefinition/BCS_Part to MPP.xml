@@ -1,7 +1,7 @@
 ﻿<AML>
   <Item type="qry_QueryDefinition" id="7A331D2DC76043AAB1B3722B1FC4A5D7" action="add">
     <description>Part反查MPP</description>
-    <name>BCS_MPP Pegging</name>
+    <name>BCS_Part to MPP</name>
     <Relationships>
       <Item type="qry_QueryItem" id="2EE7C923FB1F44D0BFEF42408ABEEDAE" action="add">
         <item_type type="ItemType" name="mpp_ProcessPlanProducedPart">231BE11042F44C1C9B3EFD38FAF1CC36</item_type>

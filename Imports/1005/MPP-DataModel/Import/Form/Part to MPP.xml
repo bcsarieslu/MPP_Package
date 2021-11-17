@@ -4,7 +4,7 @@
     <height>234</height>
     <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
     <width>699</width>
-    <name>MPP Pegging</name>
+    <name>Part to MPP</name>
     <Relationships>
       <Item type="Body" id="EC1479562BD34F4D828827C6807BED1A" action="add">
         <bg_color>#FFFFFF</bg_color>

@@ -4,7 +4,7 @@
     <max_child_items>100</max_child_items>
     <max_query_depth>2</max_query_depth>
     <query_definition type="qry_QueryDefinition">7A331D2DC76043AAB1B3722B1FC4A5D7</query_definition>
-    <name>BCS_PartPeggingMPP</name>
+    <name>BCS_Part to MPP</name>
     <Relationships>
       <Item type="rb_ColumnDefinition" id="0F0EC21A186B4AD3B42B2E80F3F31BFF" action="add">
         <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
@@ -73,7 +73,7 @@
       <Item type="rb_ColumnDefinition" id="61734EFC96FB41AB8F8A7A0737AE9F5F" action="add">
         <builder_method type="Method"><Item type="Method" action="get" id="AD1F071AA1B1437396D7ABCD67D10EA7" /></builder_method>
         <header xml:lang="zc">工艺流程规划编号</header>
-        <name>BCS_PartPeggingMPP</name>
+        <name>BCS_Part to MPP</name>
         <position_order>0</position_order>
         <sort_order>128</sort_order>
         <width>193</width>
