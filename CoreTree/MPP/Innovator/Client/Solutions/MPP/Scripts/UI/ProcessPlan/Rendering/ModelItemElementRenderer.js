@@ -102,10 +102,10 @@ function(declare, ItemXmlSchemaElementRenderer) {
 					else {
 						//2021/11/16 图标显示,本地图标,上传图标
 						var icon = aras.newIOMItem("mpp_Location", "get");
-						icon.setAttribute("select", "icon");
+						icon.setAttribute("select", "bcs_icon");
 						icon.setAttribute("id", schemaElement.getProperty("bcs_location"));
 						icon = icon.apply();
-						var iconurl = icon.getProperty("icon");
+						var iconurl = icon.getProperty("bcs_icon");
 						if (iconurl.indexOf(".") != -1) {
 							iconurl = "../" + iconurl;
 						}
