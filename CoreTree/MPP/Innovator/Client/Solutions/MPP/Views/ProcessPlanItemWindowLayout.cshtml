@@ -245,8 +245,8 @@
 		require(dojoConfig, ['dojo/ready', 'dojo/_base/connect', 'MPP/Model/Model', 'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/PPViewer',
 			'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/EBOMViewer', 'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/MBOMViewer',
 			'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/HeadFootViewer','Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/TestWorkHourViewer',
-			'MPP/UI/ProcessPlan/DnD/DndController', 'MPP/UI/Utils/UIUtils', 'MPP/Model/PartConfig', 'dojo/domReady!'],
-			function (ready, connect, Model, PPViewer, EBOMViewer, MBOMViewer,HeadFootViewer,TestWorkHourViewer, DnDController, UIUtils, PartConfig) {
+			'Modules/aras.innovator.solutions.MPP/Scripts/UI/Viewers/ProcessFlows','MPP/UI/ProcessPlan/DnD/DndController', 'MPP/UI/Utils/UIUtils', 'MPP/Model/PartConfig', 'dojo/domReady!'],
+			function (ready, connect, Model, PPViewer, EBOMViewer, MBOMViewer,HeadFootViewer,TestWorkHourViewer,ProcessFlows, DnDController, UIUtils, PartConfig) {
 				ready(function () {
 					var tabViewContol = window.getViewersTabs();
 					var currentViewer;
@@ -287,6 +287,11 @@
 					viewController.addViewer('testworkhour_viewer', currentViewer);
 					tabViewContol.createTab(currentViewer, 'testworkhour_viewer');
 					
+					//工艺流程图 页面 2021/6/8 zhou
+					currentViewer = new ProcessFlows();
+					viewController.addViewer("process_flows",currentViewer);
+					tabViewContol.createTab(currentViewer,"process_flows");
+
 					setShareData();
 					viewController.dataModel.setFilterParameter('locationId', viewController.shareData.locationId);
 
@@ -312,7 +317,7 @@
 					return true;
 				}
 				if (!viewController.dataModel.rootProcessPlan) {
-					aras.AlertWarning(uiUtils.getResource('warning.saveProcessPlan'));
+					aras.AlertWarning(uiUtils.getResource('workbench.unauthorized'));
 					return true;
 				}
 			}

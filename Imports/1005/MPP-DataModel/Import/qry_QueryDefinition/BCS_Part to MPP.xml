@@ -1,0 +1,86 @@
+﻿<AML>
+  <Item type="qry_QueryDefinition" id="7A331D2DC76043AAB1B3722B1FC4A5D7" action="add">
+    <description>Part反查MPP</description>
+    <name>BCS_Part to MPP</name>
+    <Relationships>
+      <Item type="qry_QueryItem" id="2EE7C923FB1F44D0BFEF42408ABEEDAE" action="add">
+        <item_type type="ItemType" name="mpp_ProcessPlanProducedPart">231BE11042F44C1C9B3EFD38FAF1CC36</item_type>
+        <ref_id>2553F59FB90C4E48AA001ECE7076C710</ref_id>
+        <sort_order>256</sort_order>
+        <alias>MPP_Part</alias>
+      </Item>
+      <Item type="qry_QueryItem" id="3FCBF1AF7B3F4CF68BBC6B8C747A1E2F" action="add">
+        <item_type type="ItemType" name="Part">4F1AC04A2B484F3ABA4E20DB63808A88</item_type>
+        <ref_id>569F3106FDA84548BD6EBE2D45D36998</ref_id>
+        <sort_order>128</sort_order>
+        <alias>Part</alias>
+      </Item>
+      <Item type="qry_QueryItem" id="8666060A7B8A4CCB86336A0330CC2721" action="add">
+        <filter_xml>&lt;condition&gt;
+	&lt;eq&gt;
+		&lt;property name="is_current" /&gt;
+		&lt;constant&gt;1&lt;/constant&gt;
+	&lt;/eq&gt;
+&lt;/condition&gt;</filter_xml>
+        <item_type type="ItemType" name="mpp_ProcessPlan">4E030A4723224002B3E94F40F01AC1DE</item_type>
+        <ref_id>97BC2F52A2FC4A69987D296E43A45D2E</ref_id>
+        <sort_order>384</sort_order>
+        <alias>MPP</alias>
+        <Relationships>
+          <Item type="qry_QueryItemSelectProperty" id="0DB734CAA8994BB8AA6BC3B85FB8E0F7" action="add">
+            <property_name>owned_by_id</property_name>
+            <sort_order>640</sort_order>
+          </Item>
+          <Item type="qry_QueryItemSelectProperty" id="1C7F9A0249AD4BEEA0E71ABDDD78CECE" action="add">
+            <property_name>name</property_name>
+            <sort_order>256</sort_order>
+          </Item>
+          <Item type="qry_QueryItemSelectProperty" id="37A8B3C179D2445E80DF42923B52247B" action="add">
+            <property_name>item_number</property_name>
+            <sort_order>128</sort_order>
+          </Item>
+          <Item type="qry_QueryItemSelectProperty" id="55819CA4E2C54327BA631101BA923CE4" action="add">
+            <property_name>created_by_id</property_name>
+            <sort_order>768</sort_order>
+          </Item>
+          <Item type="qry_QueryItemSelectProperty" id="7481DF389AFC4186897724C84B9FA8CA" action="add">
+            <property_name>major_rev</property_name>
+            <sort_order>512</sort_order>
+          </Item>
+          <Item type="qry_QueryItemSelectProperty" id="EE345A09DE78425A9C77AF461D95DAB6" action="add">
+            <property_name>state</property_name>
+            <sort_order>384</sort_order>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="qry_QueryReference" id="44DAD439CB1642A3B0044415FB60FA0C" action="add">
+        <child_ref_id>97BC2F52A2FC4A69987D296E43A45D2E</child_ref_id>
+        <filter_xml>&lt;condition&gt;
+	&lt;eq&gt;
+		&lt;property name="source_id" query_items_xpath="parent::Item" /&gt;
+		&lt;property name="id" /&gt;
+	&lt;/eq&gt;
+&lt;/condition&gt;</filter_xml>
+        <parent_ref_id>2553F59FB90C4E48AA001ECE7076C710</parent_ref_id>
+        <ref_id>B9E9B693D07241CBA96F2F5DC474DA15</ref_id>
+        <sort_order>384</sort_order>
+      </Item>
+      <Item type="qry_QueryReference" id="D1B0FF84714C4B0DA5E20C44785486D2" action="add">
+        <child_ref_id>569F3106FDA84548BD6EBE2D45D36998</child_ref_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="qry_QueryReference" id="E06E027FFDC8487B9BC097F59477FE48" action="add">
+        <child_ref_id>2553F59FB90C4E48AA001ECE7076C710</child_ref_id>
+        <filter_xml>&lt;condition&gt;
+	&lt;eq&gt;
+		&lt;property query_items_xpath="parent::Item" name="id" /&gt;
+		&lt;property name="related_id" /&gt;
+	&lt;/eq&gt;
+&lt;/condition&gt;</filter_xml>
+        <parent_ref_id>569F3106FDA84548BD6EBE2D45D36998</parent_ref_id>
+        <ref_id>840E3AD7CD504C45A9EE6F6FD11DBA91</ref_id>
+        <sort_order>256</sort_order>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

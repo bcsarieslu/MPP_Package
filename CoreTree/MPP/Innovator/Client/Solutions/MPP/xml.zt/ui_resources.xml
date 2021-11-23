@@ -22,6 +22,7 @@
   <resource key="workbenchDropdown.Skills" value="技能專長" />
   <resource key="workbench.sendToWorkbenchButton" value="送出" />
   <resource key="workbench.sendToWorkbenchWarning" value="刪除還是加入至物件總管？" />
+  <resource key="workbench.unauthorized" value="無產品授權,請申請產品授權" />
   <!-- Add by tengz  -->
   <!-- Process Plan的workbench里添加对象类 -->
   <resource key="workbenchDropdown.CAD" value="工程图" />
@@ -94,6 +95,20 @@
   <resource key="find.found_of_matches" value="{1}中的{0}" />
   <!-- Add by tengz  -->
   <resource key="import.itemIsNotLocked" value="物件未鎖定" />
+
+  <!--Add by zhou-->
+  <!--工艺流程图页面工具栏&&属性栏-->
+  <resource key="flwo_delete" value="刪除" /> 
+  <resource key="flwo_property" value="屬性" /> 
+  <resource key="flwo_toolkit" value="工具集" />
+  <resource key="flwo_pointer" value="選擇" />
+  <resource key="flwo_path" value='連接' /> 
+  <resource key="flwo_amplification" value='放大' />
+  <resource key="flwo_shrink" value='縮小' /> 
+  <resource key="flwo_replacement" value='恢復' /> 
+  <!--Add by zhou-->
+  <!--MPP Tree右键菜单-->
+  <resource key="Phantom" value="虛擬件" />
 
   <resource key="bcs.promptmessage" value="請填寫時間(秒)" />
   <resource key="bcs.formaterror" value="輸入格式錯誤(只能輸入整數數字)!" />

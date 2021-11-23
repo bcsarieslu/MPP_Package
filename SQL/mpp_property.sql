@@ -363,6 +363,11 @@ SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''樣本容�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''製造流程規劃'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''工序圖標'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Operation'' and a.is_current=1 and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''廠區圖標'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Location'' and a.is_current=1 and a.name=''bcs_icon'')';
+
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''更改前編號'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Affected Item'' and a.is_current=1 and a.name=''affected_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''更改後編號'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Affected Item'' and a.is_current=1 and a.name=''new_item_id'')';
@@ -408,6 +413,7 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''發行日期'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Change Controlled Item'' and a.is_current=1 and a.name=''release_date'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zt = N''修改人員'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Change Controlled Item'' and a.is_current=1 and a.name=''modified_by_id'')';
+
 EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
@@ -773,6 +779,11 @@ SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''样本容�
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''工艺流程规划'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''工序图标'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Operation'' and a.is_current=1 and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''厂区图标'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Location'' and a.is_current=1 and a.name=''bcs_icon'')';
+
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''新版本'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Affected Item'' and a.is_current=1 and a.name=''new_item_rev'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''旧版本'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Affected Item'' and a.is_current=1 and a.name=''affected_rev'')';
@@ -818,6 +829,7 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''发布日期'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Change Controlled Item'' and a.is_current=1 and a.name=''release_date'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label_zc = N''修改人员'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Change Controlled Item'' and a.is_current=1 and a.name=''modified_by_id'')';
+
 EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
@@ -1195,6 +1207,11 @@ SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Sample Size''
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Process Plan'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''Process Quality Document'' and a.is_current=1 and a.name=''process_plan_id'')';
 EXEC SP_EXECUTESQL @UpdateString;
+
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Process icon'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Operation'' and a.is_current=1 and a.name=''bcs_operation_image'')';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''bcs_icon'' where id = (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''mpp_Location'' and a.is_current=1 and a.name=''bcs_icon'')';
+
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''New Revision'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Affected Item'' and a.is_current=1 and a.name=''new_item_rev'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Team'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Affected Item'' and a.is_current=1 and a.name=''team_id'')';
@@ -1254,5 +1271,6 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Superseded Date'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Change Controlled Item'' and a.is_current=1 and a.name=''superseded_date'')';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [Innovator].[PROPERTY] set label = N''Modify By'' where id in (select a.id from [innovator].[PROPERTY] as a left join [innovator].[ITEMTYPE] as b on a.source_id=b.id where b.name=''MPP Change Controlled Item'' and a.is_current=1 and a.name=''modified_by_id'')';
+
 EXEC SP_EXECUTESQL @UpdateString;
 END

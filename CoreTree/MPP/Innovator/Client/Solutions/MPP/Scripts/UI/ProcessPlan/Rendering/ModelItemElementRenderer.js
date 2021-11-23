@@ -99,6 +99,21 @@ function(declare, ItemXmlSchemaElementRenderer) {
 					{
 						marksContent += this.wrapInTag('', 'img', {src: '../../images/FlaggedBy.svg', class: 'ConditionMark', style: markCount ? 'right:' + markCount * 20 + 'px;' : ''});
 					}
+					else {
+						//2021/11/16 图标显示,本地图标,上传图标
+						var icon = aras.newIOMItem("mpp_Location", "get");
+						icon.setAttribute("select", "bcs_icon");
+						icon.setAttribute("id", schemaElement.getProperty("bcs_location"));
+						icon = icon.apply();
+						var iconurl = icon.getProperty("bcs_icon");
+						if (iconurl.indexOf(".") != -1) {
+							iconurl = "../" + iconurl;
+						}
+						else {
+							iconurl = dojoConfig.arasContext.adjustIconUrl(iconurl);
+						}
+						marksContent += this.wrapInTag('', 'img', { src: iconurl, class: 'ConditionMark', style: markCount ? 'right:' + markCount * 20 + 'px;' : '' });
+					}
 				}
 				
 				return marksContent;

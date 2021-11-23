@@ -1,0 +1,35 @@
+﻿<AML>
+  <Item type="Method" action="add" id="AB7F2926139F4DCBA81C50FD9D8BA116">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[
+//Creator:SiLvZhou
+//Name:bcs_mpp_readMPPTemplateFile
+//Type: C#
+//Comments:v0.1 Developed By SiLvZhou @Broadway
+//============================================================
+
+const string ERR_PREFIX = "Error[bcs_mpp_process_flow_update]:";
+
+try{
+	Innovator inn = this.getInnovator();
+	
+	bcsMPP.Core.MPP bcsMPP = new bcsMPP.Core.MPP(inn);
+    
+    Item result=bcsMPP.mppProcessFlowUpdate(this);
+    
+    return result;
+	
+}
+catch(Exception ex)
+{
+	return this.getInnovator().newError(ERR_PREFIX + ex.Message);
+}
+return this;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_mpp_process_flow_update</name>
+  </Item>
+</AML>

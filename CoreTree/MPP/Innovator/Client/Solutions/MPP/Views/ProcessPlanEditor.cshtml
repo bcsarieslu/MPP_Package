@@ -94,6 +94,7 @@
 	var processPlanItem;
 	var uiUtils;
 	var listeners = [];
+	var processFlowItem = parent.processFlowItem;
 
 	loadView = function(targetItem) {
 		var refreshFunction = topWindow.onRefresh;
@@ -123,6 +124,9 @@
 
 		setEditState(dataModel.isEditable());
 		setupUIControls();
+		if (!processFlowItem) {
+			getProcessFlow();
+		}
 	}
 
 	reloadView = function(newItem) {
@@ -161,6 +165,14 @@
 				workbenchWidget.setEditable(isViewEditable);
 			}
 		}
+	}
+
+	getProcessFlow = function () {
+		processFlowItem = aras.newIOMItem("mpp_process_flow", "get");
+		processFlowItem.setProperty("source_id", parent.itemID);
+		processFlowItem.setAttribute("select", "path_to_id,path_from_id,path_name,path_name_pos,path_dots");
+		processFlowItem = processFlowItem.apply();
+		parent.processFlowItem = processFlowItem;
 	}
 
 	setupUIControls = function() {

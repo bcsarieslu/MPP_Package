@@ -322,6 +322,28 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 					var action = dataModelActions.actions[actionName];
 					actionArguments.actionArgumentsOptionalArgs = action.actionOptionalArgs;
 					dataModelActions.executeAction(actionName, actionArguments);
+					var currentItem, flowCourses;
+					if (selectedModelItems && actionName == "removeelement") {
+						for (var i = 0; i < selectedModelItems.length; i++) {
+							currentItem = selectedModelItems[i];
+							flowCourses = aras.getRelationships(parent.item, "mpp_process_flow");
+							if (flowCourses.length < 1) {
+								processFlowItem = aras.getItemRelationshipsEx(parent.item, "mpp_process_flow");
+								flowCourses = aras.getRelationships(parent.item, "mpp_process_flow");
+							}
+							if (flowCourses.length > 0) {
+								var flowCourse, path_to_id, path_from_id;
+								for (var x = 0; x < flowCourses.length; x++) {
+									flowCourse = flowCourses[x];
+									path_to_id = aras.getItemProperty(flowCourse, "path_to_id");
+									path_from_id = aras.getItemProperty(flowCourse, "path_from_id");
+									if (path_to_id.substring(4) == currentItem._id || path_from_id.substring(4) == currentItem._id) {
+										flowCourse.setAttribute("action", "delete");
+									}
+								}
+							}
+						}
+					}
 				}
 			} catch (ex) {
 				this.aras.AlertError(ex.message);
@@ -575,11 +597,51 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 			}
 		},
 
+		getMppResour: function(elementName) {
+			var itemTypeByName;
+			switch (elementName) {
+				case 'ProcessPlan':
+					itemTypeByName = 'mpp_ProcessPlan';
+					break;
+				case 'Operation':
+					itemTypeByName = 'mpp_Operation';
+					break;
+				case 'Step':
+					itemTypeByName = 'mpp_Step';
+					break;
+				case 'Part':
+					itemTypeByName = "Part";
+					break;
+				case 'Phantom':
+					return aras.getResource("MPP","Phantom");
+				case 'Resource':
+					itemTypeByName = 'mpp_Resource';
+					break;
+				case 'Skill':
+					itemTypeByName = 'mpp_Skill';
+					break;
+				case 'Document':
+					itemTypeByName = 'Document';
+					break;
+				case 'CAD':
+					itemTypeByName = 'CAD';
+					break;
+				case 'Test':
+					itemTypeByName = 'mpp_Test';
+					break;
+				default:
+					break;
+			}
+			var itemLabel = aras.getItemByName("itemtype",itemTypeByName,"0","","label");
+			debugger;
+			return aras.getItemProperty(itemLabel,"label");
+		},
+
 		getInsertMenu: function(selectedItem) {
 			var schemaHelper = this.viewmodel.Schema();
 			var expectedElements = schemaHelper.GetExpectedElements(selectedItem).insert;
 			var menuItems = [];
-			var elementName, elementType, itemImage, isInternalItem, menuItemToPushLast, menuItem, i;
+			var elementName, elementType, itemImage, isInternalItem, menuItemToPushLast, menuItem, i,elementResour;
 
 			for (i = 0; i < expectedElements.length; i++) {
 				elementName = expectedElements[i];
@@ -594,10 +656,11 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 					elementType = schemaHelper.GetSchemaElementType(elementName);
 					isInternalItem = schemaHelper.getSchemaAttribute(elementName, 'internalitem') !== undefined;
 					itemImage = Enums.getImageFromName(elementName) || Enums.getImagefromType(elementType);
+					elementResour = this.getMppResour(elementName);
 					menuItem = {
 						id: (isInternalItem ? 'datamodel|additem' : 'wi|addelement') + ':insert>' + elementName,
 						icon: itemImage === 'blank' ? undefined : itemImage,
-						name: elementName
+						name: elementResour
 					};
 
 					if (elementName === this.resourceElementName) {
@@ -620,7 +683,7 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 			var expectedElements = schemaHelper.GetExpectedElements(selectedItem).append;
 			var menuItems = [];
 			var isTableCell = selectedItem.is('ArasCellXmlSchemaElement');
-			var elementName, elementType, itemImage, isInternalItem, menuItemToPushLast, menuItem, i;
+			var elementName, elementType, itemImage, isInternalItem, menuItemToPushLast, menuItem, i, elementResour;
 
 			for (i = 0; i < expectedElements.length; i++) {
 				elementName = expectedElements[i];
@@ -642,10 +705,11 @@ function(declare, connect, popup, AddElementAction, RemoveElementAction, ArasTex
 
 					isInternalItem = schemaHelper.getSchemaAttribute(elementName, 'internalitem') !== undefined;
 					itemImage = Enums.getImageFromName(elementName) || Enums.getImagefromType(elementType);
+					elementResour = this.getMppResour(elementName);
 					menuItem = {
 						id: (isInternalItem ? 'datamodel|additem' : 'wi|addelement') + ':append>' + elementName,
 						icon: itemImage === 'blank' ? undefined : itemImage,
-						name: elementName
+						name: elementResour
 					};
 
 					if (elementName === this.resourceElementName) {
