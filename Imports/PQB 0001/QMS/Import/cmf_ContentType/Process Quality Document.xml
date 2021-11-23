@@ -39,12 +39,12 @@
           </Item>
         </Relationships>
       </Item>
-      <Item type="cmf_ElementType" id="C6F3C576ED374CB88533230F2A71BD9B" action="add">
+      <Item type="cmf_ElementType" id="7A483FFCC0784FB195E9AE374862B59B" action="add">
         <default_permission type="Permission">FAC64B6CE47348458D6DEB1C68DC4724</default_permission>
         <sort_order>128</sort_order>
-        <name>PQD Operation</name>
+        <name>PQD Process Step Element</name>
         <Relationships>
-          <Item type="cmf_ElementBinding" id="1F520C659561439AB7C7959ACD3F3C46" action="add">
+          <Item type="cmf_ElementBinding" id="74FBB7F00F9E4C41A3BC50E72A672F61" action="add">
             <item_delete_behavior>NonCheckConstraint</item_delete_behavior>
             <new_row_mode>CreateOnly</new_row_mode>
             <reference_required>1</reference_required>
@@ -55,14 +55,8 @@
             <synchronization_direction>FromItem</synchronization_direction>
             <tracking_mode>NonTracking</tracking_mode>
             <Relationships>
-              <Item type="cmf_PropertyBinding" id="59B01B396E294F65958694A02374434C" action="add">
-                <property type="cmf_PropertyType">43465CDD5A3A45A2A6ED2591A9816286</property>
-                <read_only>0</read_only>
-                <reference_type_property_id type="Property">7313E38EA8264602AB98CB30D626CB22</reference_type_property_id>
-                <sort_order>256</sort_order>
-              </Item>
-              <Item type="cmf_PropertyBinding" id="73C70386E5CC4E89A1D731CF3AF49E46" action="add">
-                <property type="cmf_PropertyType">2540A2783C6F4267B77C6F980F2E6657</property>
+              <Item type="cmf_PropertyBinding" id="CB022FC381D94DA3826587192444BE0B" action="add">
+                <property type="cmf_PropertyType">9B92B63356414C71A905553BEAFDE17A</property>
                 <read_only>0</read_only>
                 <reference_type_property_id type="Property">
                   <Item type="Property" action="get" select="id">

@@ -118,17 +118,20 @@ Other user's edit: Part removed"/>
 	
 	<!-- Add by tengz  -->
 	<resource key="import.itemIsNotLocked" value="Item is not locked"/>
-    <!--Add by zhou-->
-    <!--工艺流程图页面工具栏&&属性栏-->
-  	<resource key="flwo_delete" value="delete" /> 
+  <!--Add by zhou-->
+  <!--工艺流程图页面工具栏&&属性栏-->
+  <resource key="flwo_delete" value="delete" /> 
  	<resource key="flwo_property" value="property" /> 
  	<resource key="flwo_toolkit" value="toolkit" />
  	<resource key="flwo_pointer" value="pointer" />
  	<resource key="flwo_path" value='path' /> 
 	<resource key="flwo_amplification" value='amplification' />
  	<resource key="flwo_shrink" value='shrink' /> 
-  	<resource key="flwo_replacement" value='replacement' /> 
+  <resource key="flwo_replacement" value='replacement' /> 
  	<!--Add by zhou-->
  	<!--MPP Tree右键菜单-->
-  	<resource key="Phantom" value="Phantom" />
+  <resource key="Phantom" value="Phantom" />
+
+	<resource key="bcs.promptmessage" value="Please fill in the time (seconds)" />
+  <resource key="bcs.formaterror" value="The input format is wrong (only integer numbers can be input)!" />
 </ui_resources>

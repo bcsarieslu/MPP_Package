@@ -1,0 +1,120 @@
+﻿<AML>
+  <Item type="ItemType" id="1152E941C53A4A3AB12CE88C95E88813" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <enforce_discovery>1</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>polymorphic</implementation_type>
+    <instance_data>MPP_CHANGE_CONTROLLED_ITEM</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>0</is_relationship>
+    <is_versionable>1</is_versionable>
+    <label xml:lang="zc">变更控制对象</label>
+    <label_plural xml:lang="zc">变更控制对象</label_plural>
+    <manual_versioning>0</manual_versioning>
+    <revisions type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs off</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>0</use_src_access>
+    <name>MPP Change Controlled Item</name>
+    <Relationships>
+      <Item type="Property" id="05EAB4F2E4484B30B5EEE099DFF5C3EE" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>120</column_width>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">对象编号</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>20</sort_order>
+        <stored_length>32</stored_length>
+        <track_history>0</track_history>
+        <name>item_number</name>
+      </Item>
+      <Item type="Property" id="50AFD33B77D44C688B00BF97983D7400" action="add">
+        <column_alignment>left</column_alignment>
+        <column_width>200</column_width>
+        <data_type>string</data_type>
+        <is_hidden>0</is_hidden>
+        <is_hidden2>0</is_hidden2>
+        <is_indexed>0</is_indexed>
+        <is_keyed>0</is_keyed>
+        <is_multi_valued>0</is_multi_valued>
+        <is_required>0</is_required>
+        <label xml:lang="zc">名称</label>
+        <range_inclusive>0</range_inclusive>
+        <readonly>0</readonly>
+        <sort_order>40</sort_order>
+        <stored_length>64</stored_length>
+        <track_history>0</track_history>
+        <name>name</name>
+      </Item>
+      <Item type="Server Event" id="FA701629E75F4F12B8BEBB5F0ED0C77C" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="32108B9113064FF2B942E7C5DDAC4DF8" /></related_id>
+        <server_event>onAfterGet</server_event>
+        <sort_order>1024</sort_order>
+      </Item>
+      <Item type="Server Event" id="007DBF2C86C14B0DAEE3D0BB3CEF1C5A" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="F8C2EF4B573D40B58DAA5C5E1A129E6F" /></related_id>
+        <server_event>onBeforeAdd</server_event>
+        <sort_order>768</sort_order>
+      </Item>
+      <Item type="Server Event" id="6835047DD5B447A686E41F3438502104" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="11E9A8E547354EBBB7ABCE730C825F19" /></related_id>
+        <server_event>onBeforeCopy</server_event>
+        <sort_order>896</sort_order>
+      </Item>
+      <Item type="Server Event" id="6F521403567F4AF49F7A14F6EE90858C" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="F7E616B8C8BA427E8B05A7660920E666" /></related_id>
+        <server_event>onBeforeDelete</server_event>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Server Event" id="A25F2279BB04440A94D9D88F4C77C3A2" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="6D497A0F23654C2190DE5A42F9118FAB" /></related_id>
+        <server_event>onBeforeLock</server_event>
+        <sort_order>256</sort_order>
+      </Item>
+      <Item type="Server Event" id="AC8733D91C2F4DA0BED9C93DC11D8856" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="E9F352498F624672ABC1C44C96B81B0B" /></related_id>
+        <server_event>onBeforeUnlock</server_event>
+        <sort_order>384</sort_order>
+      </Item>
+      <Item type="Server Event" id="C3BF71CEC25642BE94F37335F048BA7D" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="B118DC20697745BDB2154126E3B0748D" /></related_id>
+        <server_event>onBeforeUpdate</server_event>
+        <sort_order>640</sort_order>
+      </Item>
+      <Item type="Server Event" id="2FA9576F72EA4DF8A9DB7A2EF1127900" action="add">
+        <event_version>version_1</event_version>
+        <is_required>0</is_required>
+        <related_id type="Method"><Item type="Method" action="get" id="1A3633033ED14CDAB5014B47A932E168" /></related_id>
+        <server_event>onBeforeVersion</server_event>
+        <sort_order>512</sort_order>
+      </Item>
+      <Item type="ItemType Life Cycle" id="2C27F12BBCF94D35B41545818CE265CE" action="add">
+        <related_id type="Life Cycle Map">2F3B75E17C4E4F2D9599579A965BFA64</related_id>
+        <sort_order>128</sort_order>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

@@ -1,0 +1,10 @@
+﻿<AML>
+  <Item type="Server Event" id="F8F0367E1A004A77946FB9373E975C2B" action="add">
+    <event_version>version_1</event_version>
+    <is_required>0</is_required>
+    <related_id type="Method"><Item type="Method" action="get" id="F1B7B3EDC8C348A7AD0382D55A9AD99A" /></related_id>
+    <server_event>onBeforeUpdate</server_event>
+    <sort_order>768</sort_order>
+    <source_id type="ItemType" name="MPart">2DF7A7891AE4480AB1B1AAACBB4246E6</source_id>
+  </Item>
+</AML>

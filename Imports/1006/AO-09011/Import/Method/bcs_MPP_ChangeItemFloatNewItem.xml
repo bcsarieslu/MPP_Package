@@ -1,0 +1,47 @@
+﻿<AML>
+  <Item type="Method" action="add" id="78FB7FE350D34238B9BA95B68309AC99">
+    <execution_allowed_to type="Identity">2618D6F5A90949BAA7E920D1B04C7EE1</execution_allowed_to>
+    <method_code><![CDATA[string new_item_id = this.getProperty("new_item_id");
+if(string.IsNullOrEmpty(new_item_id))
+{
+  return this;
+}
+
+string versionedItemId;
+Aras.Server.Core.InnovatorDatabase conn = CCO.Variables.InnDatabase;
+string itemTypeDbName = CCO.DB.GenerateTableName("MPP Change Controlled Item");
+
+Aras.Server.Core.Utilities.IsIdValid(new_item_id, true);
+
+string sqlQuery = "SELECT TOP(1) last_version.ID FROM " + itemTypeDbName + " cur_version INNER JOIN " + itemTypeDbName + " last_version ON cur_version.id = '" + conn.QuoteValue(new_item_id) + "' and cur_version.config_id = last_version.config_id and last_version.is_current = '1'";
+
+Aras.Server.Core.InnovatorDataSet result = conn.ExecuteSelect(sqlQuery);
+
+if (result.RowsNumber <= 0)
+{
+	const string errorString = "Item last version is not found.";
+	const string errorDetail = "config_id = '{0}'";
+	Item errorItem = this.getInnovator().newError(errorString);
+	errorItem.setErrorDetail(string.Format(errorDetail,new_item_id));
+	return errorItem;
+}
+
+versionedItemId = result["id"].ToString();
+
+if(versionedItemId == new_item_id)
+{
+  return this;
+}
+
+Item callframe = this.newItem("SQL","SQL PROCESS");
+callframe.setProperty("name","bcs_MPP_affectedItemFloatNewItem");
+callframe.setProperty("PROCESS","CALL");
+callframe.setProperty("ARG1", this.getID());
+callframe.setProperty("ARG2", versionedItemId);
+callframe = callframe.apply();
+  
+return callframe;]]></method_code>
+    <method_type>C#</method_type>
+    <name>bcs_MPP_ChangeItemFloatNewItem</name>
+  </Item>
+</AML>

@@ -85,7 +85,13 @@
 			//this applySQL should be the first request to DataBase to lock the row if different users will do the same at the same moment. The second user will wait until
 			// the transaction of the first user will be commited to DB.
 			_processPlanLockManager.Lock(processPlansIdsToUpdate.ToString());
-			_requestState.Add("MPP|PpIds", processPlansIdsToUpdate.ToString());
+			//Modify by BCS Tengz 2021/8/17 修复PPR一次送审多个MPP报错
+			if(_requestState.Contains("MPP|PpIds")){
+			    _requestState["MPP|PpIds"]+=","+processPlansIdsToUpdate.ToString();
+			}else{
+			    _requestState.Add("MPP|PpIds", processPlansIdsToUpdate.ToString());
+			}
+			//End Modify
 
 			if (!String.IsNullOrEmpty(clientChanges))
 			{

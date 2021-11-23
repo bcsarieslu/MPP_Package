@@ -99,6 +99,7 @@
   <resource key="find.found_of_matches" value="{1}中的{0}" />
   <!-- Add by tengz  -->
   <resource key="import.itemIsNotLocked" value="物件未锁定" />
+
   <!--Add by zhou-->
   <!--工艺流程图页面工具栏&&属性栏-->
   <resource key="flwo_delete" value="删除" /> 
@@ -112,4 +113,8 @@
   <!--Add by zhou-->
   <!--MPP Tree右键菜单-->
   <resource key="Phantom" value="虚拟件" />
+
+  <resource key="bcs.promptmessage" value="请填写时间(秒)" />
+  <resource key="bcs.formaterror" value="输入格式错误(只能输入整数数字)!" />
+  
 </ui_resources>

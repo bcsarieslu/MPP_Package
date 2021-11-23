@@ -29,6 +29,14 @@ SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''樣本頻率'' 
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''樣本容量'' where id=''CE603FC172BA412DA79A413E91FCACD4''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''取消'' where id=''0435F3D5B6C64B868898D349B736A00F''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''變更類型:'' where id=''8EBA825E53AF4BF4A61794363F067B7D''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''對象:'' where id=''B4D6687ABC7C4FDF9D15DB026A0B0335''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zt=N''確定'' where id=''5A4DF6BCA88B4ABD838E0C6533C24679''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label_zc'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='FIELD') 
@@ -59,6 +67,14 @@ SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''样本频率'' 
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''样本容量'' where id=''CE603FC172BA412DA79A413E91FCACD4''';
 EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''取消'' where id=''0435F3D5B6C64B868898D349B736A00F''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''变更类型:'' where id=''8EBA825E53AF4BF4A61794363F067B7D''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''对象:'' where id=''B4D6687ABC7C4FDF9D15DB026A0B0335''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''确定'' where id=''5A4DF6BCA88B4ABD838E0C6533C24679''';
+EXEC SP_EXECUTESQL @UpdateString;
 END
 SET @PropertyName = 'label'
 If exists (select * from information_schema.columns where COLUMN_NAME=@PropertyName and TABLE_NAME='FIELD') 
@@ -88,6 +104,14 @@ EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label=N''Sample Frequency'' where id=''22C4C1B565D742589F8FC608E94D1E2C''';
 EXEC SP_EXECUTESQL @UpdateString;
 SET @UpdateString = N'update [innovator].[FIELD] set label_zc=N''Sample Size'' where id=''CE603FC172BA412DA79A413E91FCACD4''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label=N''Cancel'' where id=''0435F3D5B6C64B868898D349B736A00F''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label=N''Change Type:'' where id=''8EBA825E53AF4BF4A61794363F067B7D''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label=N''Item:'' where id=''B4D6687ABC7C4FDF9D15DB026A0B0335''';
+EXEC SP_EXECUTESQL @UpdateString;
+SET @UpdateString = N'update [innovator].[FIELD] set label=N''OK'' where id=''5A4DF6BCA88B4ABD838E0C6533C24679''';
 EXEC SP_EXECUTESQL @UpdateString;
 END
 

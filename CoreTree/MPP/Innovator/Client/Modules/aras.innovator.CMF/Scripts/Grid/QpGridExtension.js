@@ -1219,7 +1219,7 @@ define([
 			}
 
 			//Modify by BCS Tengz 2022/6/22 MPP与PQD联动 不允许修改Operation
-			if(parent.isPQD && parent.isUsedMPP && propertyItem.treeItem.documentElementType.name=="PQD Operation" && propertyItem.property.bindingType){
+			if(parent.isPQD && parent.isUsedMPP && propertyItem.treeItem.documentElementType.name=="PQD Process Step Element" && propertyItem.property.bindingType){
 				return;
 			}
 			//End Modify

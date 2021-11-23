@@ -1,0 +1,11 @@
+﻿<AML>
+  <Item type="ItemType" id="1152E941C53A4A3AB12CE88C95E88813" action="edit">
+    <Relationships>
+      <Item type="Morphae" id="ED279E7A858E4D7DBE2DBB16F225B35A" action="add">
+        <source_id type="ItemType" name="MPP Change Controlled Item">1152E941C53A4A3AB12CE88C95E88813</source_id>
+        <related_id type="ItemType" name="MPart">2DF7A7891AE4480AB1B1AAACBB4246E6</related_id>
+        <sort_order>896</sort_order>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

@@ -1,0 +1,153 @@
+﻿<AML>
+  <Item type="Form" id="F9999AB9FCB1457B8FD3434AE56D8B11" action="add">
+    <category_form>0</category_form>
+    <height>170</height>
+    <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+    <width>360</width>
+    <name>bcs_MPP_AddToChange</name>
+    <Relationships>
+      <Item type="Body" id="BDC96E92C2D64B1F928D317A0AAD98D6" action="add">
+        <sort_order>128</sort_order>
+        <Relationships>
+          <Item type="Field" id="0435F3D5B6C64B868898D349B736A00F" action="add">
+            <border_width>0</border_width>
+            <display_length_unit>px</display_length_unit>
+            <field_type>button</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">取消</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <sort_order>512</sort_order>
+            <tab_stop>1</tab_stop>
+            <x>170</x>
+            <y>100</y>
+            <name>cancel_button</name>
+            <Relationships>
+              <Item type="Field Event" id="55FE9187B66D4264BEDA9C17F007D25C" action="add">
+                <field_event>onclick</field_event>
+                <related_id type="Method"><Item type="Method" action="get" id="54CA3B7C78284125A1DAE9246A42EE50" /></related_id>
+                <sort_order>128</sort_order>
+              </Item>
+            </Relationships>
+          </Item>
+          <Item type="Field" id="8EBA825E53AF4BF4A61794363F067B7D" action="add">
+            <border_width>0</border_width>
+            <css>{$this field rule} .sys_f_label_container
+{
+  width: 110px;
+}
+
+{$this field rule}
+{
+   margin: 5px 0px 5px 0px;
+}
+
+{$this field rule}  select
+{
+  width: 100px;
+}</css>
+            <display_length_unit>px</display_length_unit>
+            <field_type>dropdown</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">变更类型:</label>
+            <label_position>left</label_position>
+            <list_no_blank>0</list_no_blank>
+            <sort_order>128</sort_order>
+            <tab_stop>1</tab_stop>
+            <text_align>left</text_align>
+            <x>60</x>
+            <y>15</y>
+            <name>change_type_input</name>
+            <Relationships>
+              <Item type="Field Event" id="6AAB0E4330AB4D44839BF527BB0A8D75" action="add">
+                <field_event>onchange</field_event>
+                <related_id type="Method"><Item type="Method" action="get" id="3D515E451C9643F488BF6367E302F9CC" /></related_id>
+                <sort_order>128</sort_order>
+              </Item>
+            </Relationships>
+          </Item>
+          <Item type="Field" id="B4D6687ABC7C4FDF9D15DB026A0B0335" action="add">
+            <border_width>0</border_width>
+            <css>{$this field rule} .sys_f_label_container
+{
+  width: 110px;
+}
+
+{$this field rule}
+{
+   margin: 5px 0px 5px 0px;
+}
+
+{$this field rule}  select
+{
+  width: 100px;
+}</css>
+            <display_length_unit>px</display_length_unit>
+            <field_type>dropdown</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">对象:</label>
+            <label_position>left</label_position>
+            <list_no_blank>0</list_no_blank>
+            <sort_order>256</sort_order>
+            <tab_stop>1</tab_stop>
+            <text_align>left</text_align>
+            <x>60</x>
+            <y>50</y>
+            <name>item_input</name>
+          </Item>
+          <Item type="Field" id="5A4DF6BCA88B4ABD838E0C6533C24679" action="add">
+            <border_width>0</border_width>
+            <display_length_unit>px</display_length_unit>
+            <field_type>button</field_type>
+            <font_color>#000000</font_color>
+            <font_family>arial, helvetica, sans-serif</font_family>
+            <font_size>8pt</font_size>
+            <font_weight>bold</font_weight>
+            <is_disabled>0</is_disabled>
+            <is_visible>1</is_visible>
+            <label xml:lang="zc">确定</label>
+            <label_position>top</label_position>
+            <list_no_blank>0</list_no_blank>
+            <sort_order>384</sort_order>
+            <tab_stop>1</tab_stop>
+            <x>78</x>
+            <y>100</y>
+            <name>ok_button</name>
+            <Relationships>
+              <Item type="Field Event" id="CB7A4A6136494F98AD500AD55DF69682" action="add">
+                <field_event>onclick</field_event>
+                <related_id type="Method"><Item type="Method" action="get" id="5C879803379A4CE8AD6B73E707092D33" /></related_id>
+                <sort_order>128</sort_order>
+              </Item>
+            </Relationships>
+          </Item>
+        </Relationships>
+      </Item>
+      <Item type="Form Event" id="1E26F70181DE44DC969BE0148FD1C01B" action="add">
+        <form_event>onload</form_event>
+        <related_id type="Method"><Item type="Method" action="get" id="1287CDFBBFCE4748864A82F445F6964A" /></related_id>
+        <sort_order>128</sort_order>
+      </Item>
+      <Item type="Form Event" id="7A73A73BDACB4998BD0B7A7E71C6AF78" action="add">
+        <form_event>onload</form_event>
+        <related_id type="Method"><Item type="Method" action="get" id="70DCD9E5341341BB87C87DAC980AE319" /></related_id>
+        <sort_order>256</sort_order>
+      </Item>
+    </Relationships>
+  </Item>
+</AML>

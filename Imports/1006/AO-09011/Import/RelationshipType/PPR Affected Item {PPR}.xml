@@ -10,7 +10,7 @@
     <is_list_type>0</is_list_type>
     <label xml:lang="zc">送審物件</label>
     <new_show_related>0</new_show_related>
-    <related_id type="ItemType" name="Affected Item">BFAAB0F6838D4F80BF12CB328FF5B097</related_id>
+    <related_id type="ItemType" name="MPP Affected Item">EB293817C4354BFA84A4BDB67E54511E</related_id>
     <related_notnull>0</related_notnull>
     <related_option>2</related_option>
     <relationship_id type="ItemType" name="PPR Affected Item">
@@ -41,14 +41,14 @@
           <Item type="Server Event" id="412305C2EC184E7C9FFF9FD466C37AB1" action="add">
             <event_version>version_1</event_version>
             <is_required>0</is_required>
-            <related_id type="Method"><Item type="Method" action="get" id="DB6A7506779F42F596433298E0855FD1" /></related_id>
+            <related_id type="Method"><Item type="Method" action="get" id="B9C5A072000C40F1B94EEC1F25C3E90D" /></related_id>
             <server_event>onAfterAdd</server_event>
             <sort_order>512</sort_order>
           </Item>
           <Item type="Server Event" id="15CE780067894261BE0CDF82B628BEEF" action="add">
             <event_version>version_1</event_version>
             <is_required>0</is_required>
-            <related_id type="Method"><Item type="Method" action="get" id="DB6A7506779F42F596433298E0855FD1" /></related_id>
+            <related_id type="Method"><Item type="Method" action="get" id="B9C5A072000C40F1B94EEC1F25C3E90D" /></related_id>
             <server_event>onAfterDelete</server_event>
             <sort_order>640</sort_order>
           </Item>

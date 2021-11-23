@@ -43,7 +43,7 @@ try {
         string new_item_id=relatedItem.getProperty("new_item_id");
         if(relatedItem.getProperty("action", "")== "Change")
         {
-            Item changeItem=inn.getItemById("Change Controlled Item",new_item_id);
+            Item changeItem=inn.getItemById("MPP Change Controlled Item",new_item_id);
             if(changeItem.getType()!="mpp_OperationTemplate")
             {
                 continue;

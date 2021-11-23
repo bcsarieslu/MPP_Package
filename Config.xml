@@ -40,12 +40,12 @@
 			<Package chek_item_type="" >PBOM2MBOM</Package>
 		</section>	
 
-		<section type="Import" exec="5" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
+		<section type="Import" exec="6" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
 			<Package chek_item_type="" >PQB 0000</Package>	
 			<Package chek_item_type="" >PQB 0001</Package>	
 		</section>			
 		
-		<section type="SQL" exec="6" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+		<section type="SQL" exec="7" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
 			<File>mpp_itemtype.sql</File>
 			<File>mpp_relationshiptype.sql</File>						
 			<File>mpp_property.sql</File>		
@@ -61,7 +61,7 @@
 			<File>mpp_rb_ColumnDefinition.sql</File>
 		</section>	
 		
-		<section type="Import" exec="7" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
+		<section type="Import" exec="8" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">		
 			<Package chek_item_type="" >2001</Package>	
 			<Package chek_item_type="" >2002</Package>	
 			<Package chek_item_type="" >2003</Package>
@@ -70,7 +70,7 @@
 			<Package chek_item_type="" >2006</Package>
 		</section>	
 		
-		<section type="SQL" exec="8" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+		<section type="SQL" exec="9" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
 			<File>update_permission_id.sql</File>
 		</section>
 

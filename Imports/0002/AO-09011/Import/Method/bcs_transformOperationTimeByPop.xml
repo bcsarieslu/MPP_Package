@@ -1,0 +1,66 @@
+﻿<AML>
+  <Item type="Method" action="add" id="343AC7D580CB4090A15A5954F0C3ADA4">
+    <execution_allowed_to type="Identity">
+      <Item type="Identity" action="get" select="id">
+        <name>World</name>
+      </Item>
+    </execution_allowed_to>
+    <method_code><![CDATA[try {
+    var cell = grid.cells(relationshipID, colNumber);
+    var time = prompt(parent.uiUtils.getResource("bcs.promptmessage"), formatTime(cell.getValue()));
+    if (time == null) {
+        return false;
+    }
+    
+    if (time == "") {
+        time = 0;
+    }
+    
+    var reg = /^[0-9]*$/;
+    if (!reg.test(time)) {
+        aras.AlertWarning(parent.uiUtils.getResource("bcs.formaterror"));
+        return false;
+    }
+    
+    time = formatSeconds(time);
+    cell.setValue(time);
+    setCellValue(time);
+} catch (ex) {
+    aras.AlertError(ex);
+}
+return false;
+
+function formatSeconds(value) {
+    let result = parseInt(value);
+    let h = Math.floor(result / 3600);
+    let m = Math.floor((result / 60 % 60)) < 10 ? '0' + Math.floor((result / 60 % 60)) : Math.floor((result / 60 % 60));
+    let s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
+    let length = h.toString().length;
+    while (length < 4) {
+        h = '0' + h;
+        length++;
+    }
+    let res = `${h}:${m}:${s}`;
+    return res;
+}
+
+function formatTime(value) {
+    let res;
+    try {
+        let times = value.split(":");
+        let h = times[0];
+        let m = times[1];
+        let s = times[2];
+        res = parseInt(h) * 3600 + parseInt(m) * 60 + parseInt(s);
+        if (isNaN(res)) {
+            res = 0;
+        }
+    } catch (e) {
+        res = 0;
+    }
+    return res;
+}]]></method_code>
+    <method_type>JavaScript</method_type>
+    <name>bcs_transformOperationTimeByPop</name>
+  </Item>
+</AML>
