@@ -1,0 +1,37 @@
+<AML>
+ <Item type="Property" id="CB7E65759AC641BDB4F0DDD853D6B11F" action="add">
+  <column_alignment>left</column_alignment>
+  <data_type>string</data_type>
+  <is_hidden>0</is_hidden>
+  <is_hidden2>0</is_hidden2>
+  <is_indexed>0</is_indexed>
+  <is_keyed>0</is_keyed>
+  <is_multi_valued>0</is_multi_valued>
+  <is_required>0</is_required>
+  <range_inclusive>0</range_inclusive>
+  <readonly>0</readonly>
+  <sort_order>4608</sort_order>
+  <source_id keyed_name="MPart" type="ItemType" name="MPart">2DF7A7891AE4480AB1B1AAACBB4246E6</source_id>
+  <stored_length>32</stored_length>
+  <track_history>0</track_history>
+  <name>name</name>
+ </Item>
+ <Item type="Property" id="674C979BF3A94659A3A3443C0B66D21D" action="add">
+  <column_alignment>left</column_alignment>
+  <data_type>string</data_type>
+  <is_hidden>0</is_hidden>
+  <is_hidden2>0</is_hidden2>
+  <is_indexed>0</is_indexed>
+  <is_keyed>0</is_keyed>
+  <is_multi_valued>0</is_multi_valued>
+  <is_required>0</is_required>
+  <label xml:lang="en">Item number</label>
+  <range_inclusive>0</range_inclusive>
+  <readonly>0</readonly>
+  <sort_order>4608</sort_order>
+  <source_id keyed_name="MPart" type="ItemType" name="MPart">2DF7A7891AE4480AB1B1AAACBB4246E6</source_id>
+  <stored_length>32</stored_length>
+  <track_history>0</track_history>
+  <name>item_number</name>
+ </Item>
+ </AML>

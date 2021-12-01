@@ -77,6 +77,8 @@
 		<section type="SQL" exec="10" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
 			<File>mpp_grid_column.sql</File>
 			<File>commandbardropdown_label.sql</File>
+			<File>changeTOCParentMenu.sql</File>
 		</section>
+		
 	</sections>
 </config>
