@@ -72,12 +72,19 @@
 		
 		<section type="SQL" exec="9" classname="MPP,MPP+PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
 			<File>update_permission_id.sql</File>
-		</section>
-
-		<section type="SQL" exec="10" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+			<File>UserMessage.sql</File>
 			<File>mpp_grid_column.sql</File>
 			<File>commandbardropdown_label.sql</File>
 			<File>changeTOCParentMenu.sql</File>
+			<File>mpp_CommandBarButton.sql</File>
+		</section>
+
+		<section type="SQL" exec="10" classname="MPP+PQB,PQB" singlelang="Traditional,Simplified,English,Korean" ignore_error="1">
+			<File>UserMessage.sql</File>
+			<File>mpp_grid_column.sql</File>
+			<File>commandbardropdown_label.sql</File>
+			<File>changeTOCParentMenu.sql</File>
+			<File>mpp_CommandBarButton.sql</File>
 		</section>
 		
 	</sections>

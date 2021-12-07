@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="5696542607A44265A1B06EE9E319AE90" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Process Flow Number</text>
+  <name>bcs_ProcessflowNumber</name>
+ </Item>
+</AML>

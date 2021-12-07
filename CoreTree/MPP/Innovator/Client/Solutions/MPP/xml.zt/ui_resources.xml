@@ -25,7 +25,7 @@
   <resource key="workbench.unauthorized" value="無產品授權,請申請產品授權" />
   <!-- Add by tengz  -->
   <!-- Process Plan的workbench里添加对象类 -->
-  <resource key="workbenchDropdown.CAD" value="工程图" />
+  <resource key="workbenchDropdown.CAD" value="工程圖" />
   <resource key="workbenchDropdown.Test" value="檢驗項" />
   <resource key="warning.addProducedPart" value="請添加生產零件" />
   <resource key="warning.saveProcessPlan" value="請保存製造流程" />
@@ -106,6 +106,13 @@
   <resource key="flwo_amplification" value='放大' />
   <resource key="flwo_shrink" value='縮小' /> 
   <resource key="flwo_replacement" value='恢復' /> 
+  
+  <!--工艺流程图页面工具栏&&属性栏-->
+  <resource key="processflow.number" value="製程流程規劃編號" /> 
+  <resource key="processflow.name" value="名稱" /> 
+  <resource key="processflow.description" value="描述" />
+  <resource key="processflow.hours" value="小時" />
+  
   <!--Add by zhou-->
   <!--MPP Tree右键菜单-->
   <resource key="Phantom" value="虛擬件" />

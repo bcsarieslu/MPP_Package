@@ -110,6 +110,13 @@
   <resource key="flwo_amplification" value='放大' />
   <resource key="flwo_shrink" value='缩小' /> 
   <resource key="flwo_replacement" value='恢复' />
+  
+  <!--工艺流程图页面工具栏&&属性栏-->
+  <resource key="processflow.number" value="工艺流程规划编号" /> 
+  <resource key="processflow.name" value="名称" /> 
+  <resource key="processflow.description" value="描述" />
+  <resource key="processflow.hours" value="小時" />
+  
   <!--Add by zhou-->
   <!--MPP Tree右键菜单-->
   <resource key="Phantom" value="虚拟件" />

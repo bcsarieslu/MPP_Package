@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="256765BE904F4ACBB1DDCE6361D796CD" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Hours</text>
+  <name>bcs_ProcessflowHours</name>
+ </Item>
+</AML>

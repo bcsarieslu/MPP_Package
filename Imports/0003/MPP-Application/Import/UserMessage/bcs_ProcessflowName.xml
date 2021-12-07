@@ -1,0 +1,7 @@
+﻿<AML>
+ <Item type="UserMessage" id="90271CD6BB1B49259D51D4E490CBD2FC" action="add">
+  <custom>0</custom>
+  <text xml:lang="en">Name</text>
+  <name>bcs_ProcessflowName</name>
+ </Item>
+</AML>

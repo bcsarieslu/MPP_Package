@@ -12,9 +12,9 @@ function myflowjpdl($) {
     });
     if (toolLoad != 0) {
         $.extend(true, myflow.config.props.props, {
-            name: { name: 'name', label: '工艺流程规划编号', value: aras.getItemProperty(parent.item, "item_number"), editor: function () { return new myflow.editors.inputEditor(); } },
-            key: { name: 'key', label: '名称', value: aras.getItemProperty(parent.item, "name"), editor: function () { return new myflow.editors.inputEditor(); } },
-            desc: { name: 'desc', label: '描述', value: aras.getItemProperty(parent.item, "description"), editor: function () { return new myflow.editors.inputEditor(); } }
+            name: { name: 'name', label: aras.getResource("../Solutions/MPP","processflow.number"), value: aras.getItemProperty(parent.item, "item_number"), editor: function () { return new myflow.editors.inputEditor(); } },
+            key: { name: 'key', label: aras.getResource("../Solutions/MPP","processflow.name"), value: aras.getItemProperty(parent.item, "name"), editor: function () { return new myflow.editors.inputEditor(); } },
+            desc: { name: 'desc', label: '../Solutions/MPP","processflow.description', value: aras.getItemProperty(parent.item, "description"), editor: function () { return new myflow.editors.inputEditor(); } }
         });
     }
     //根据数据库生成节点 
